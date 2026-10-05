@@ -21,6 +21,7 @@ The client approved these changes during the build. They override the rest of th
 - **Hero headline** breaks after the first sentence: "Great businesses don’t fail." / "They go unseen."
 - **Audit buttons** all read "Book my audit" (hero, CTA bands, service pages, nav, form). Descriptive copy still says "free visibility audit".
 - **Typography:** curly apostrophes in display copy. The Manifesto headline is framed by two slab quote marks (cap-height tall, opening mark hanging left, closing mark inline after "problem.").
+- **No italics (October 2026).** Nothing on the site is italic. The Instrument Serif Italic accent is retired: the Manifesto supporting line, the Founder note's first paragraph, the About intro, blog post descriptions and blockquotes, and case study quotes are upright Instrument Sans (Manifesto and About intro `clamp(20px, 2vw, 28px)`, Founder 21px / 24px from 640px). "unseen" in the hero headline is no longer italic.
 - **Homepage order:** Hero, Stat bar, Manifesto, Founder note, Services (Poster Wall), Case Files, Reels fan, Process, Why choose us, Testimonials, Audit CTA.
 - **Header:** thinner nav (63px). The wordmark full stop is orange on light pages and cream on dark pages.
 - **Poster Wall:** compact 3x3 grid on desktop. Illustrations on Social media, Performance marketing and Automations only, with none on Websites.
