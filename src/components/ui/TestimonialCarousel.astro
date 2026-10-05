@@ -36,11 +36,11 @@ const words = (quote: string) => {
 <div class="tcar" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
   <div class="tcar-grid grid items-end gap-x-6 gap-y-6 sm:gap-x-8 lg:gap-x-20 lg:gap-y-10">
     <!-- Card stack -->
-    <div aria-hidden="true" class="tcar-stack relative h-[178px] w-[150px] sm:h-[220px] sm:w-[188px] lg:h-[340px] lg:w-[290px]">
+    <div aria-hidden="true" class="tcar-stack relative h-[150px] w-[150px] sm:h-[188px] sm:w-[188px] lg:h-[290px] lg:w-[290px]">
       {
         testimonials.map((t, i) => (
           <div
-            class:list={['tcar-card absolute inset-0 flex flex-col justify-between rounded-[6px] p-4 sm:p-5', tones[t.tone]]}
+            class:list={['tcar-card absolute inset-0 flex flex-col items-center justify-center rounded-full p-4 text-center sm:p-5', tones[t.tone]]}
             style={`--tilt:${rest[i % rest.length].tilt}deg;--x:${rest[i % rest.length].x}px;--y:${rest[i % rest.length].y}px;box-shadow:var(--shadow-poster)`}
             data-state={i === 0 ? 'active' : 'behind'}
           >

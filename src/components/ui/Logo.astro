@@ -1,0 +1,32 @@
+---
+/**
+ * BizMeUp logo (the client's wordmark with the arrow in the "B"). Drawn as a CSS mask so it takes
+ * the colour of the text around it: espresso on cream, cream on dark. Decorative when the link
+ * around it already says the brand name, so pass `decorative` to hide it from screen readers.
+ */
+import logo from '../../assets/logo/bizmeup-logo.webp';
+
+interface Props {
+  class?: string;
+  decorative?: boolean;
+}
+
+const { class: className = '', decorative = false } = Astro.props;
+---
+
+<span
+  class:list={['bizmeup-logo block', className]}
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : 'BizMeUp'}
+  aria-hidden={decorative ? 'true' : undefined}
+  style={`--logo-src:url("${logo.src}")`}
+></span>
+
+<style>
+  .bizmeup-logo {
+    aspect-ratio: 1404 / 232;
+    background-color: currentColor;
+    -webkit-mask: var(--logo-src) center / contain no-repeat;
+    mask: var(--logo-src) center / contain no-repeat;
+  }
+</style>

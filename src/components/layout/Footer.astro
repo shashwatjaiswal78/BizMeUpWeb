@@ -1,5 +1,6 @@
 ---
 import { nav, site } from '../../config/site';
+import Logo from '../ui/Logo.astro';
 import SocialIcon from '../ui/SocialIcon.astro';
 
 const year = new Date().getFullYear();
@@ -49,11 +50,8 @@ const socials = [
       </address>
     </div>
 
-    <div
-      aria-hidden="true"
-      class="font-display text-[21vw] leading-[0.8] font-extrabold tracking-[-0.06em] text-espresso"
-    >
-      BizMeUp
+    <div class="text-espresso">
+      <Logo class="w-full" decorative />
     </div>
 
     <div class="flex flex-wrap items-baseline justify-between gap-4">

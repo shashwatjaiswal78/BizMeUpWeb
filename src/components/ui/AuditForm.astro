@@ -9,13 +9,13 @@ const services = ['Websites', 'Social media', 'Content strategy', 'Performance m
 const budgets = ['Under ₹25K', '₹25K to ₹50K', '₹50K to ₹1L', '₹1L and above'];
 
 const field =
-  'w-full min-h-12 rounded-[10px] border border-espresso-line bg-espresso p-3.5 font-body text-base text-cream placeholder:text-cream/50 aria-[invalid=true]:border-orange';
+  'w-full min-h-12 rounded-[10px] border border-espresso-line bg-white p-3.5 font-body text-base text-espresso placeholder:text-muted aria-[invalid=true]:border-orange';
 const labelCls = 'flex flex-col gap-2 text-sm font-medium';
 ---
 
 <div class="audit-form-wrap min-w-0 flex-[1_1_480px]">
   <form
-    class="audit-form flex flex-col gap-[22px] rounded-[16px] border border-mustard/45 bg-espresso-card p-6 text-cream sm:p-9"
+    class="audit-form flex flex-col gap-[22px] rounded-[16px] border border-mustard/45 bg-white p-6 text-espresso sm:p-9"
     novalidate
     data-endpoint={import.meta.env.PUBLIC_FORM_ENDPOINT ?? ''}
   >
@@ -23,17 +23,17 @@ const labelCls = 'flex flex-col gap-2 text-sm font-medium';
       <label class={labelCls}>
         Name
         <input class={field} type="text" name="name" placeholder="Your name" autocomplete="name" required aria-describedby="err-name" />
-        <span id="err-name" class="field-error text-[13px] text-mustard" hidden></span>
+        <span id="err-name" class="field-error text-[13px] text-orange-deep" hidden></span>
       </label>
       <label class={labelCls}>
         Business name
         <input class={field} type="text" name="business" placeholder="Your business" autocomplete="organization" required aria-describedby="err-business" />
-        <span id="err-business" class="field-error text-[13px] text-mustard" hidden></span>
+        <span id="err-business" class="field-error text-[13px] text-orange-deep" hidden></span>
       </label>
       <label class={labelCls}>
         Phone (WhatsApp)
         <input class={field} type="tel" name="phone" placeholder="+91" autocomplete="tel" inputmode="tel" required aria-describedby="err-phone" />
-        <span id="err-phone" class="field-error text-[13px] text-mustard" hidden></span>
+        <span id="err-phone" class="field-error text-[13px] text-orange-deep" hidden></span>
       </label>
       <label class={labelCls}>
         Website or Instagram link
@@ -46,7 +46,7 @@ const labelCls = 'flex flex-col gap-2 text-sm font-medium';
       <div class="flex flex-wrap gap-2.5">
         {
           services.map((s) => (
-            <label class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-espresso-line px-4 py-2.5 text-[15px]">
+            <label class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-espresso-line px-4 py-2.5 text-[15px] text-espresso">
               <input type="checkbox" name="services" value={s} class="m-0 h-4 w-4 accent-orange" />
               {s}
             </label>
@@ -74,14 +74,14 @@ const labelCls = 'flex flex-col gap-2 text-sm font-medium';
     >
       Book my audit
     </button>
-    <p class="form-error m-0 rounded-[10px] border border-orange px-4 py-3 text-[15px] leading-normal text-cream" role="alert" hidden>
+    <p class="form-error m-0 rounded-[10px] border border-orange px-4 py-3 text-[15px] leading-normal text-espresso" role="alert" hidden>
       That didn't go through. Check your phone number and try again, or message us on WhatsApp.
     </p>
-    <p class="m-0 text-sm text-cream/70">We reply on WhatsApp within one working day.</p>
+    <p class="m-0 text-sm text-muted">We reply on WhatsApp within one working day.</p>
   </form>
 
   <div
-    class="audit-success flex flex-col items-start gap-6 rounded-[16px] border border-mustard/45 bg-espresso-card p-6 text-cream sm:p-9"
+    class="audit-success flex flex-col items-start gap-6 rounded-[16px] border border-mustard/45 bg-white p-6 text-espresso sm:p-9"
     tabindex="-1"
     role="status"
     hidden
