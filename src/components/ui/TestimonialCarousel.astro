@@ -46,7 +46,7 @@ const words = (quote: string) => {
           >
             <Tape color={tapes[t.tone]} width={70} height={22} rotate={-4} style="top:-10px;left:50%;margin-left:-35px" />
             <span class="font-display text-[64px] leading-[0.85] font-extrabold tracking-[-0.05em] sm:text-[84px] lg:text-[128px]">{t.initials}</span>
-            <span class="text-[13px] leading-snug font-semibold lg:text-base">{t.business}</span>
+            <span class:list={['text-[13px] leading-snug font-semibold lg:text-base', t.tone === 'orange' && 'text-espresso']}>{t.business}</span>
           </div>
         ))
       }

@@ -44,13 +44,13 @@ const filters = [{ id: 'all', label: 'All' }, ...services.map((s) => ({ id: s.id
 
   <section class="bg-blue px-5 py-16 md:px-10 lg:px-16 lg:py-28">
     <div class="mx-auto max-w-[1280px]">
-      <p class="work-count m-0 mb-8 text-[15px] text-cream/80" aria-live="polite">
+      <p class="work-count m-0 mb-8 text-[15px] text-white" aria-live="polite">
         {cases.length} case files
       </p>
       <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
         {cases.map((entry) => <CaseTile entry={entry} serviceSlugs={caseServiceSlugs(entry, services)} headingLevel="h2" />)}
       </div>
-      <p class="work-empty m-0 text-[21px] text-cream" hidden>No case files for this service yet. Check back soon.</p>
+      <p class="work-empty m-0 text-[21px] text-white" hidden>No case files for this service yet. Check back soon.</p>
     </div>
   </section>
 

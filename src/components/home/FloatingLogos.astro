@@ -5,14 +5,25 @@
  * in one by one. Each tile bobs on its own rhythm and, on desktop, drifts with the
  * pointer at a different depth. Decorative only. Reduced motion: still and visible.
  */
-import instagram from '../../assets/social-logos/tile/instagram.svg';
-import whatsapp from '../../assets/social-logos/tile/whatsapp.svg';
-import youtube from '../../assets/social-logos/tile/youtube.svg';
+// Inlined (not <img>) so the tiles cost no requests and are never the page's LCP element.
+import instagramRaw from '../../assets/social-logos/tile/instagram.svg?raw';
+import whatsappRaw from '../../assets/social-logos/tile/whatsapp.svg?raw';
+import youtubeRaw from '../../assets/social-logos/tile/youtube.svg?raw';
+
+/** Decorative inline SVG: hidden from assistive tech, with ids prefixed so gradients never clash. */
+const inline = (svg: string, prefix: string) =>
+  svg
+    .replace(/ role="img" aria-label="[^"]*"/, ' aria-hidden="true" focusable="false"')
+    .replace(/id="([^"]+)"/g, `id="${prefix}-$1"`)
+    .replace(/url\(#([^)]+)\)/g, `url(#${prefix}-$1)`);
+const instagram = inline(instagramRaw, 'ig');
+const whatsapp = inline(whatsappRaw, 'wa');
+const youtube = inline(youtubeRaw, 'yt');
 
 // Positions are percentages of the scene (leftSm overrides on phones so tiles stay on screen);
 // depth sets how far each drifts with the pointer.
 const logos: {
-  src: ImageMetadata;
+  svg: string;
   top: string;
   left: string;
   leftSm?: string;
@@ -24,9 +35,9 @@ const logos: {
   badge: 'likes' | 'count' | null;
 }[] = [
   // Three tiles in a triangle around the composition (top left, top right, right middle), popping in in that order.
-  { src: youtube, top: '-2%', left: '-3%', leftSm: '1%', size: 76, rotate: -9, depth: 0.6, float: 6.2, delay: 0, badge: null },
-  { src: instagram, top: '-3%', left: '54%', size: 92, rotate: 8, depth: 1, float: 5.4, delay: 0.1, badge: 'likes' },
-  { src: whatsapp, top: '42%', left: '91%', leftSm: '80%', size: 84, rotate: -8, depth: 0.8, float: 6.6, delay: 0.2, badge: 'count' },
+  { svg: youtube, top: '-2%', left: '-3%', leftSm: '1%', size: 76, rotate: -9, depth: 0.6, float: 6.2, delay: 0, badge: null },
+  { svg: instagram, top: '-3%', left: '54%', size: 92, rotate: 8, depth: 1, float: 5.4, delay: 0.1, badge: 'likes' },
+  { svg: whatsapp, top: '42%', left: '91%', leftSm: '80%', size: 84, rotate: -8, depth: 0.8, float: 6.6, delay: 0.2, badge: 'count' },
 ];
 ---
 
@@ -38,7 +49,7 @@ const logos: {
     >
       <div class="float-logo-pop">
         <div class="float-logo-bob relative">
-          <img src={l.src.src} alt="" width={l.size} height={l.size} class="float-logo-img block" loading="eager" decoding="async" />
+          <span class="float-logo-img block" set:html={l.svg} />
           {l.badge === 'likes' && (
             <span class="absolute -top-2.5 -right-7 inline-flex items-center gap-1 rounded-full bg-orange-deep px-2 py-1 text-xs leading-none font-bold whitespace-nowrap text-cream shadow-[0_6px_12px_rgba(25,25,25,0.25)]">
               <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 3 4.5 6.7 4.5c2.1 0 3.6 1.2 4.3 2.4.7-1.2 2.2-2.4 4.3-2.4 3.7 0 5.8 3.9 4.3 7.3C19.5 16.4 12 21 12 21z" /></svg>
@@ -63,6 +74,11 @@ const logos: {
     /* Pointer parallax: --mx/--my (-1 to 1) are set on the hero by the spotlight script. */
     transform: translate3d(calc(var(--mx, 0) * var(--depth) * 14px), calc(var(--my, 0) * var(--depth) * 10px), 0);
     transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .float-logo-img :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
   .float-logo-img {
     max-width: none;

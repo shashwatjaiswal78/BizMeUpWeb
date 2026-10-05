@@ -22,9 +22,9 @@ const total = cases.length;
         >
           The Case Files.
         </h2>
-        <p class="m-0 text-[19px] text-cream/80 sm:text-[21px]">Real businesses. Real problems. Lights on.</p>
+        <p class="m-0 text-[19px] text-white sm:text-[21px]">Real businesses. Real problems. Lights on.</p>
       </div>
-      <div class="flex items-center gap-3.5 text-[15px] text-cream/80">
+      <div class="flex items-center gap-3.5 text-[15px] text-white">
         <span class="case-label" aria-live="polite">Case 1 of {total}</span>
         <div class="h-[3px] w-40 bg-cream/20">
           <div class="case-bar h-[3px] w-full origin-left bg-mustard" style={`transform:scaleX(${1 / total})`}></div>
@@ -36,12 +36,12 @@ const total = cases.length;
       {cases.map((entry, i) => <CaseCard entry={entry} index={i} />)}
     </div>
 
-    <div class="case-dots mt-6 flex gap-2.5" role="group" aria-label="Choose a case">
+    <div class="case-dots mt-6 flex gap-0" role="group" aria-label="Choose a case">
       {
         cases.map((_, i) => (
           <button
             type="button"
-            class="case-dot h-3 w-3 cursor-pointer rounded-full bg-cream/30 p-0"
+            class="case-dot h-6 w-6 cursor-pointer rounded-full bg-transparent p-0"
             aria-label={`Show case ${i + 1}`}
             aria-current={i === 0 ? 'true' : undefined}
             data-dot={i}
@@ -64,16 +64,23 @@ const total = cases.length;
   .case-track::-webkit-scrollbar {
     display: none;
   }
-  /* Dots give the 44px touch target without changing the dot size. */
+  /* 24px buttons (WCAG target size) draw a 12px dot inside; ::after extends the touch area to 44px. */
   .case-dot {
     position: relative;
+  }
+  .case-dot::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    background: rgba(253, 246, 236, 0.3);
   }
   .case-dot::after {
     content: '';
     position: absolute;
-    inset: -16px;
+    inset: -10px;
   }
-  .case-dot[aria-current='true'] {
+  .case-dot[aria-current='true']::before {
     background: var(--color-mustard);
   }
   .case-card {

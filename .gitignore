@@ -14,3 +14,6 @@ Video Gallery/
 
 # Original images (large PNGs). Optimised copies live in src/assets.
 Image Assets/
+
+# Python virtualenv for scripts/subset-display-font.py
+.venv/
