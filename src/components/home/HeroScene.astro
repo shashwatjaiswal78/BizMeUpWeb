@@ -33,7 +33,7 @@ const grid = [
   One light source: every shadow falls straight down and grows with the object's height in the stack
   (--elev-1 cards, --elev-2 browser, --elev-3 phone). Tilts alternate: browser -3, phone 4, cards -3 and 2.
 -->
-<div aria-hidden="true" style="--elev-1:0 14px 28px rgba(25,25,25,0.18);--elev-2:0 22px 44px rgba(25,25,25,0.22);--elev-3:0 32px 60px rgba(25,25,25,0.3)" class="hero-scene relative z-[1] h-[480px] min-w-0 flex-[1_1_480px] sm:h-[560px] sm:min-w-[300px]">
+<div aria-hidden="true" style="--elev-1:0 14px 28px rgba(25,25,25,0.18);--elev-2:0 22px 44px rgba(25,25,25,0.22);--elev-3:0 32px 60px rgba(25,25,25,0.3)" class="hero-scene relative z-[1] h-[480px] min-w-0 flex-[1_1_480px] sm:h-[504px] sm:min-w-[300px]">
   <!-- Website mockup -->
   <div
     class="absolute top-10 left-0 h-[260px] w-[86%] overflow-hidden rounded-[14px] bg-white sm:h-[310px] sm:w-[76%]"
@@ -104,7 +104,8 @@ const grid = [
     </div>
   </div>
 
-  <!-- Search result -->
+  <!-- Search result: from 640px up the scene is 504px tall, which tucks this card just under the mockup's
+       bottom edge so the cards read as one cluster (phones keep the original 480px layout). -->
   <div
     class="absolute bottom-10 left-[2%] w-[84%] rounded-[14px] bg-white px-[18px] py-4 text-espresso-soft sm:left-[6%] sm:w-[62%]"
     style="box-shadow:var(--elev-1);transform:rotate(2deg)"
@@ -118,7 +119,7 @@ const grid = [
 
   <!-- New enquiry -->
   <div
-    class="absolute right-[4%] bottom-[150px] w-[200px] rounded-[14px] bg-mustard px-3.5 py-3 text-espresso sm:w-[230px]"
+    class="absolute right-[4%] bottom-[150px] w-[200px] sm:bottom-[94px] rounded-[14px] bg-mustard px-3.5 py-3 text-espresso sm:w-[230px]"
     style="transform:rotate(-3deg);box-shadow:var(--elev-1)"
   >
     <div class="text-sm font-bold">New enquiry</div>

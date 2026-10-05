@@ -125,18 +125,18 @@ import { auditHref } from '../../config/site';
       font-size: clamp(48px, min(6.2vw, 10.5svh), 92px);
     }
     .hero :global(.hero-scene) {
-      height: 560px;
+      height: 504px;
       /* Room for the logos above the scene. */
       margin-top: 76px;
       zoom: var(--scene-zoom);
     }
   }
-  /* Side by side (copy 560 + scene 480 + gap + padding): move 48px of the scene's top margin to
-     its bottom. The box keeps its height, so the hero stays one screen tall, but the scene sits
-     48px higher and its lowest card lines up with the bottom of the buttons. */
+  /* Side by side (copy 560 + scene 480 + gap + padding): margins tuned (84px over, 48px under the
+     504px scene) so the hero stays one screen tall and the scene's lowest card, the search result,
+     lines up with the bottom of the buttons. */
   @media (min-width: 1216px) {
     .hero :global(.hero-scene) {
-      margin-top: 28px;
+      margin-top: 84px;
       margin-bottom: 48px;
     }
   }
