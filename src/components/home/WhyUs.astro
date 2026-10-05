@@ -1,7 +1,7 @@
 ---
 /**
  * Why choose us (added after Process at the client's request). White background.
- * Six reasons on white tiles with the stat tiles' espresso outline and offset shadow, each with a
+ * Six reasons on white tiles with the stat tiles' espresso outline and soft shadow, each with a
  * small line icon in a brand-colour circle. Static (no motion). Descriptions are drafts for review.
  */
 const reasons = [
@@ -81,10 +81,8 @@ const tones: Record<string, string> = {
 </section>
 
 <style>
-  /* Same printed, extruded look as the stat tiles. */
+  /* Same soft drop shadow as the stat tiles. */
   .why-tile {
-    box-shadow:
-      6px 6px 0 var(--color-espresso),
-      0 18px 32px rgba(25, 25, 25, 0.1);
+    box-shadow: 0 18px 32px rgba(25, 25, 25, 0.1);
   }
 </style>

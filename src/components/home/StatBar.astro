@@ -1,8 +1,7 @@
 ---
 /**
  * Stat bar (replaces the industries marquee). Four "3D" tiles straddling the seam between the cream
- * hero and the Manifesto: white, a 1.5px espresso outline and a solid espresso offset shadow,
- * the site's printed, extruded poster look. On desktop the row rises 40px into the hero's bottom
+ * hero and the Manifesto: white with a 1.5px espresso outline and a soft drop shadow. On desktop the row rises 40px into the hero's bottom
  * padding so it peeks above the fold (only on screens at least 800px tall: shorter ones have less hero
  * padding to spare). Phones: a 2 x 2 grid of equal tiles. Static (no motion).
  */
@@ -40,17 +39,8 @@ const stats = [
       background: linear-gradient(var(--color-cream) 50%, var(--color-white) 50%);
     }
   }
-  /* The extrusion: a solid offset shadow, plus a soft drop shadow so the tile also floats. */
+  /* Soft drop shadow so the tiles float (the solid offset shadow was removed at the client's request). */
   .stat-tile {
-    box-shadow:
-      5px 5px 0 var(--color-espresso),
-      0 18px 30px rgba(25, 25, 25, 0.12);
-  }
-  @media (min-width: 640px) {
-    .stat-tile {
-      box-shadow:
-        7px 7px 0 var(--color-espresso),
-        0 22px 36px rgba(25, 25, 25, 0.14);
-    }
+    box-shadow: 0 18px 32px rgba(25, 25, 25, 0.1);
   }
 </style>
