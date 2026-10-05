@@ -1,0 +1,479 @@
+---
+/**
+ * Service poster for the Poster Wall. Every colour, rotation and tape position
+ * is passed in so each poster matches homepage-design-reference.html exactly.
+ *
+ * Interaction (CLAUDE.md 4.5):
+ * - Desktop hover and keyboard focus lift the poster and peel its bottom-right corner.
+ * - Below 900px, collapsible posters show label and headline; a tap expands the
+ *   description and link. Without JavaScript everything is shown.
+ * - The whole poster links to its service page through a stretched link.
+ */
+import Tape from './Tape.astro';
+import Sticker from './Sticker.astro';
+import { Picture } from 'astro:assets';
+
+export interface PosterProps {
+  id: string;
+  label: string;
+  headline: string;
+  description: string;
+  href: string;
+  linkLabel?: string;
+  /** Show "See how it works" on desktop too (the reference shows it on two posters) */
+  showLink?: boolean;
+  large?: boolean;
+  /** Starts collapsed on mobile and expands on tap */
+  collapsible?: boolean;
+  rotate: number;
+  /** Token names, e.g. "orange", "espresso", "orange-deep" */
+  bg: string;
+  text: string;
+  labelColor?: string;
+  headlineColor?: string;
+  descriptionColor?: string;
+  linkColor?: string;
+  tape: { color: string; style: string; rotate: number; width?: number; height?: number };
+  sticker?: string;
+  /** Permanently peeled corner (Performance marketing) */
+  peel?: boolean;
+  minHeight: number;
+  shadow?: 'lg' | 'md' | 'dark';
+  /** Decorative copy (service page hero): no links, no tap-to-expand, hidden from screen readers */
+  static?: boolean;
+  /** Tighter desktop sizing for the homepage wall so all six posters fit on one screen */
+  compact?: boolean;
+  /**
+   * Transparent illustration standing in the poster's bottom-right negative space.
+   * `height` is a share of the poster's height; `textGap` keeps the description clear of it;
+   * `right`/`bottom` offset it (e.g. to sit beside a peeled corner or above a link).
+   */
+  illustration?: {
+    src: ImageMetadata;
+    height: string;
+    textGap: string;
+    /** Keeps the headline clear too (desktop wall), e.g. so a long headline breaks into two lines */
+    headlineGap?: string;
+    right?: string;
+    bottom?: string;
+  };
+  class?: string;
+}
+
+type Props = PosterProps;
+
+const {
+  id,
+  label,
+  headline,
+  description,
+  href,
+  linkLabel = 'See how it works',
+  showLink = false,
+  large = false,
+  collapsible = false,
+  rotate,
+  bg,
+  text,
+  labelColor,
+  headlineColor,
+  descriptionColor,
+  linkColor,
+  tape,
+  sticker,
+  peel = false,
+  minHeight,
+  shadow = 'md',
+  static: isStatic = false,
+  compact = false,
+  illustration,
+  class: className,
+} = Astro.props;
+
+const c = (token?: string) => (token ? `color:var(--color-${token})` : undefined);
+const shadows = { lg: 'var(--shadow-poster-lg)', md: 'var(--shadow-poster)', dark: 'var(--shadow-poster-dark)' };
+const bodyId = `poster-body-${id}`;
+
+const style = [
+  `--r:${rotate}deg`,
+  `--min-h:${minHeight}px`,
+  `background:var(--color-${bg})`,
+  `color:var(--color-${text})`,
+  `box-shadow:${shadows[shadow]}`,
+  illustration
+    ? `--ill-h:${illustration.height};--ill-gap:${illustration.textGap};--ill-head-gap:${illustration.headlineGap ?? '0%'};--ill-right:${illustration.right ?? '16px'};--ill-bottom:${illustration.bottom ?? '0px'}`
+    : '',
+]
+  .filter(Boolean)
+  .join(';');
+
+// Stretched link: the visible "See how it works" when shown, otherwise the headline.
+const stretch = 'poster-stretch';
+---
+
+<article
+  class:list={[
+    'poster relative flex flex-col justify-between rounded-[6px]',
+    large ? 'gap-8 p-7 md:p-12' : 'gap-[22px] p-[34px]',
+    peel && 'overflow-hidden',
+    className,
+  ]}
+  style={style}
+  data-poster
+  data-compact={compact ? 'true' : undefined}
+  data-large={large ? 'true' : undefined}
+  data-illustrated={illustration ? 'true' : undefined}
+  data-collapsible={collapsible && !isStatic ? 'true' : undefined}
+  aria-hidden={isStatic ? 'true' : undefined}
+>
+  <Tape color={tape.color} rotate={tape.rotate} width={tape.width} height={tape.height} style={tape.style} />
+
+  {
+    large ? (
+      <div class="flex items-start justify-between gap-4">
+        <span class="poster-label text-[17px] font-semibold" style={c(labelColor)}>
+          {label}
+        </span>
+        {sticker && (
+          <Sticker shape="pill" tone="espresso" rotate={8}>
+            {sticker}
+          </Sticker>
+        )}
+      </div>
+    ) : sticker ? (
+      <div class="flex items-start justify-between gap-4">
+        <span class="poster-label text-base font-semibold" style={c(labelColor)}>
+          {label}
+        </span>
+        <Sticker shape="pill" tone="espresso" rotate={8}>
+          {sticker}
+        </Sticker>
+      </div>
+    ) : (
+      <span class="poster-label text-base font-semibold" style={c(labelColor)}>
+        {label}
+      </span>
+    )
+  }
+
+  <h3
+    class:list={[
+      'm-0 font-display font-extrabold',
+      large
+        ? 'text-[clamp(56px,7.4vw,116px)] leading-[0.88] tracking-[-0.05em]'
+        : 'text-[44px] leading-[0.95] tracking-[-0.035em]',
+    ]}
+    style={c(headlineColor)}
+  >
+    {
+      isStatic ? (
+        headline
+      ) : (
+        <a href={href} class:list={['poster-title text-inherit no-underline hover:text-inherit', !showLink && stretch]}>
+          {headline}
+        </a>
+      )
+    }
+  </h3>
+
+  <div
+    id={bodyId}
+    class:list={[
+      'poster-body',
+      large ? 'flex flex-wrap items-end justify-between gap-5' : 'flex flex-col justify-between gap-[22px]',
+    ]}
+  >
+    <p
+      class:list={['m-0 leading-normal', large ? 'max-w-[440px] text-[19px]' : 'text-base']}
+      style={c(descriptionColor)}
+    >
+      {description}
+    </p>
+    {!isStatic && <a
+      href={href}
+      tabindex={showLink ? undefined : '-1'}
+      class:list={[
+        'poster-link font-semibold',
+        large ? 'text-[17px]' : 'text-base',
+        showLink ? stretch : 'min-[900px]:hidden',
+      ]}
+      style={linkColor ? c(linkColor) : 'color:inherit'}
+    >
+      {linkLabel}
+    </a>}
+  </div>
+
+  {
+    collapsible && !isStatic && (
+      <button
+        type="button"
+        class="poster-toggle absolute inset-0 z-[2] cursor-pointer rounded-[6px] bg-transparent text-inherit"
+        aria-expanded="false"
+        aria-controls={bodyId}
+        aria-label={`${label}: show details`}
+        hidden
+      >
+        <span
+          aria-hidden="true"
+          class="absolute top-6 right-6 inline-flex h-9 w-9 items-center justify-center rounded-full border-[1.5px] border-current"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M7 1v12M1 7h12"></path>
+          </svg>
+        </span>
+      </button>
+    )
+  }
+
+  {
+    illustration && (
+      <div aria-hidden="true" class="poster-ill pointer-events-none absolute z-[1]">
+        <Picture
+          src={illustration.src}
+          alt=""
+          widths={[160, 320, 440]}
+          sizes="160px"
+          formats={['avif']}
+          fallbackFormat="webp"
+          class="block h-full w-auto max-w-none"
+        />
+      </div>
+    )
+  }
+
+  <div
+    aria-hidden="true"
+    class:list={['poster-peel absolute right-0 bottom-0', peel ? 'poster-peel-static' : '', large ? 'h-20 w-20' : 'h-16 w-16']}
+  >
+  </div>
+</article>
+
+<style>
+  .poster {
+    transform: rotate(var(--r));
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  @media (min-width: 900px) {
+    .poster {
+      min-height: var(--min-h);
+    }
+
+    /* Compact wall (desktop only): smaller padding, type and gaps; phones keep the full sizes. */
+    .poster[data-compact='true'] {
+      gap: 12px;
+      padding: 24px 26px;
+    }
+    .poster[data-compact='true'] .poster-label {
+      font-size: 14px;
+    }
+    .poster[data-compact='true'] h3 {
+      font-size: clamp(26px, 2.3vw, 34px);
+    }
+    .poster[data-compact='true'] .poster-body {
+      gap: 12px;
+    }
+    .poster[data-compact='true'] .poster-body p,
+    .poster[data-compact='true'] .poster-link {
+      font-size: 15px;
+    }
+    .poster[data-compact='true'] .poster-peel {
+      width: 48px;
+      height: 48px;
+    }
+
+    /* The large Websites poster keeps its scale relative to the others */
+    .poster[data-compact='true'][data-large='true'] {
+      gap: 20px;
+      padding: 32px 36px;
+    }
+    .poster[data-compact='true'][data-large='true'] h3 {
+      font-size: clamp(48px, 5.4vw, 84px);
+    }
+    .poster[data-compact='true'][data-large='true'] .poster-body p,
+    .poster[data-compact='true'][data-large='true'] .poster-link {
+      font-size: 17px;
+    }
+    .poster[data-compact='true'][data-large='true'] .poster-peel {
+      width: 64px;
+      height: 64px;
+    }
+  }
+
+  /* Stretched link makes the whole poster clickable. */
+  .poster-stretch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .poster-title:focus-visible {
+    outline: none;
+  }
+  .poster:has(.poster-stretch:focus-visible) {
+    outline: 3px solid var(--color-mustard);
+    outline-offset: 4px;
+  }
+
+  /* Illustration: stands on the poster's bottom edge in the right-hand negative space. */
+  .poster-ill {
+    right: var(--ill-right);
+    bottom: var(--ill-bottom);
+    height: var(--ill-h);
+    transform-origin: 50% 100%;
+    transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .poster-ill :global(picture),
+  .poster-ill :global(img) {
+    height: 100%;
+  }
+  .poster[data-illustrated='true'] .poster-body p,
+  .poster[data-illustrated='true'] .poster-link {
+    padding-right: var(--ill-gap);
+  }
+  @media (min-width: 1200px) {
+    .poster[data-illustrated='true'][data-compact='true'] h3 {
+      padding-right: var(--ill-head-gap);
+    }
+  }
+  /* Strip layout: the illustration gets a fixed size and its own strip at the bottom of the
+     card (text above, illustration standing below on the right), so it never covers text and
+     keeps its size whether the card is collapsed or expanded. Used below 1200px and on full-size
+     posters (service page heroes); the compact wall at 1200px+ uses the side-by-side layout. */
+  /* (.poster.poster raises specificity above the compact/large padding rules.) */
+  .poster.poster[data-illustrated='true']:not([data-compact='true']) {
+    padding-bottom: calc(34px + 120px);
+  }
+  .poster[data-illustrated='true']:not([data-compact='true']) .poster-ill {
+    height: 150px;
+    bottom: 0;
+  }
+  .poster[data-illustrated='true']:not([data-compact='true']) .poster-body p,
+  .poster[data-illustrated='true']:not([data-compact='true']) .poster-link {
+    padding-right: 0;
+  }
+  @media (max-width: 1199px) {
+    .poster.poster[data-illustrated='true'] {
+      padding-bottom: calc(34px + 104px);
+    }
+    .poster[data-illustrated='true'] .poster-ill {
+      height: 132px;
+      bottom: 0;
+    }
+    .poster[data-illustrated='true'] .poster-body p,
+    .poster[data-illustrated='true'] .poster-link {
+      padding-right: 0;
+    }
+  }
+  /* An illustrated poster's hover moment is the illustration itself, so it skips the hover
+     peel. A permanent peel (Performance marketing) stays; its illustration sits beside it. */
+  .poster[data-illustrated='true'] .poster-peel:not(.poster-peel-static) {
+    display: none;
+  }
+  /* On lift, the robot leans in a little, as if to take a closer look. */
+  @media (hover: hover) and (min-width: 900px) {
+    .poster:hover .poster-ill {
+      transform: translateY(-4px) rotate(-4deg);
+    }
+  }
+  .poster:focus-within .poster-ill {
+    transform: translateY(-4px) rotate(-4deg);
+  }
+
+  /* Peeled corner: hidden until lift, except on the Performance poster where it is always peeled. */
+  .poster-peel {
+    background: linear-gradient(
+      135deg,
+      var(--color-cream-deep) 0%,
+      var(--color-cream-deep) 50%,
+      var(--color-cream) 50%,
+      var(--color-cream) 100%
+    );
+    box-shadow: -4px -4px 8px rgba(25, 25, 25, 0.12);
+    transform: scale(0);
+    transform-origin: 100% 100%;
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .poster-peel-static {
+    transform: scale(1);
+  }
+
+  /* Lift and peel: hover on desktop, focus anywhere */
+  @media (hover: hover) and (min-width: 900px) {
+    .poster:hover {
+      transform: rotate(var(--r)) translate3d(0, -10px, 0);
+    }
+    .poster:hover .poster-peel {
+      transform: scale(1);
+    }
+    .poster:hover .poster-peel-static {
+      transform: scale(1.4);
+    }
+  }
+  .poster:focus-within {
+    transform: rotate(var(--r)) translate3d(0, -10px, 0);
+  }
+  .poster:focus-within .poster-peel {
+    transform: scale(1);
+  }
+  .poster:focus-within .poster-peel-static {
+    transform: scale(1.4);
+  }
+
+  /* Mobile: collapsed posters hide their description until tapped (only once JS is running). */
+  @media (max-width: 899px) {
+    .poster[data-collapsible='true'][data-expanded='false'] .poster-body {
+      display: none;
+    }
+    .poster[data-expanded='true'] .poster-body {
+      animation: poster-reveal 300ms ease-out;
+    }
+    .poster[data-expanded='true'] .poster-toggle {
+      display: none;
+    }
+  }
+  @media (min-width: 900px) {
+    .poster-toggle {
+      display: none;
+    }
+  }
+  @keyframes poster-reveal {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .poster,
+    .poster:hover,
+    .poster:focus-within {
+      transform: rotate(var(--r));
+    }
+    .poster-peel,
+    .poster-ill {
+      transition: none;
+    }
+    .poster:hover .poster-ill,
+    .poster:focus-within .poster-ill {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  // Enable tap-to-expand on collapsible posters.
+  document.querySelectorAll<HTMLElement>('[data-poster][data-collapsible="true"]').forEach((poster) => {
+    const toggle = poster.querySelector<HTMLButtonElement>('.poster-toggle');
+    if (!toggle || poster.dataset.expanded) return;
+    poster.dataset.expanded = 'false';
+    toggle.hidden = false;
+    toggle.addEventListener('click', (e) => {
+      poster.dataset.expanded = 'true';
+      toggle.setAttribute('aria-expanded', 'true');
+      poster.querySelector<HTMLElement>('.poster-link')?.removeAttribute('tabindex');
+      // The toggle disappears once expanded, so keyboard users get focus moved to the headline link.
+      if (e.detail === 0) poster.querySelector<HTMLElement>('.poster-title')?.focus({ preventScroll: true });
+    });
+  });
+</script>

@@ -1,0 +1,16 @@
+---
+/**
+ * Testimonials (CLAUDE.md 4.9, chat panel removed at the client's request): the title and the
+ * animated testimonial cards, which use the full width on desktop.
+ */
+import TestimonialCarousel from '../ui/TestimonialCarousel.astro';
+---
+
+<section class="bg-cream px-5 pt-[44px] pb-24 md:px-10 lg:px-16 lg:pt-[52px] lg:pb-32">
+  <div class="mx-auto flex max-w-[1280px] flex-col gap-12 lg:gap-16">
+    <h2 class="m-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso">
+      Don’t take our word for it.
+    </h2>
+    <TestimonialCarousel />
+  </div>
+</section>

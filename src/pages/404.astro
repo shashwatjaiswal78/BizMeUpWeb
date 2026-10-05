@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="Page not found | BizMeUp"
+  description="This page is in the dark. Even we can't find it."
+  headerTone="dark"
+  noindex
+>
+  <section class="relative flex min-h-[86vh] items-end overflow-hidden bg-espresso px-5 pt-36 pb-20 md:px-10 lg:px-16 lg:pb-28">
+    <!-- A faint, static pool of light -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -top-[20%] right-[-10%] h-[720px] w-[720px] rounded-full"
+      style="background:radial-gradient(circle, rgba(244,185,66,0.18) 0%, rgba(244,185,66,0.05) 45%, rgba(25,25,25,0) 70%)"
+    >
+    </div>
+    <div class="relative mx-auto flex w-full max-w-[1280px] flex-col items-start gap-10">
+      <span class="font-display text-[clamp(96px,16vw,240px)] leading-[0.8] font-extrabold tracking-[-0.06em] text-cream/10" aria-hidden="true">404</span>
+      <h1 class="m-0 max-w-[1000px] font-display text-[clamp(48px,7vw,112px)] leading-[0.9] font-extrabold tracking-[-0.045em] text-cream">
+        This page is in the dark. Even we can't find it.
+      </h1>
+      <Button href="/" variant="mustard">Back to home</Button>
+    </div>
+  </section>
+</BaseLayout>

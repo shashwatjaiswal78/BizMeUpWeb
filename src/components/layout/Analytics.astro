@@ -1,0 +1,45 @@
+---
+/**
+ * GA4 and Meta Pixel, loaded when the browser is idle after page load so they
+ * never compete with the page itself. IDs come from PUBLIC_GA4_ID and
+ * PUBLIC_META_PIXEL_ID; nothing loads when they are empty.
+ */
+const ga4 = import.meta.env.PUBLIC_GA4_ID ?? '';
+const pixel = import.meta.env.PUBLIC_META_PIXEL_ID ?? '';
+---
+
+{
+  (ga4 || pixel) && (
+    <script is:inline define:vars={{ ga4, pixel }}>
+      (function () {
+        function load() {
+          if (ga4) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga4;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+            window.gtag('config', ga4);
+          }
+          if (pixel) {
+            !function (f, b, e, v, n, t, s) {
+              if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+              if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+              t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+            }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+            window.fbq('init', pixel);
+            window.fbq('track', 'PageView');
+          }
+        }
+        function idle() {
+          if ('requestIdleCallback' in window) requestIdleCallback(load, { timeout: 4000 });
+          else setTimeout(load, 2000);
+        }
+        if (document.readyState === 'complete') idle();
+        else window.addEventListener('load', idle, { once: true });
+      })();
+    </script>
+  )
+}

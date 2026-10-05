@@ -1,0 +1,85 @@
+---
+/** Work: every case study, filterable by service. Without JavaScript all cases show. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseTile from '../../components/ui/CaseTile.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { getServices, getCaseStudies, caseServiceSlugs } from '../../lib/content';
+
+const services = await getServices();
+const cases = await getCaseStudies();
+const filters = [{ id: 'all', label: 'All' }, ...services.map((s) => ({ id: s.id, label: s.data.title }))];
+---
+
+<BaseLayout
+  title="Our work: the Case Files | BizMeUp"
+  description="Real businesses. Real problems. Lights on. Websites, content and campaigns BizMeUp has built for businesses in Mohali, Chandigarh and beyond."
+  image="/og/work.png"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Work' }]}
+>
+  <section class="bg-cream px-5 pt-32 pb-14 md:px-10 lg:px-16 lg:pt-44 lg:pb-20">
+    <div class="mx-auto flex max-w-[1280px] flex-col gap-10">
+      <div class="flex flex-col gap-4">
+        <h1 class="m-0 font-display text-[clamp(48px,7vw,112px)] leading-[0.9] font-extrabold tracking-[-0.045em] text-espresso">
+          The Case Files.
+        </h1>
+        <p class="m-0 text-[19px] sm:text-[21px]">Real businesses. Real problems. Lights on.</p>
+      </div>
+
+      <div class="work-filters hidden flex-wrap gap-2.5" role="group" aria-label="Filter by service">
+        {
+          filters.map((f, i) => (
+            <button
+              type="button"
+              class="min-h-11 cursor-pointer rounded-full border-[1.5px] border-espresso px-[18px] py-2.5 text-[15px] font-semibold text-espresso aria-pressed:bg-espresso aria-pressed:text-cream"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              data-filter={f.id}
+            >
+              {f.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-blue px-5 py-16 md:px-10 lg:px-16 lg:py-28">
+    <div class="mx-auto max-w-[1280px]">
+      <p class="work-count m-0 mb-8 text-[15px] text-cream/80" aria-live="polite">
+        {cases.length} case files
+      </p>
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+        {cases.map((entry) => <CaseTile entry={entry} serviceSlugs={caseServiceSlugs(entry, services)} headingLevel="h2" />)}
+      </div>
+      <p class="work-empty m-0 text-[21px] text-cream" hidden>No case files for this service yet. Check back soon.</p>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<script>
+  const group = document.querySelector<HTMLElement>('.work-filters');
+  const tiles = Array.from(document.querySelectorAll<HTMLElement>('.case-tile'));
+  const count = document.querySelector<HTMLElement>('.work-count');
+  const empty = document.querySelector<HTMLElement>('.work-empty');
+
+  if (group && tiles.length) {
+    group.classList.remove('hidden');
+    group.classList.add('flex');
+    const buttons = Array.from(group.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+
+    const apply = (filter: string) => {
+      let shown = 0;
+      tiles.forEach((tile) => {
+        const match = filter === 'all' || (tile.dataset.services ?? '').split(' ').includes(filter);
+        tile.hidden = !match;
+        if (match) shown++;
+      });
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      if (count) count.textContent = `${shown} case ${shown === 1 ? 'file' : 'files'}`;
+      if (empty) empty.hidden = shown > 0;
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? 'all')));
+  }
+</script>

@@ -1,0 +1,26 @@
+---
+/** FAQ accordion built on <details>, so it works without JavaScript. */
+interface Props {
+  items: { question: string; answer: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="border-t-2 border-espresso">
+  {
+    items.map((item) => (
+      <details class="faq group border-b-2 border-espresso">
+        <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between gap-6 py-6 font-display text-[clamp(22px,2.2vw,30px)] leading-[1.1] font-bold tracking-[-0.02em] text-espresso [&::-webkit-details-marker]:hidden">
+          {item.question}
+          <span aria-hidden="true" class="inline-flex h-10 w-10 flex-none items-center justify-center rounded-full bg-espresso text-mustard transition-transform duration-300 group-open:rotate-45 motion-reduce:transition-none">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M7 1v12M1 7h12" />
+            </svg>
+          </span>
+        </summary>
+        <p class="m-0 max-w-[760px] pb-7 text-lg leading-relaxed text-espresso-soft">{item.answer}</p>
+      </details>
+    ))
+  }
+</div>

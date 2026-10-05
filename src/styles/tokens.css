@@ -1,0 +1,40 @@
+/* BizMeUp design tokens (CLAUDE.md section 3, locked).
+   @theme exposes each token as a CSS custom property (--color-cream, ...)
+   and as a Tailwind utility (bg-cream, text-espresso, ...).
+   The default Tailwind palette is cleared so no other colours can be used.
+   2026-10-05: the brown family was replaced with neutral Dark Slate Black at the client's request.
+   The "espresso" token names are kept so no markup changes; espresso is now #191919 and its
+   softer shades are neutral greys stepped the same way as the old browns. */
+
+@theme {
+  --color-*: initial;
+
+  --color-cream: #FDF6EC;
+  --color-espresso: #191919;
+  --color-mustard: #F4B942;
+  --color-orange: #E76F51;
+  --color-blue: #457B9D;
+
+  --color-white: #FFFFFF;
+  --color-espresso-soft: #2E2E2E;
+  --color-espresso-card: #242424;
+  --color-espresso-line: #4A4A4A;
+  --color-orange-deep: #B4472C;
+  --color-cream-deep: #EFE2CC;
+  --color-muted: #666666;
+  --color-dashed: #D6C4A8;
+
+  /* Link hover from the reference file (a:hover) */
+  --color-orange-deeper: #8F3620;
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+  --radius-pill: 999px;
+
+  --shadow-poster-lg: 0 24px 40px rgba(25, 25, 25, 0.2);
+  --shadow-poster: 0 20px 34px rgba(25, 25, 25, 0.16);
+  --shadow-poster-dark: 0 20px 34px rgba(25, 25, 25, 0.18);
+  --shadow-float: 0 10px 24px rgba(0, 0, 0, 0.3);
+}

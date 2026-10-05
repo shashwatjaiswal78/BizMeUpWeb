@@ -1,0 +1,50 @@
+---
+/**
+ * Founder note (CLAUDE.md 4.10). Taped photo print of the founder.
+ * Below 1024px (stacked) the text column dissolves (display: contents) so the heading sits above the photo
+ * and the body stays below it; side by side, the heading leads the text column as before.
+ */
+import { Picture } from 'astro:assets';
+import Tape from '../ui/Tape.astro';
+import founderPhoto from '../../assets/founder/shashwat.webp';
+---
+
+<!-- Cream between the white Manifesto and Services, so the colour change itself divides the sections. -->
+<section id="founder" class="bg-cream px-5 pt-16 pb-24 md:px-10 lg:px-16 lg:pt-20 lg:pb-[110px]">
+  <div class="mx-auto flex max-w-[1100px] flex-wrap items-center gap-10 sm:gap-14 lg:gap-[72px]">
+    <div class="relative w-full max-w-[360px] flex-[0_1_360px] max-sm:mx-auto max-sm:w-[86%]" style="transform:rotate(-3deg)">
+      <Tape color="rgba(244,185,66,0.75)" width={110} height={30} rotate={4} style="top:-14px;left:50%;margin-left:-55px" />
+      <div class="aspect-[4/5] overflow-hidden border-[14px] border-white bg-espresso-soft" style="box-shadow:var(--shadow-poster-lg)">
+        <Picture
+          src={founderPhoto}
+          alt="Shashwat Jaiswal, founder of BizMeUp, smiling with a cup of coffee"
+          widths={[360, 540, 720]}
+          sizes="(min-width: 640px) 332px, 76vw"
+          formats={['avif']}
+          fallbackFormat="webp"
+          quality={78}
+          class="block h-full w-full object-cover object-[50%_35%]"
+          pictureAttributes={{ class: 'block h-full w-full' }}
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-[1_1_420px] flex-col gap-6 max-lg:contents">
+      <h2
+        class="m-0 w-full font-display text-[clamp(44px,5.4vw,80px)] leading-[0.95] font-extrabold tracking-[-0.04em] text-espresso max-lg:order-first max-lg:mb-2"
+      >
+        Hi, I’m Shashwat.
+      </h2>
+      <div class="flex flex-col gap-6 max-lg:w-full">
+        <p class="m-0 font-serif text-[26px] leading-[1.3] text-espresso-soft italic sm:text-[30px]">
+          I’ve spent five years in marketing, across brand management, social and paid ads, watching good businesses lose
+          to louder ones.
+        </p>
+        <p class="m-0 max-w-[560px] text-[19px] leading-[1.6]">
+          BizMeUp exists to flip that. We’re small on purpose, so you work with the people actually doing the work.
+        </p>
+        <slot />
+      </div>
+    </div>
+  </div>
+</section>

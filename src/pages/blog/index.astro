@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { getPosts, formatDate } from '../../lib/content';
+
+const posts = await getPosts();
+const covers = ['bg-orange text-white', 'bg-mustard text-espresso', 'bg-blue text-white', 'bg-espresso text-cream'];
+---
+
+<BaseLayout
+  title="Blog | BizMeUp"
+  description="Notes from BizMeUp on websites, content, ads and search for businesses that deserve to be seen."
+  image="/og/blog.png"
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Blog' }]}
+>
+  <section class="bg-cream px-5 pt-32 pb-24 md:px-10 lg:px-16 lg:pt-44 lg:pb-40">
+    <div class="mx-auto flex max-w-[1280px] flex-col gap-14">
+      <h1 class="m-0 font-display text-[clamp(48px,7vw,112px)] leading-[0.9] font-extrabold tracking-[-0.045em] text-espresso">
+        The BizMeUp blog.
+      </h1>
+
+      {
+        posts.length ? (
+          <ul class="m-0 grid list-none grid-cols-1 gap-x-10 gap-y-14 p-0 md:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post, i) => (
+              <li class="relative flex flex-col gap-4">
+                {post.data.cover ? (
+                  <Image src={post.data.cover} alt="" widths={[400, 800]} sizes="(min-width: 1024px) 400px, 90vw" class="aspect-[16/10] w-full rounded-[6px] object-cover" />
+                ) : (
+                  <div aria-hidden="true" class:list={['flex aspect-[16/10] items-end rounded-[6px] p-6', covers[i % covers.length]]}>
+                    <span class="font-display text-[28px] leading-[0.95] font-extrabold tracking-[-0.03em]">{post.data.title}</span>
+                  </div>
+                )}
+                <div class="flex flex-wrap items-center gap-3 text-sm text-muted">
+                  <time datetime={post.data.publishedAt.toISOString()}>{formatDate(post.data.publishedAt)}</time>
+                  {post.data.tags.map((t) => <span class="rounded-full bg-cream-deep px-3 py-1 font-semibold text-espresso-soft">{t}</span>)}
+                </div>
+                <h2 class="m-0 font-display text-[30px] leading-[1] font-extrabold tracking-[-0.03em] text-espresso">
+                  <a href={`/blog/${post.id}`} class="text-espresso no-underline after:absolute after:inset-0 after:content-[''] hover:text-espresso hover:underline">
+                    {post.data.title}
+                  </a>
+                </h2>
+                <p class="m-0 text-[17px] leading-normal">{post.data.description}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p class="m-0 text-[21px]">New posts are on the way.</p>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

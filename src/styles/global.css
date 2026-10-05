@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+@import './fonts.css';
+@import './tokens.css';
+
+@layer base {
+  html {
+    /* Keeps anchor targets clear of the fixed header */
+    scroll-padding-top: 80px;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-cream);
+    color: var(--color-espresso-soft);
+    font-family: var(--font-body);
+    /* The reference relies on the browser default, not Tailwind's 1.5 */
+    line-height: normal;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a {
+    color: var(--color-orange-deep);
+  }
+  a:hover {
+    color: var(--color-orange-deeper);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-mustard);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Headline styles shared across sections, values from the reference file */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--color-espresso);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -100px;
+    z-index: 100;
+    background: var(--color-espresso);
+    color: var(--color-cream);
+    padding: 12px 20px;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    top: 16px;
+    color: var(--color-cream);
+  }
+
+}

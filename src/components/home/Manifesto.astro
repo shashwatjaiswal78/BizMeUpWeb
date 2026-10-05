@@ -1,0 +1,119 @@
+---
+/**
+ * Manifesto (CLAUDE.md 4.4). Words are split into spans at build time so the
+ * scroll reveal causes no layout shift. Without JavaScript, or with reduced
+ * motion, the headline is simply fully visible.
+ *
+ * The headline is quoted by two slab quote marks sized in em, so they scale with it:
+ * the opening mark hangs into the left margin above "It's"; the closing mark follows
+ * "problem." inline (kept on the same line with nowrap) with its top on the cap height.
+ */
+const before = 'It’s not a product problem. It’s a'.split(' ');
+const after = 'problem.';
+
+// One mark: a rounded block with a hook whose tip is softened to match Bricolage's terminals (40 x 70 units).
+const mark =
+  'M6 70H34Q40 70 40 64V36Q40 30 34 30H22C22.6 21.4 27 16.2 35 12.6Q38.6 11 37.6 7.3L36.4 3Q35.4-.3 31.9.6C12.4 5.6 0 18.6 0 40V64Q0 70 6 70Z';
+---
+
+<section class="manifesto overflow-hidden bg-white px-5 py-14 md:px-10 lg:px-16 lg:py-20">
+  <div class="mx-auto max-w-[1280px]">
+    <h2
+      class="m-0 font-display text-[clamp(48px,8.4vw,132px)] leading-[0.92] font-extrabold tracking-[-0.045em] text-espresso"
+    >
+      <svg aria-hidden="true" class="quote-open quote-mark block text-espresso" viewBox="0 0 92 70" fill="currentColor">
+        <path d={mark} /><path d={mark} transform="translate(52 0)" />
+      </svg>
+      {before.map((word) => <><span class="reveal-word inline-block">{word}</span>{' '}</>)}<span
+        class="reveal-word skip-ink relative z-0 inline-block"
+        >visibility<span
+          aria-hidden="true"
+          class="absolute right-0 bottom-[-0.03em] left-0 -z-10 h-[0.06em] rounded-[2px] bg-mustard"></span></span
+      >{' '}<span class="whitespace-nowrap"
+        ><span class="reveal-word inline-block">{after}</span><svg
+          aria-hidden="true"
+          class="quote-close quote-mark inline-block text-espresso"
+          viewBox="0 0 92 70"
+          fill="currentColor"
+          ><g transform="rotate(180 46 35)"><path d={mark} /><path d={mark} transform="translate(52 0)" /></g></svg
+        ></span
+      >
+    </h2>
+
+    <p class="manifesto-sub m-0 max-w-[760px] font-serif text-[clamp(24px,2.6vw,38px)] leading-[1.3] text-espresso-soft italic">
+      You’ve built something good. Nobody’s seeing it. That’s the part we fix.
+    </p>
+  </div>
+</section>
+
+<style>
+  /* Both marks share one size, in em of the headline: 0.66em tall, exactly Bricolage 800's cap height. */
+  .quote-mark {
+    width: calc(0.66em * 92 / 70);
+    height: auto;
+  }
+  /* Hanging punctuation: the opening mark sits partly in the left margin with clear space above the cap height. */
+  .quote-open {
+    margin-left: -0.3em;
+    margin-bottom: 0.04em;
+  }
+  /* Closing mark: bottom on the baseline, so its top lands on the cap height. */
+  .quote-close {
+    margin-left: 0.1em;
+    vertical-align: baseline;
+  }
+  /* Phones have no side padding to hang into. */
+  @media (max-width: 767px) {
+    .quote-open {
+      margin-left: 0;
+    }
+  }
+  /* Skip-ink for the mustard underline: a white halo (matches the section background) around the letters breaks it where the "y" descends. */
+  .skip-ink {
+    text-shadow:
+      0.04em 0 var(--color-white),
+      -0.04em 0 var(--color-white),
+      0 0.04em var(--color-white),
+      0.03em 0.03em var(--color-white),
+      -0.03em 0.03em var(--color-white);
+  }
+  .manifesto-sub {
+    margin-top: clamp(28px, 3.4vw, 48px);
+    text-wrap: balance;
+  }
+</style>
+
+<script>
+  import { gsap, MOTION_OK } from '../../scripts/motion';
+
+  const section = document.querySelector<HTMLElement>('.manifesto');
+  const words = section?.querySelectorAll<HTMLElement>('.reveal-word');
+  const openMark = section?.querySelector<HTMLElement>('.quote-open');
+  const closeMark = section?.querySelector<HTMLElement>('.quote-close');
+
+  if (section && words?.length && openMark && closeMark) {
+    const mm = gsap.matchMedia();
+    mm.add(MOTION_OK, () => {
+      // One scrubbed sentence: opening mark, then the words, then the closing mark lands like a full stop.
+      gsap
+        .timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: section.querySelector('h2'),
+            start: 'top 85%',
+            end: 'bottom 65%',
+            scrub: 0.4,
+            invalidateOnRefresh: true,
+          },
+        })
+        .fromTo(openMark, { opacity: 0.12, y: 24 }, { opacity: 1, y: 0, duration: 1 })
+        .fromTo(words, { opacity: 0.12 }, { opacity: 1, stagger: 0.5 }, '<0.4')
+        .fromTo(
+          closeMark,
+          { opacity: 0.12, y: 40, rotation: -6, transformOrigin: '50% 50%' },
+          { opacity: 1, y: 0, rotation: 0, duration: 1.2, ease: 'back.out(1.6)' },
+          '-=0.6',
+        );
+    });
+  }
+</script>

@@ -1,0 +1,57 @@
+---
+/**
+ * Fully rounded pill button. Renders an <a> when href is set, otherwise a <button>.
+ * Variants map to the buttons in homepage-design-reference.html.
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'espresso' | 'outline' | 'outline-light' | 'mustard' | 'cream';
+type Size = 'md' | 'sm';
+
+type Props = {
+  href?: string;
+  variant?: Variant;
+  size?: Size;
+  type?: 'button' | 'submit';
+  class?: string;
+} & Omit<HTMLAttributes<'a'> & HTMLAttributes<'button'>, 'type'>;
+
+const { href, variant = 'espresso', size = 'md', type = 'button', class: className, ...rest } = Astro.props;
+
+const outlined = variant === 'outline' || variant === 'outline-light';
+
+const sizes: Record<Size, string> = {
+  // Solid: 17px 28px. Outline: 15px 26px plus a 1.5px border, so both end up the same height.
+  md: outlined ? 'text-[17px] px-[26px] py-[15px]' : 'text-[17px] px-7 py-[17px]',
+  sm: outlined ? 'text-base px-5 py-3' : 'text-base px-[22px] py-[14px]',
+};
+
+const variants: Record<Variant, string> = {
+  espresso: 'bg-espresso text-cream hover:text-cream',
+  outline: 'border-[1.5px] border-espresso text-espresso hover:text-espresso',
+  // Outline for coloured backgrounds that take white text (e.g. the orange Audit CTA).
+  'outline-light': 'border-[1.5px] border-white text-white hover:text-white',
+  mustard: 'bg-mustard text-espresso hover:text-espresso',
+  cream: 'bg-cream text-espresso hover:text-espresso',
+};
+
+const classes = [
+  'inline-flex items-center justify-center text-center rounded-full font-semibold no-underline cursor-pointer',
+  'transition-transform duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 motion-reduce:transform-none',
+  sizes[size],
+  variants[variant],
+  className,
+];
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={classes} {...rest}>
+      <slot />
+    </button>
+  )
+}

@@ -1,0 +1,215 @@
+---
+/**
+ * Case Files (CLAUDE.md 4.6).
+ * Default (mobile, reduced motion, no JS): native horizontal swipe with scroll-snap and dots.
+ * Desktop with motion: the section pins and vertical scroll drives the cards sideways.
+ * In both modes the active card is fully lit and the others sit at 32% opacity.
+ */
+import { getCollection } from 'astro:content';
+import CaseCard from '../ui/CaseCard.astro';
+import Button from '../ui/Button.astro';
+
+const cases = (await getCollection('case-studies', ({ data }) => data.featured)).sort((a, b) => a.data.order - b.data.order);
+const total = cases.length;
+---
+
+<section id="work" class="case-files overflow-hidden bg-blue py-16 pl-5 text-cream md:pl-10 lg:py-20 lg:pl-16" data-total={total}>
+  <div class="case-pin">
+    <div class="case-head mb-12 flex flex-wrap items-end justify-between gap-6 pr-5 md:pr-10 lg:mb-16 lg:pr-16">
+      <div class="flex flex-col gap-4">
+        <h2
+          class="case-title m-0 font-display text-[clamp(48px,7vw,112px)] leading-[0.9] font-extrabold tracking-[-0.045em] text-cream"
+        >
+          The Case Files.
+        </h2>
+        <p class="m-0 text-[19px] text-cream/80 sm:text-[21px]">Real businesses. Real problems. Lights on.</p>
+      </div>
+      <div class="flex items-center gap-3.5 text-[15px] text-cream/80">
+        <span class="case-label" aria-live="polite">Case 1 of {total}</span>
+        <div class="h-[3px] w-40 bg-cream/20">
+          <div class="case-bar h-[3px] w-full origin-left bg-mustard" style={`transform:scaleX(${1 / total})`}></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-track flex snap-x snap-mandatory gap-5 overflow-x-auto pr-5 pb-3 sm:gap-10 md:pr-10 lg:pr-16">
+      {cases.map((entry, i) => <CaseCard entry={entry} index={i} />)}
+    </div>
+
+    <div class="case-dots mt-6 flex gap-2.5" role="group" aria-label="Choose a case">
+      {
+        cases.map((_, i) => (
+          <button
+            type="button"
+            class="case-dot h-3 w-3 cursor-pointer rounded-full bg-cream/30 p-0"
+            aria-label={`Show case ${i + 1}`}
+            aria-current={i === 0 ? 'true' : undefined}
+            data-dot={i}
+          />
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="mt-8 lg:mt-6">
+    <Button href="/work" variant="mustard">See all our work</Button>
+  </div>
+</section>
+
+<style>
+  .case-track {
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .case-track::-webkit-scrollbar {
+    display: none;
+  }
+  /* Dots give the 44px touch target without changing the dot size. */
+  .case-dot {
+    position: relative;
+  }
+  .case-dot::after {
+    content: '';
+    position: absolute;
+    inset: -16px;
+  }
+  .case-dot[aria-current='true'] {
+    background: var(--color-mustard);
+  }
+  .case-card {
+    transition: opacity 300ms ease;
+  }
+
+  /* Desktop: title and spacing also scale with the window height, so the title,
+     progress and a full case card fit on screen together while pinned. */
+  @media (min-width: 900px) {
+    .case-head {
+      margin-bottom: clamp(20px, 4svh, 64px);
+    }
+    .case-head > div:first-child {
+      gap: clamp(6px, 1.4svh, 16px);
+    }
+    .case-title {
+      font-size: clamp(48px, min(7vw, 11svh), 112px);
+    }
+  }
+
+  /* Pinned desktop mode, switched on by the script */
+  .case-files[data-mode='pinned'] .case-track {
+    overflow: visible;
+    scroll-snap-type: none;
+    will-change: transform;
+  }
+  .case-files[data-mode='pinned'] .case-card {
+    transition: none;
+  }
+  .case-files[data-mode='pinned'] .case-dots {
+    display: none;
+  }
+</style>
+
+<script>
+  import { gsap, ScrollTrigger, MOTION_OK, pinStart } from '../../scripts/motion';
+
+  const section = document.querySelector<HTMLElement>('.case-files');
+  const pin = section?.querySelector<HTMLElement>('.case-pin');
+  const track = section?.querySelector<HTMLElement>('.case-track');
+  const label = section?.querySelector<HTMLElement>('.case-label');
+  const bar = section?.querySelector<HTMLElement>('.case-bar');
+  const cards = Array.from(section?.querySelectorAll<HTMLElement>('.case-card') ?? []);
+  const dots = Array.from(section?.querySelectorAll<HTMLButtonElement>('.case-dot') ?? []);
+
+  if (section && pin && track && label && bar && cards.length) {
+    const total = cards.length;
+    let active = -1;
+
+    const setActive = (i: number) => {
+      if (i === active) return;
+      active = i;
+      label.textContent = `Case ${i + 1} of ${total}`;
+      bar.style.transform = `scaleX(${(i + 1) / total})`;
+      dots.forEach((d, j) => (j === i ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
+    };
+
+    /** Light each card by how close it is to `position` (a fractional card index). */
+    const light = (position: number) => {
+      cards.forEach((card, i) => {
+        const lit = Math.max(0, 1 - Math.abs(position - i));
+        card.style.opacity = String(0.32 + 0.68 * lit);
+      });
+      setActive(Math.round(position));
+    };
+
+    // Swipe mode: the card nearest the centre of the track is active.
+    const fromSwipe = () => {
+      const mid = track.scrollLeft + track.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      cards.forEach((card, i) => {
+        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      cards.forEach((card, i) => (card.style.opacity = i === best ? '1' : '0.32'));
+      setActive(best);
+    };
+
+    let ticking = false;
+    track.addEventListener(
+      'scroll',
+      () => {
+        if (section.dataset.mode === 'pinned' || ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          fromSwipe();
+          ticking = false;
+        });
+      },
+      { passive: true },
+    );
+
+    dots.forEach((dot, i) =>
+      dot.addEventListener('click', () => {
+        const card = cards[i];
+        track.scrollTo({ left: card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2, behavior: 'smooth' });
+      }),
+    );
+
+    fromSwipe();
+
+    // Desktop with motion: pin and drive the track with vertical scroll.
+    const mm = gsap.matchMedia();
+    mm.add(`(min-width: 900px) and ${MOTION_OK}`, () => {
+      section.dataset.mode = 'pinned';
+      track.scrollLeft = 0;
+      const distance = () => Math.max(0, track.scrollWidth - track.clientWidth);
+
+      const tween = gsap.to(track, {
+        x: () => -distance(),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: pin,
+          start: pinStart(pin),
+          end: () => `+=${distance()}`,
+          pin: true,
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => light(self.progress * (total - 1)),
+        },
+      });
+      light(0);
+
+      return () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+        gsap.set(track, { clearProps: 'transform' });
+        delete section.dataset.mode;
+        fromSwipe();
+      };
+    });
+
+    window.addEventListener('load', () => ScrollTrigger.refresh());
+  }
+</script>

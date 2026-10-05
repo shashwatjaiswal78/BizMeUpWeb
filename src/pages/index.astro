@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { organization, localBusiness } from '../lib/schema';
+import Hero from '../components/home/Hero.astro';
+import StatBar from '../components/home/StatBar.astro';
+import Manifesto from '../components/home/Manifesto.astro';
+import PosterWall from '../components/home/PosterWall.astro';
+import CaseFiles from '../components/home/CaseFiles.astro';
+import ReelsFan from '../components/home/ReelsFan.astro';
+import Process from '../components/home/Process.astro';
+import WhyUs from '../components/home/WhyUs.astro';
+import Testimonials from '../components/home/Testimonials.astro';
+import FounderNote from '../components/home/FounderNote.astro';
+import AuditCta from '../components/home/AuditCta.astro';
+---
+
+<BaseLayout
+  title="BizMeUp | Websites, content and campaigns that get you seen"
+  description="BizMeUp builds websites, content and campaigns that make you impossible to miss. Marketing and digital execution in Mohali and Chandigarh."
+  image="/og/home.png"
+  schema={[organization(Astro.site), localBusiness(Astro.site)]}
+>
+  <Hero />
+  <StatBar />
+  <Manifesto />
+  <FounderNote />
+  <PosterWall />
+  <CaseFiles />
+  <ReelsFan />
+  <Process />
+  <WhyUs />
+  <Testimonials />
+  <AuditCta />
+</BaseLayout>

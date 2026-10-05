@@ -1,0 +1,26 @@
+---
+/**
+ * Reels section (replaces Watch us build): client reels in a card fan, with the CTA under the fan's arrows.
+ * Data lives in src/config/reels.ts.
+ */
+import CardFanCarousel from '../ui/CardFanCarousel.astro';
+import Button from '../ui/Button.astro';
+import { resolvedReels } from '../../config/reels';
+---
+
+<section class="overflow-hidden bg-cream px-5 py-16 text-espresso md:px-10 lg:px-16 lg:py-20">
+  <div class="mx-auto flex max-w-[1280px] flex-wrap items-end justify-between gap-8">
+    <h2 class="m-0 max-w-[760px] font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em]">
+      Content that stops the scroll.
+    </h2>
+    <p class="m-0 max-w-[380px] text-[17px] leading-normal text-espresso-soft sm:text-[19px]">Reels we’ve made for brands that wanted to be seen.</p>
+  </div>
+
+  <div class="mt-8 lg:mt-10">
+    <CardFanCarousel cards={resolvedReels} label="Reels we've made for clients" />
+  </div>
+
+  <div class="mt-6 flex justify-center">
+    <Button href="/services/social-media/" variant="espresso" size="sm">See our social work</Button>
+  </div>
+</section>

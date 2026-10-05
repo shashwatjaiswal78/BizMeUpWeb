@@ -1,0 +1,106 @@
+---
+/**
+ * Free Visibility Audit form (CLAUDE.md 4.11 and section 10).
+ * Posts to the Google Apps Script web app in PUBLIC_FORM_ENDPOINT.
+ * Validates required fields and Indian mobile numbers, uses a honeypot instead of a CAPTCHA,
+ * fires Lead events and offers "Continue on WhatsApp" after a successful submit.
+ */
+const services = ['Websites', 'Social media', 'Content strategy', 'Performance marketing', 'SEO and blogs', 'Automations'];
+const budgets = ['Under ₹25K', '₹25K to ₹50K', '₹50K to ₹1L', '₹1L and above'];
+
+const field =
+  'w-full min-h-12 rounded-[10px] border border-espresso-line bg-espresso p-3.5 font-body text-base text-cream placeholder:text-cream/50 aria-[invalid=true]:border-orange';
+const labelCls = 'flex flex-col gap-2 text-sm font-medium';
+---
+
+<div class="audit-form-wrap min-w-0 flex-[1_1_480px]">
+  <form
+    class="audit-form flex flex-col gap-[22px] rounded-[16px] border border-mustard/45 bg-espresso-card p-6 text-cream sm:p-9"
+    novalidate
+    data-endpoint={import.meta.env.PUBLIC_FORM_ENDPOINT ?? ''}
+  >
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
+      <label class={labelCls}>
+        Name
+        <input class={field} type="text" name="name" placeholder="Your name" autocomplete="name" required aria-describedby="err-name" />
+        <span id="err-name" class="field-error text-[13px] text-mustard" hidden></span>
+      </label>
+      <label class={labelCls}>
+        Business name
+        <input class={field} type="text" name="business" placeholder="Your business" autocomplete="organization" required aria-describedby="err-business" />
+        <span id="err-business" class="field-error text-[13px] text-mustard" hidden></span>
+      </label>
+      <label class={labelCls}>
+        Phone (WhatsApp)
+        <input class={field} type="tel" name="phone" placeholder="+91" autocomplete="tel" inputmode="tel" required aria-describedby="err-phone" />
+        <span id="err-phone" class="field-error text-[13px] text-mustard" hidden></span>
+      </label>
+      <label class={labelCls}>
+        Website or Instagram link
+        <input class={field} type="text" name="link" placeholder="instagram.com/yourbrand" inputmode="url" autocomplete="url" />
+      </label>
+    </div>
+
+    <fieldset class="m-0 border-0 p-0">
+      <legend class="mb-3 p-0 text-sm font-medium">What do you need help with?</legend>
+      <div class="flex flex-wrap gap-2.5">
+        {
+          services.map((s) => (
+            <label class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-espresso-line px-4 py-2.5 text-[15px]">
+              <input type="checkbox" name="services" value={s} class="m-0 h-4 w-4 accent-orange" />
+              {s}
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+
+    <label class={labelCls}>
+      Monthly budget (optional)
+      <select class={field} name="budget">
+        <option value="">Choose a range</option>
+        {budgets.map((b) => <option value={b}>{b}</option>)}
+      </select>
+    </label>
+
+    <!-- Honeypot: hidden from people, filled by bots -->
+    <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+      <label>Company website <input type="text" name="company_website" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <button
+      type="submit"
+      class="min-h-[52px] cursor-pointer rounded-full border-0 bg-mustard px-6 py-[18px] font-body text-[17px] font-semibold text-espresso transition-transform duration-200 hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-70 motion-reduce:transform-none"
+    >
+      Book my audit
+    </button>
+    <p class="form-error m-0 rounded-[10px] border border-orange px-4 py-3 text-[15px] leading-normal text-cream" role="alert" hidden>
+      That didn't go through. Check your phone number and try again, or message us on WhatsApp.
+    </p>
+    <p class="m-0 text-sm text-cream/70">We reply on WhatsApp within one working day.</p>
+  </form>
+
+  <div
+    class="audit-success flex flex-col items-start gap-6 rounded-[16px] border border-mustard/45 bg-espresso-card p-6 text-cream sm:p-9"
+    tabindex="-1"
+    role="status"
+    hidden
+  >
+    <p class="m-0 font-display text-[clamp(28px,3vw,40px)] leading-[1.05] font-extrabold tracking-[-0.03em]">
+      Audit booked. We'll message you on WhatsApp within one working day.
+    </p>
+    <a
+      class="audit-whatsapp inline-flex min-h-12 items-center justify-center rounded-full bg-mustard px-7 py-[17px] text-[17px] font-semibold text-espresso no-underline hover:text-espresso"
+      href="#"
+      target="_blank"
+      rel="noopener"
+    >
+      Continue on WhatsApp
+    </a>
+  </div>
+</div>
+
+<script>
+  import { initAuditForms } from '../../scripts/audit-form';
+  initAuditForms();
+</script>

@@ -1,0 +1,236 @@
+---
+/**
+ * Animated testimonials (inspired by 21st.dev's animated testimonials, in BizMeUp style):
+ * a stack of tilted, taped poster cards with each client's initials, plus the full quote,
+ * which fades in word by word. Rotates on its own, pauses on hover, focus or when off screen.
+ * Also pauses while the browser tab is in the background.
+ * Reduced motion: no autoplay or word animation; the arrows still switch quotes.
+ * All quotes sit in the same grid cell, so switching never changes the layout height.
+ * Layout: phones show the stack beside the name and arrows, with the quote below; from 1024px the
+ * larger stack sits on the left and the quote leads on the right, with the name and arrows under it.
+ */
+import Tape from './Tape.astro';
+import { testimonials } from '../../config/testimonials';
+
+const tones = {
+  orange: 'bg-orange text-white',
+  mustard: 'bg-mustard text-espresso',
+  blue: 'bg-blue text-white',
+};
+const tapes = { orange: 'rgba(253,246,236,0.75)', mustard: 'rgba(255,255,255,0.6)', blue: 'rgba(253,246,236,0.7)' };
+// Resting tilt and offset of each card when it sits behind, so the stack peeks out.
+const rest = [
+  { tilt: -7, x: -10, y: 8 },
+  { tilt: 6, x: 14, y: -6 },
+  { tilt: -3, x: 6, y: 12 },
+];
+const words = (quote: string) => {
+  const list = quote.split(' ');
+  // Keep the quote marks attached to the first and last words so they never wrap alone.
+  list[0] = `\u201C${list[0]}`;
+  list[list.length - 1] = `${list[list.length - 1]}\u201D`;
+  return list;
+};
+---
+
+<div class="tcar" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
+  <div class="tcar-grid grid items-end gap-x-6 gap-y-6 sm:gap-x-8 lg:gap-x-20 lg:gap-y-10">
+    <!-- Card stack -->
+    <div aria-hidden="true" class="tcar-stack relative h-[178px] w-[150px] sm:h-[220px] sm:w-[188px] lg:h-[340px] lg:w-[290px]">
+      {
+        testimonials.map((t, i) => (
+          <div
+            class:list={['tcar-card absolute inset-0 flex flex-col justify-between rounded-[6px] p-4 sm:p-5', tones[t.tone]]}
+            style={`--tilt:${rest[i % rest.length].tilt}deg;--x:${rest[i % rest.length].x}px;--y:${rest[i % rest.length].y}px;box-shadow:var(--shadow-poster)`}
+            data-state={i === 0 ? 'active' : 'behind'}
+          >
+            <Tape color={tapes[t.tone]} width={70} height={22} rotate={-4} style="top:-10px;left:50%;margin-left:-35px" />
+            <span class="font-display text-[64px] leading-[0.85] font-extrabold tracking-[-0.05em] sm:text-[84px] lg:text-[128px]">{t.initials}</span>
+            <span class="text-[13px] leading-snug font-semibold lg:text-base">{t.business}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Name, role and controls -->
+    <div class="tcar-meta flex min-w-0 flex-col gap-5 lg:max-w-[820px] lg:flex-row lg:items-end lg:justify-between lg:gap-8">
+      <div class="grid">
+        {
+          testimonials.map((t, i) => (
+            <div class="tcar-caption [grid-area:1/1]" data-slide={i} aria-hidden={i === 0 ? undefined : 'true'}>
+              <p class="m-0 font-display text-[24px] leading-[1.05] font-extrabold tracking-[-0.02em] text-espresso sm:text-[28px] lg:text-[32px]">{t.name}</p>
+              <p class="m-0 mt-1.5 text-[15px] leading-snug text-muted">{t.role}</p>
+            </div>
+          ))
+        }
+      </div>
+      <div class="flex gap-2.5">
+        <button type="button" class="tcar-prev inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-espresso text-mustard transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transform-none" aria-label="Previous testimonial">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 9H3M8 4 3 9l5 5" /></svg>
+        </button>
+        <button type="button" class="tcar-next inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-espresso text-mustard transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transform-none" aria-label="Next testimonial">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h12M10 4l5 5-5 5" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Quotes -->
+    <div class="tcar-quotes grid" aria-live="off">
+      {
+        testimonials.map((t, i) => (
+          <blockquote class="tcar-quote m-0 text-[18px] leading-[1.55] text-espresso-soft [grid-area:1/1] sm:text-[19px] lg:max-w-[820px] lg:text-[clamp(24px,2.1vw,30px)] lg:leading-[1.4] lg:font-medium lg:tracking-[-0.01em] lg:text-espresso" data-slide={i} aria-hidden={i === 0 ? undefined : 'true'}>
+            {words(t.quote).map((w, j) => <><span class="tcar-word" style={`--i:${j}`}>{w}</span>{' '}</>)}
+          </blockquote>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .tcar-grid {
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'stack meta'
+      'quote quote';
+  }
+  .tcar-stack {
+    grid-area: stack;
+  }
+  .tcar-meta {
+    grid-area: meta;
+  }
+  .tcar-quotes {
+    grid-area: quote;
+  }
+  @media (min-width: 1024px) {
+    .tcar-grid {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        'stack quote'
+        'stack meta';
+      align-items: center;
+    }
+    .tcar-quotes {
+      align-self: end;
+    }
+    .tcar-meta {
+      align-self: start;
+    }
+  }
+  .tcar-card {
+    transform: translate(var(--x), var(--y)) rotate(var(--tilt)) scale(0.94);
+    transition: transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .tcar-card[data-state='active'] {
+    transform: rotate(0deg) scale(1);
+    z-index: 10;
+    animation: tcar-lift 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  @keyframes tcar-lift {
+    40% {
+      transform: translateY(-22px) rotate(0deg) scale(1);
+    }
+  }
+
+  .tcar-caption[aria-hidden='true'],
+  .tcar-quote[aria-hidden='true'] {
+    visibility: hidden;
+    opacity: 0;
+  }
+  .tcar-caption {
+    transition: opacity 300ms ease;
+  }
+  .tcar-word {
+    display: inline-block;
+  }
+  .tcar-quote.is-revealing .tcar-word {
+    animation: tcar-word 420ms ease-out both;
+    animation-delay: calc(var(--i) * 18ms);
+  }
+  @keyframes tcar-word {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tcar-card,
+    .tcar-card[data-state='active'] {
+      transition: none;
+      animation: none;
+    }
+    .tcar-quote.is-revealing .tcar-word {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const INTERVAL = 6500;
+
+  document.querySelectorAll<HTMLElement>('.tcar').forEach((root) => {
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('.tcar-card'));
+    const captions = Array.from(root.querySelectorAll<HTMLElement>('.tcar-caption'));
+    const quotes = Array.from(root.querySelectorAll<HTMLElement>('.tcar-quote'));
+    const live = root.querySelector<HTMLElement>('.tcar-quotes');
+    const total = cards.length;
+    if (!total) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer = 0;
+    let hovered = false;
+    let visible = false;
+
+    const show = (next: number) => {
+      index = (next + total) % total;
+      cards.forEach((card, i) => {
+        card.dataset.state = i === index ? 'active' : 'behind';
+        // Cards nearer the front sit higher in the stack.
+        card.style.zIndex = i === index ? '10' : String(total - ((i - index + total) % total));
+      });
+      [captions, quotes].forEach((set) =>
+        set.forEach((el, i) => (i === index ? el.removeAttribute('aria-hidden') : el.setAttribute('aria-hidden', 'true'))),
+      );
+      const quote = quotes[index];
+      quote.classList.remove('is-revealing');
+      void quote.offsetWidth; // restart the word animation
+      quote.classList.add('is-revealing');
+    };
+
+    const stop = () => window.clearInterval(timer);
+    const start = () => {
+      stop();
+      if (reduced || hovered || !visible || document.hidden) return;
+      timer = window.setInterval(() => show(index + 1), INTERVAL);
+    };
+
+    const step = (dir: number) => {
+      live?.setAttribute('aria-live', 'polite'); // announce changes the visitor asked for
+      show(index + dir);
+      start();
+    };
+
+    root.querySelector('.tcar-prev')?.addEventListener('click', () => step(-1));
+    root.querySelector('.tcar-next')?.addEventListener('click', () => step(1));
+    root.addEventListener('pointerenter', () => ((hovered = true), stop()));
+    root.addEventListener('pointerleave', () => ((hovered = false), start()));
+    root.addEventListener('focusin', () => ((hovered = true), stop()));
+    root.addEventListener('focusout', () => ((hovered = false), start()));
+
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+
+    new IntersectionObserver(([entry]) => {
+      const wasVisible = visible;
+      visible = entry.isIntersecting;
+      if (visible && !wasVisible) {
+        show(index);
+        start();
+      } else if (!visible) stop();
+    }, { threshold: 0.3 }).observe(root);
+
+    show(0);
+  });
+</script>

@@ -1,0 +1,214 @@
+---
+/**
+ * Transparent over the hero with espresso text. Once the page scrolls it turns
+ * solid espresso with cream text, keeping the same layout.
+ * Below 1024px: wordmark plus a round menu button that opens a full-screen espresso menu.
+ */
+import { nav, auditHref } from '../../config/site';
+
+interface Props {
+  /**
+   * "hero": over the orange homepage hero (cream full stop, as in the reference).
+   * "light": cream or mustard pages (orange full stop, so it stays visible).
+   * "dark": pages that open on a dark background (cream text before scrolling).
+   */
+  tone?: 'hero' | 'light' | 'dark';
+}
+
+const { tone = 'light' } = Astro.props;
+---
+
+<header id="site-header" class="site-header fixed inset-x-0 top-0 z-50" data-solid="false" data-tone={tone}>
+  <div class="flex items-center justify-between gap-4 px-5 py-4 md:px-10 lg:px-16 lg:py-3">
+    <a href="/" class="wordmark font-display text-[30px] font-extrabold tracking-[-0.03em] no-underline lg:text-[26px]">
+      BizMeUp<span class="wordmark-dot">.</span>
+    </a>
+
+    <nav aria-label="Main" class="hidden items-center gap-8 lg:flex">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="nav-link text-base font-medium no-underline">
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href={auditHref}
+        class="header-cta rounded-full px-5 py-2.5 text-[15px] font-semibold no-underline transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transform-none"
+      >
+        Book my audit
+      </a>
+    </nav>
+
+    <button
+      type="button"
+      class="menu-toggle inline-flex h-12 w-12 items-center justify-center rounded-full lg:hidden"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg aria-hidden="true" width="20" height="14" viewBox="0 0 20 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M1 1h18M1 7h18M1 13h18"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div
+  id="mobile-menu"
+  class="fixed inset-0 z-[60] hidden flex-col bg-espresso px-5 pt-4 pb-10 text-cream md:px-10"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu"
+>
+  <div class="flex items-center justify-between gap-4">
+    <a href="/" class="font-display text-[30px] font-extrabold tracking-[-0.03em] text-cream no-underline hover:text-cream">
+      BizMeUp<span class="text-cream">.</span>
+    </a>
+    <button
+      type="button"
+      class="menu-close inline-flex h-12 w-12 items-center justify-center rounded-full bg-cream text-espresso"
+      aria-label="Close menu"
+    >
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M2 2l12 12M14 2L2 14"></path>
+      </svg>
+    </button>
+  </div>
+  <nav aria-label="Mobile" class="mt-14 flex flex-col gap-3">
+    {
+      nav.map((item) => (
+        <a
+          href={item.href}
+          class="font-display text-[44px] leading-[1.05] font-extrabold tracking-[-0.035em] text-cream no-underline hover:text-mustard"
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+  <a
+    href={auditHref}
+    class="mt-auto inline-flex min-h-12 items-center justify-center rounded-full bg-mustard px-7 py-[17px] text-[17px] font-semibold text-espresso no-underline hover:text-espresso"
+  >
+    Book my audit
+  </a>
+</div>
+
+<style>
+  .site-header {
+    color: var(--color-espresso);
+    transition: background-color 200ms ease;
+  }
+  .wordmark,
+  .wordmark:hover,
+  .nav-link,
+  .nav-link:hover {
+    color: var(--color-espresso);
+  }
+  .wordmark-dot {
+    color: var(--color-orange);
+  }
+  .site-header[data-tone='hero'] .wordmark-dot,
+  .site-header[data-tone='dark'] .wordmark-dot,
+  .site-header[data-solid='true'] .wordmark-dot {
+    color: var(--color-cream);
+  }
+  .header-cta,
+  .header-cta:hover {
+    background: var(--color-espresso);
+    color: var(--color-cream);
+  }
+  .menu-toggle {
+    background: var(--color-espresso);
+    color: var(--color-cream);
+  }
+
+  /* Solid state after scrolling, and the dark tone (same colours, transparent background) */
+  .site-header[data-solid='true'] {
+    background: var(--color-espresso);
+  }
+  .site-header[data-solid='true'] .wordmark,
+  .site-header[data-solid='true'] .nav-link,
+  .site-header[data-tone='dark'] .wordmark,
+  .site-header[data-tone='dark'] .nav-link {
+    color: var(--color-cream);
+  }
+  .site-header[data-solid='true'] .header-cta,
+  .site-header[data-solid='true'] .menu-toggle,
+  .site-header[data-tone='dark'] .header-cta,
+  .site-header[data-tone='dark'] .menu-toggle {
+    background: var(--color-cream);
+    color: var(--color-espresso);
+  }
+
+  #mobile-menu[data-open='true'] {
+    display: flex;
+  }
+</style>
+
+<script>
+  const header = document.getElementById('site-header');
+  const menu = document.getElementById('mobile-menu');
+  const openBtn = header?.querySelector<HTMLButtonElement>('.menu-toggle');
+  const closeBtn = menu?.querySelector<HTMLButtonElement>('.menu-close');
+
+  if (header) {
+    let ticking = false;
+    const update = () => {
+      header.dataset.solid = window.scrollY > 16 ? 'true' : 'false';
+      ticking = false;
+    };
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true },
+    );
+    update();
+  }
+
+  if (menu && openBtn && closeBtn) {
+    const focusable = () => Array.from(menu.querySelectorAll<HTMLElement>('a[href], button'));
+
+    const open = () => {
+      menu.dataset.open = 'true';
+      openBtn.setAttribute('aria-expanded', 'true');
+      document.documentElement.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+    const close = () => {
+      menu.dataset.open = 'false';
+      openBtn.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = '';
+      openBtn.focus();
+    };
+
+    openBtn.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    menu.querySelectorAll('nav a, a[href^="/#"]').forEach((link) => link.addEventListener('click', close));
+
+    menu.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key !== 'Tab') return;
+      const items = focusable();
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+      if (e.matches && menu.dataset.open === 'true') close();
+    });
+  }
+</script>

@@ -1,0 +1,40 @@
+---
+/**
+ * Rotated sticker. "circle" is the hero's "Websites from ₹15K";
+ * "pill" is the Websites poster's "Starting ₹15K".
+ */
+interface Props {
+  shape?: 'circle' | 'pill';
+  tone?: 'mustard' | 'espresso';
+  rotate?: number;
+  size?: number;
+  /** Circle diameter below 640px, defaults to size */
+  mobileSize?: number;
+  class?: string;
+}
+
+const { shape = 'circle', tone = 'mustard', rotate = 12, size = 116, mobileSize, class: className } = Astro.props;
+
+const tones = {
+  mustard: 'bg-mustard text-espresso',
+  espresso: 'bg-espresso text-mustard',
+};
+
+const shapes = {
+  circle: [
+    'inline-flex shrink-0 items-center justify-center text-center rounded-full leading-[1.05]',
+    'h-[var(--size-sm)] w-[var(--size-sm)] sm:h-[var(--size)] sm:w-[var(--size)]',
+    mobileSize ? 'p-3 text-base sm:p-[14px] sm:text-lg' : 'p-[14px] text-lg',
+  ].join(' '),
+  pill: 'inline-block rounded-full px-[18px] py-3 text-lg',
+};
+
+const style =
+  shape === 'circle'
+    ? `--size:${size}px;--size-sm:${mobileSize ?? size}px;transform:rotate(${rotate}deg)`
+    : `transform:rotate(${rotate}deg)`;
+---
+
+<span class:list={['font-display font-extrabold', shapes[shape], tones[tone], className]} style={style}>
+  <slot />
+</span>

@@ -1,0 +1,46 @@
+---
+/**
+ * Services Poster Wall (CLAUDE.md 4.5). Websites spans two columns and two rows;
+ * one column below 900px. Copy comes from the services collection, styling from
+ * src/config/posters.ts, so values still match homepage-design-reference.html.
+ */
+import Poster from '../ui/Poster.astro';
+import { posterStyles } from '../../config/posters';
+import { getServices } from '../../lib/content';
+
+const services = await getServices();
+---
+
+<section id="services" class="bg-white px-5 pt-20 pb-16 md:px-10 lg:px-16 lg:pt-24 lg:pb-20">
+  <div class="mx-auto max-w-[1280px]">
+    <div class="mb-14 flex flex-wrap items-end justify-between gap-6 lg:mb-12">
+      <h2
+        class="m-0 max-w-[760px] font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso"
+      >
+        Six ways we turn the lights on.
+      </h2>
+      <p class="m-0 max-w-[360px] text-lg leading-normal">
+        Websites are the main event. Everything else makes sure people actually see them.
+      </p>
+    </div>
+
+    <!-- Desktop: compact posters and tighter gaps so the whole wall fits on a 1440x900 screen -->
+    <div class="grid grid-cols-1 gap-11 min-[900px]:grid-cols-3 min-[900px]:gap-7">
+      {
+        services.map((s) => (
+          <Poster
+            {...posterStyles[s.id]}
+            id={s.id}
+            label={s.data.title}
+            headline={s.data.posterHeadline}
+            description={s.data.shortDescription}
+            href={`/services/${s.id}`}
+            sticker={posterStyles[s.id]?.large && s.data.priceShort ? `Starting ${s.data.priceShort}` : undefined}
+            minHeight={posterStyles[s.id]?.large ? 0 : 200}
+            compact
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

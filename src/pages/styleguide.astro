@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/ui/Button.astro';
+import Sticker from '../components/ui/Sticker.astro';
+import Poster from '../components/ui/Poster.astro';
+import Tape from '../components/ui/Tape.astro';
+
+const colours = [
+  { token: 'cream', hex: '#FDF6EC', role: 'Base background, about 55%', dark: false },
+  { token: 'espresso', hex: '#191919', role: 'Text, dark blocks, marquee, buttons, about 20%', dark: true },
+  { token: 'mustard', hex: '#F4B942', role: 'Process, audit, stickers, highlights, about 15%', dark: false },
+  { token: 'orange', hex: '#E76F51', role: 'Hero, Websites poster, accents, about 6%', dark: false },
+  { token: 'blue', hex: '#457B9D', role: 'Case Files, Content strategy poster, about 4%', dark: true },
+];
+
+const shades = [
+  { token: 'white', hex: '#FFFFFF', role: 'Hero text, white posters, chat bubbles', dark: false },
+  { token: 'espresso-soft', hex: '#2E2E2E', role: 'Body text on cream, mockup frames', dark: true },
+  { token: 'espresso-card', hex: '#242424', role: 'Audit form card', dark: true },
+  { token: 'espresso-line', hex: '#4A4A4A', role: 'Field and chip borders on dark', dark: true },
+  { token: 'orange-deep', hex: '#B4472C', role: 'Small orange text on cream', dark: true },
+  { token: 'orange-deeper', hex: '#8F3620', role: 'Link hover (from the reference file)', dark: true },
+  { token: 'cream-deep', hex: '#EFE2CC', role: 'Chat panel, placeholders', dark: false },
+  { token: 'muted', hex: '#666666', role: 'Secondary text, timestamps', dark: true },
+  { token: 'dashed', hex: '#D6C4A8', role: 'Wireframe dashed boxes', dark: false },
+];
+
+const typeSamples = [
+  { name: 'Hero headline', spec: 'Bricolage 800, clamp(48px, 6.2vw, 92px), 0.95, -0.035em', cls: 'text-[clamp(48px,6.2vw,92px)] leading-[0.95] tracking-[-0.035em]', text: "Great businesses don't fail." },
+  { name: 'Manifesto', spec: 'Bricolage 800, clamp(48px, 8.4vw, 132px), 0.92, -0.045em', cls: 'text-[clamp(48px,8.4vw,132px)] leading-[0.92] tracking-[-0.045em]', text: "It's not a product problem." },
+  { name: 'Section title', spec: 'Bricolage 800, clamp(40px, 5vw, 76px), 0.95, -0.035em', cls: 'text-[clamp(40px,5vw,76px)] leading-[0.95] tracking-[-0.035em]', text: 'Six ways we turn the lights on.' },
+  { name: 'Poster headline', spec: 'Bricolage 800, 44px, 0.95, -0.035em', cls: 'text-[44px] leading-[0.95] tracking-[-0.035em]', text: 'Page 1, not page 4.' },
+];
+
+// Social platform logos (src/assets/social-logos): app-tile and plain versions.
+const logoTiles = import.meta.glob<{ default: ImageMetadata }>('../assets/social-logos/tile/*.svg', { eager: true });
+const logoGlyphs = import.meta.glob<{ default: ImageMetadata }>('../assets/social-logos/glyph/*.svg', { eager: true });
+const logos = Object.keys(logoTiles)
+  .map((path) => {
+    const name = path.split('/').pop()!.replace('.svg', '');
+    return { name, tile: logoTiles[path].default, glyph: logoGlyphs[path.replace('/tile/', '/glyph/')].default };
+  })
+  .sort((a, b) => a.name.localeCompare(b.name));
+
+const swatchHeading = 'font-display text-[clamp(32px,4vw,52px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso';
+---
+
+<BaseLayout
+  title="Styleguide | BizMeUp"
+  description="BizMeUp design tokens, type, buttons, stickers and posters."
+  noindex
+>
+  <div class="mx-auto max-w-[1280px] px-5 pt-32 pb-32 md:px-10 lg:px-16 lg:pt-40">
+    <h1 class="m-0 font-display text-[clamp(48px,6.2vw,92px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso">
+      Styleguide
+    </h1>
+    <p class="mt-6 max-w-[620px] text-lg leading-normal">
+      Tokens and building blocks from the locked homepage design. Internal only, not indexed.
+    </p>
+
+    <!-- Colours -->
+    <section class="mt-24 border-t-2 border-espresso pt-10" aria-labelledby="sg-colours">
+      <h2 id="sg-colours" class={swatchHeading}>Colour palette</h2>
+      <ul class="mt-10 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-5">
+        {
+          colours.map((c) => (
+            <li class="overflow-hidden rounded-[8px] border border-espresso/20">
+              <div class="flex h-36 items-end p-4" style={`background:${c.hex};color:${c.dark ? '#FDF6EC' : '#191919'}`}>
+                <span class="font-display text-2xl font-extrabold tracking-[-0.03em]">{c.token}</span>
+              </div>
+              <div class="bg-white p-4 text-sm leading-normal">
+                <div class="font-semibold text-espresso">{c.hex}</div>
+                <div class="text-muted">{c.role}</div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h3 class="mt-14 font-display text-2xl font-extrabold tracking-[-0.03em] text-espresso">Supporting shades</h3>
+      <ul class="mt-6 grid list-none grid-cols-2 gap-4 p-0 sm:grid-cols-3 lg:grid-cols-5">
+        {
+          shades.map((c) => (
+            <li class="overflow-hidden rounded-[8px] border border-espresso/20">
+              <div class="h-20" style={`background:${c.hex}`} />
+              <div class="bg-white p-3 text-[13px] leading-snug">
+                <div class="font-semibold text-espresso">{c.token}</div>
+                <div class="text-espresso">{c.hex}</div>
+                <div class="text-muted">{c.role}</div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Typography -->
+    <section class="mt-24 border-t-2 border-espresso pt-10" aria-labelledby="sg-type">
+      <h2 id="sg-type" class={swatchHeading}>Typography</h2>
+      <div class="mt-10 flex flex-col gap-12">
+        {
+          typeSamples.map((t) => (
+            <div class="flex flex-col gap-3">
+              <span class="text-sm font-semibold text-orange-deep">
+                {t.name}: {t.spec}
+              </span>
+              <p class:list={['m-0 font-display font-extrabold text-espresso', t.cls]}>{t.text}</p>
+            </div>
+          ))
+        }
+
+        <div class="flex flex-col gap-3">
+          <span class="text-sm font-semibold text-orange-deep">Underline highlight: thin mustard rule under one word</span>
+          <p class="m-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso">
+            A <span class="relative z-0 inline-block">visibility<span aria-hidden="true" class="absolute right-0 bottom-[-0.03em] left-0 -z-10 h-[0.06em] rounded-[2px] bg-mustard"></span></span> problem.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <span class="text-sm font-semibold text-orange-deep">Accent: Instrument Serif Italic, clamp(26px, 2.6vw, 38px), 1.3</span>
+          <p class="m-0 max-w-[760px] font-serif text-[clamp(26px,2.6vw,38px)] leading-[1.3] text-espresso-soft italic">
+            You've built something good. Nobody's seeing it. That's the part we fix.
+          </p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          <div class="flex flex-col gap-3">
+            <span class="text-sm font-semibold text-orange-deep">Body large: Instrument Sans 21px, 1.5</span>
+            <p class="m-0 text-[21px] leading-normal">BizMeUp builds websites, content and campaigns that make you impossible to miss.</p>
+          </div>
+          <div class="flex flex-col gap-3">
+            <span class="text-sm font-semibold text-orange-deep">Body: Instrument Sans 18px, 1.5</span>
+            <p class="m-0 text-lg leading-normal">Websites are the main event. Everything else makes sure people actually see them.</p>
+          </div>
+          <div class="flex flex-col gap-3">
+            <span class="text-sm font-semibold text-orange-deep">Small: Instrument Sans 16px, 1.5</span>
+            <p class="m-0 text-base leading-normal">Meta and Google ads that are tracked, tested and scaled on what makes money.</p>
+            <a href="#sg-type" class="text-base font-semibold">Text link, orange-deep</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons -->
+    <section class="mt-24 border-t-2 border-espresso pt-10" aria-labelledby="sg-buttons">
+      <h2 id="sg-buttons" class={swatchHeading}>Buttons</h2>
+      <div class="mt-10 grid gap-5 md:grid-cols-2">
+        <div class="flex flex-wrap items-center gap-[14px] rounded-[8px] bg-orange p-8">
+          <Button href="#sg-buttons">Book my audit</Button>
+          <Button href="#sg-buttons" variant="outline">See our work</Button>
+          <span class="w-full text-sm font-semibold text-espresso">On orange: espresso solid and espresso outline</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-[14px] rounded-[8px] bg-blue p-8">
+          <Button href="#sg-buttons" variant="mustard">See all our work</Button>
+          <span class="w-full text-sm font-semibold text-cream">On blue: mustard solid</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-[14px] rounded-[8px] bg-mustard p-8">
+          <Button href="#sg-buttons" variant="outline">Chat on WhatsApp</Button>
+          <span class="w-full text-sm font-semibold text-espresso">On mustard: espresso outline</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-[14px] rounded-[8px] bg-espresso p-8">
+          <Button href="#sg-buttons" size="sm" variant="cream">Book my audit</Button>
+          <Button variant="mustard" class="min-h-[52px]">Book my audit</Button>
+          <span class="w-full text-sm font-semibold text-cream">On espresso: scrolled header button (cream) and form submit (mustard)</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-[14px] rounded-[8px] border border-espresso/20 p-8">
+          <Button href="#sg-buttons" size="sm">Book my audit</Button>
+          <span class="w-full text-sm font-semibold text-espresso">Header button, small</span>
+        </div>
+        <div class="flex flex-wrap items-center gap-[14px] rounded-[8px] bg-orange p-8">
+          <button
+            type="button"
+            class="min-h-11 cursor-pointer rounded-full border border-espresso/70 bg-transparent px-[18px] py-2.5 text-[15px] font-semibold text-espresso"
+          >
+            Turn on the lights
+          </button>
+          <span class="w-full text-sm font-semibold text-espresso">Hero lights toggle (built with the hero in phase 2)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stickers and tape -->
+    <section class="mt-24 border-t-2 border-espresso pt-10" aria-labelledby="sg-stickers">
+      <h2 id="sg-stickers" class={swatchHeading}>Stickers and tape</h2>
+      <div class="mt-10 flex flex-wrap items-center gap-12">
+        <div class="flex items-center justify-center rounded-[8px] bg-orange p-10">
+          <Sticker>Websites from ₹15K</Sticker>
+        </div>
+        <div class="flex items-center justify-center rounded-[8px] bg-orange p-10">
+          <Sticker shape="pill" tone="espresso" rotate={8}>Starting ₹15K</Sticker>
+        </div>
+        <div class="relative flex h-40 w-56 items-center justify-center bg-white shadow-poster">
+          <Tape color="rgba(244,185,66,0.75)" width={110} height={30} rotate={4} style="top:-14px;left:50%;margin-left:-55px" />
+          <span class="text-sm text-muted">Mustard tape</span>
+        </div>
+        <div class="relative flex h-40 w-56 items-center justify-center bg-blue shadow-poster">
+          <Tape color="rgba(253,246,236,0.7)" rotate={-5} style="top:-12px;right:40px" />
+          <span class="text-sm text-white">Cream tape</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social logos -->
+    <section class="mt-24 border-t-2 border-espresso pt-10" aria-labelledby="sg-logos">
+      <h2 id="sg-logos" class={swatchHeading}>Social platform logos</h2>
+      <p class="mt-4 max-w-[640px] text-base leading-normal text-muted">
+        App-tile and plain versions in <code>src/assets/social-logos/</code>. Not placed on the site yet.
+      </p>
+      <ul class="mt-10 grid list-none grid-cols-3 gap-6 p-0 sm:grid-cols-5 lg:grid-cols-7">
+        {
+          logos.map((l) => (
+            <li class="flex flex-col items-center gap-3">
+              <img src={l.tile.src} alt="" width="72" height="72" class="drop-shadow-[0_8px_14px_rgba(25,25,25,0.18)]" />
+              <img src={l.glyph.src} alt="" width="36" height="36" />
+              <span class="text-[13px] font-semibold text-espresso">{l.name}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Posters -->
+    <section class="mt-24 border-t-2 border-espresso pt-10" aria-labelledby="sg-posters">
+      <h2 id="sg-posters" class={swatchHeading}>Sample posters</h2>
+      <div class="mt-16 grid grid-cols-1 gap-11 lg:grid-cols-3">
+        <Poster
+          id="sg-websites"
+          class="lg:col-span-2"
+          showLink
+          large
+          label="Websites"
+          headline="Your 24/7 salesperson."
+          description="Fast, gorgeous websites built to turn visitors into enquiries, from landing pages to full Shopify stores."
+          href="#sg-posters"
+          rotate={-1}
+          bg="orange"
+          text="white"
+          labelColor="espresso"
+          headlineColor="white"
+          descriptionColor="espresso"
+          linkColor="espresso"
+          sticker="Starting ₹15K"
+          minHeight={640}
+          shadow="lg"
+          tape={{ color: 'rgba(253,246,236,0.75)', width: 120, height: 30, rotate: -3, style: 'top:-14px;left:50%;margin-left:-60px' }}
+        />
+        <Poster
+          id="sg-performance"
+          showLink
+          label="Performance marketing"
+          headline="Put ₹1 in. Get more out."
+          description="Meta and Google ads that are tracked, tested and scaled on what makes money."
+          href="#sg-posters"
+          rotate={1.5}
+          bg="white"
+          text="espresso"
+          linkColor="orange-deep"
+          peel
+          minHeight={320}
+          tape={{ color: 'rgba(231,111,81,0.25)', rotate: -2, style: 'top:-12px;left:50%;margin-left:-45px' }}
+        />
+      </div>
+    </section>
+  </div>
+</BaseLayout>

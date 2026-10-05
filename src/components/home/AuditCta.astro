@@ -1,0 +1,59 @@
+---
+/**
+ * Audit CTA (CLAUDE.md 4.11). Mustard with a soft orange glow on the right.
+ * "Chat on WhatsApp" uses an espresso outline for contrast (approved at checkpoint 5).
+ */
+import Button from '../ui/Button.astro';
+import AuditForm from '../ui/AuditForm.astro';
+import { whatsappUrl, site } from '../../config/site';
+
+interface Props {
+  /** Contact page: the title becomes the page h1 and contact details are listed */
+  page?: boolean;
+}
+
+const { page = false } = Astro.props;
+const Heading = page ? 'h1' : 'h2';
+---
+
+<section
+  id="audit"
+  class:list={[
+    'relative overflow-hidden bg-orange px-5 text-cream md:px-10 lg:px-16',
+    page ? 'pt-32 pb-24 lg:pt-44 lg:pb-40' : 'py-24 lg:py-40',
+  ]}
+>
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute top-[4%] -right-[12%] h-[600px] w-[600px] rounded-full lg:h-[960px] lg:w-[960px]"
+    style="background:radial-gradient(circle, rgba(244,185,66,0.45) 0%, rgba(244,185,66,0.12) 42%, rgba(244,185,66,0) 70%)"
+  >
+  </div>
+
+  <div class="relative mx-auto flex max-w-[1280px] flex-wrap items-start gap-12 lg:gap-[72px]">
+    <div class="flex flex-[1_1_440px] flex-col gap-7">
+      <Heading
+        class="m-0 font-display text-[clamp(56px,8vw,128px)] leading-[0.88] font-extrabold tracking-[-0.05em] text-white"
+      >
+        Ready to be seen?
+      </Heading>
+      <p class="m-0 max-w-[480px] text-[19px] leading-normal text-white sm:text-[21px]">
+        Get a free visibility audit. We'll show you exactly what's keeping you invisible, and how to fix it.
+      </p>
+      <Button href={whatsappUrl()} variant="outline-light" class="self-start" target="_blank" rel="noopener">
+        Chat on WhatsApp
+      </Button>
+      {
+        page && (
+          <address class="mt-4 flex flex-col gap-2 text-lg text-white not-italic">
+            <a href={`mailto:${site.email}`} class="text-white hover:text-white">{site.email}</a>
+            <a href={site.phone.href} class="text-white hover:text-white">{site.phone.label}</a>
+            <span>{site.location}</span>
+          </address>
+        )
+      }
+    </div>
+
+    <AuditForm />
+  </div>
+</section>

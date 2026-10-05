@@ -1,0 +1,182 @@
+---
+/**
+ * A website screenshot that opens into a full-page viewer.
+ * The trigger shows the hero screenshot; clicking opens a native <dialog> with a
+ * browser frame and the full-page capture to scroll through. The full capture is
+ * only fetched when the viewer opens (lazy image inside a closed dialog).
+ */
+import { Picture, Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  hero: ImageMetadata;
+  full?: ImageMetadata;
+  client: string;
+  url?: string;
+  /** Responsive sizes for the hero inside its mockup */
+  sizes: string;
+  widths: number[];
+  class?: string;
+  /** Shows the "View the full site" label on the screenshot */
+  label?: boolean;
+  eager?: boolean;
+}
+
+const { hero, full, client, url, sizes, widths, class: className, label = true, eager = false } = Astro.props;
+const address = url && /^https?:\/\//.test(url) ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : client;
+const heroAlt = `${client} website, home page`;
+---
+
+{
+  full ? (
+    <div class:list={['site-viewer w-full', className]}>
+      <button
+        type="button"
+        class="site-viewer-open group relative block w-full cursor-zoom-in overflow-hidden rounded-[4px] p-0"
+        aria-haspopup="dialog"
+        aria-label={`View the full ${client} website`}
+      >
+        <Picture
+          src={hero}
+          alt={heroAlt}
+          widths={widths}
+          sizes={sizes}
+          formats={['avif']}
+          fallbackFormat="webp"
+          loading={eager ? 'eager' : 'lazy'}
+          class="block h-auto w-full"
+          pictureAttributes={{ class: 'block w-full' }}
+        />
+        {label && (
+          <span class="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full bg-espresso px-3 py-1.5 text-[13px] font-semibold text-cream shadow-[0_6px_16px_rgba(25,25,25,0.3)] transition-transform duration-200 group-hover:-translate-y-0.5 motion-reduce:transform-none">
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 1h4v4M5 11H1V7M11 1 7 5M1 11l4-4" />
+            </svg>
+            View the full site
+          </span>
+        )}
+      </button>
+
+      <dialog class="site-viewer-dialog" aria-label={`${client} website, full page`}>
+        <div class="flex h-full flex-col overflow-hidden rounded-[14px] border-2 border-espresso bg-white max-sm:rounded-none max-sm:border-0">
+          <div class="flex flex-none items-center gap-2 border-b-2 border-espresso bg-white px-4 py-3">
+            <span class="h-2.5 w-2.5 shrink-0 rounded-full bg-orange" />
+            <span class="h-2.5 w-2.5 shrink-0 rounded-full bg-mustard" />
+            <span class="h-2.5 w-2.5 shrink-0 rounded-full bg-cream-deep" />
+            <span class="ml-2 min-w-0 flex-1 truncate rounded-full bg-cream px-3 py-1.5 text-[13px] text-muted">{address}</span>
+            <button
+              type="button"
+              class="site-viewer-close inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-espresso text-cream"
+              aria-label="Close"
+            >
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M2 2l12 12M14 2L2 14" />
+              </svg>
+            </button>
+          </div>
+          <div class="site-viewer-scroll relative min-h-0 flex-1 overflow-y-auto overscroll-contain bg-cream-deep" data-lenis-prevent tabindex="0" aria-label="Scrollable full-page screenshot">
+            <p class="absolute inset-x-0 top-16 m-0 text-center text-[15px] text-muted">Loading the full page</p>
+            <Image
+              src={full}
+              alt={`${client} website, full page`}
+              widths={[828, 1440]}
+              sizes="(min-width: 1140px) 1100px, 100vw"
+              format="webp"
+              quality={72}
+              loading="lazy"
+              decoding="async"
+              class="relative block h-auto w-full"
+            />
+          </div>
+        </div>
+      </dialog>
+    </div>
+  ) : (
+    <Picture
+      src={hero}
+      alt={heroAlt}
+      widths={widths}
+      sizes={sizes}
+      formats={['avif']}
+          fallbackFormat="webp"
+      loading={eager ? 'eager' : 'lazy'}
+      class:list={['block h-auto w-full rounded-[4px]', className]}
+    />
+  )
+}
+
+<style>
+  .site-viewer-dialog {
+    width: min(1100px, 94vw);
+    height: 92vh;
+    height: 92dvh;
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  .site-viewer-dialog::backdrop {
+    background: rgba(25, 25, 25, 0.9);
+  }
+  .site-viewer-dialog[open] {
+    animation: viewer-in 250ms ease-out;
+  }
+  @keyframes viewer-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+  }
+  @media (max-width: 639px) {
+    .site-viewer-dialog {
+      width: 100vw;
+      height: 100dvh;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-viewer-dialog[open] {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { setSmoothScrollPaused } from '../../scripts/motion';
+
+  document.querySelectorAll<HTMLElement>('.site-viewer').forEach((viewer) => {
+    if (viewer.dataset.ready) return;
+    viewer.dataset.ready = 'true';
+    const open = viewer.querySelector<HTMLButtonElement>('.site-viewer-open');
+    const dialog = viewer.querySelector<HTMLDialogElement>('.site-viewer-dialog');
+    const close = viewer.querySelector<HTMLButtonElement>('.site-viewer-close');
+    const scroller = viewer.querySelector<HTMLElement>('.site-viewer-scroll');
+    if (!open || !dialog || !close || !scroller) return;
+
+    // Move the dialog to <body> so pinned, transformed sections (Case Files) can't
+    // re-parent it mid-way and drop it out of its modal state.
+    document.body.appendChild(dialog);
+
+    let lockedPage = false;
+    open.addEventListener('click', () => {
+      dialog.showModal();
+      scroller.scrollTop = 0;
+      // Desktop: pausing smooth scroll locks the page. Elsewhere hide overflow
+      // (overlay scrollbars on touch devices, so no layout shift).
+      lockedPage = !setSmoothScrollPaused(true);
+      if (lockedPage) document.documentElement.style.overflow = 'hidden';
+    });
+    close.addEventListener('click', () => dialog.close());
+    // Clicking the backdrop (outside the frame) closes the viewer.
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      if (lockedPage) document.documentElement.style.overflow = '';
+      setSmoothScrollPaused(false);
+      open.focus({ preventScroll: true });
+    });
+  });
+</script>

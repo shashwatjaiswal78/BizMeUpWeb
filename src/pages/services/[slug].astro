@@ -1,0 +1,135 @@
+---
+/**
+ * Service page (CLAUDE.md section 6): hero with the poster headline and poster,
+ * "What you get", four-step process on mustard, related case files, FAQ, CTA band.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Button from '../../components/ui/Button.astro';
+import Poster from '../../components/ui/Poster.astro';
+import Process from '../../components/home/Process.astro';
+import CaseTile from '../../components/ui/CaseTile.astro';
+import Faq from '../../components/ui/Faq.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { posterStyles } from '../../config/posters';
+import { getServices, getCaseStudies, caseServiceSlugs, type Service } from '../../lib/content';
+import { serviceSchema } from '../../lib/schema';
+
+export async function getStaticPaths() {
+  const services = await getServices();
+  return services.map((service) => ({ params: { slug: service.id }, props: { service } }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const d = service.data;
+const services = await getServices();
+const related = await getCaseStudies((c) => caseServiceSlugs(c, services).includes(service.id));
+
+// Hero poster: same colours, tape and rotation as on the wall, at a size that fits beside the headline.
+const { class: _wallClass, large: _large, collapsible: _c, ...style } = posterStyles[service.id];
+const sectionTitle = 'm-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso';
+---
+
+<BaseLayout
+  title={d.seoTitle}
+  description={d.seoDescription}
+  image={`/og/services/${service.id}.png`}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Services', href: '/#services' }, { label: d.title }]}
+  schema={[serviceSchema(service, Astro.site)]}
+>
+  <!-- Hero -->
+  <section class="bg-cream px-5 pt-32 pb-20 md:px-10 lg:px-16 lg:pt-44 lg:pb-32">
+    <div class="mx-auto flex max-w-[1280px] flex-wrap items-center gap-14 lg:gap-20">
+      <div class="flex max-w-[680px] flex-[1_1_520px] flex-col gap-7">
+        <span class="text-[17px] font-semibold text-orange-deep">{d.title}</span>
+        <h1
+          class="m-0 font-display text-[46px] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso sm:text-[clamp(48px,6.2vw,92px)]"
+        >
+          {d.posterHeadline}
+        </h1>
+        <p class="m-0 max-w-[520px] text-[19px] leading-normal sm:text-[21px]">{d.shortDescription}</p>
+        {
+          d.startingPrice && (
+            <p class="m-0 text-lg font-semibold text-espresso">Starting at {d.startingPrice}</p>
+          )
+        }
+        <div class="flex flex-col gap-3.5 sm:flex-row sm:flex-wrap">
+          <Button href="/contact">Book my audit</Button>
+          <Button href="/work" variant="outline">See our work</Button>
+        </div>
+      </div>
+      <div class="mx-auto w-full max-w-[460px] flex-[1_1_360px] py-4">
+        <Poster
+          {...style}
+          static
+          id={`hero-${service.id}`}
+          label={d.title}
+          headline={d.posterHeadline}
+          description={d.shortDescription}
+          href={`/services/${service.id}`}
+          minHeight={420}
+          sticker={d.priceShort ? `Starting ${d.priceShort}` : undefined}
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- What you get -->
+  {
+    d.whatYouGet.length > 0 && (
+      <section class="bg-cream px-5 pb-24 md:px-10 lg:px-16 lg:pb-40">
+        <div class="mx-auto max-w-[1280px] border-t-2 border-espresso pt-10">
+          <h2 class={sectionTitle}>What you get.</h2>
+          <ul class="mt-14 grid list-none grid-cols-1 gap-x-10 gap-y-12 p-0 sm:grid-cols-2 lg:grid-cols-3">
+            {d.whatYouGet.map((item) => (
+              <li class="flex flex-col gap-3 border-t-[3px] border-espresso pt-6">
+                <h3 class="m-0 font-display text-[28px] leading-[1.05] font-extrabold tracking-[-0.03em] text-espresso">{item.title}</h3>
+                <p class="m-0 text-lg leading-normal">{item.text}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <Process title={d.processTitle} />
+
+  <!-- Related case files -->
+  {
+    related.length > 0 && (
+      <section class="bg-blue px-5 py-24 text-cream md:px-10 lg:px-16 lg:py-40">
+        <div class="mx-auto max-w-[1280px]">
+          <div class="mb-12 flex flex-wrap items-end justify-between gap-6 lg:mb-16">
+            <h2 class="m-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-cream">
+              Related case files.
+            </h2>
+            <Button href="/work" variant="mustard">See all our work</Button>
+          </div>
+          <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {related.slice(0, 4).map((entry) => <CaseTile entry={entry} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- FAQ -->
+  {
+    d.faqs.length > 0 && (
+      <section class="bg-cream px-5 py-24 md:px-10 lg:px-16 lg:py-40">
+        <div class="mx-auto flex max-w-[1280px] flex-wrap gap-12 lg:gap-16">
+          <h2 class:list={[sectionTitle, 'flex-[1_1_300px]']}>Questions, answered.</h2>
+          <div class="min-w-0 flex-[2_1_560px]">
+            <Faq items={d.faqs} />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand />
+</BaseLayout>

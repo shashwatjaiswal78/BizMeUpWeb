@@ -1,0 +1,99 @@
+---
+/**
+ * Case file card (CLAUDE.md 4.6). Content comes from the case-studies collection.
+ * The laptop shows the hero screenshot and opens the full-page viewer; the phone
+ * mockup only appears when the case has a mobile screenshot.
+ */
+import { Picture } from 'astro:assets';
+import SiteViewer from './SiteViewer.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'case-studies'>;
+  index: number;
+}
+
+const { entry, index } = Astro.props;
+const d = entry.data;
+const number = String(d.order).padStart(2, '0');
+---
+
+<article
+  class="case-card flex shrink-0 basis-[86vw] snap-center flex-wrap items-center gap-10 rounded-[8px] bg-cream p-6 text-espresso-soft sm:p-11 min-[900px]:basis-[min(900px,86vw)]"
+  data-case-index={index}
+>
+  <div class="case-text flex min-w-0 flex-[1_1_320px] flex-col gap-[18px]">
+    <span class="text-[15px] font-semibold text-orange-deep">Case {number} / {d.industry}</span>
+    <h3 class="m-0 text-xl font-semibold">{d.title}</h3>
+    <p
+      class="case-result m-0 font-display text-[clamp(40px,4.4vw,62px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso"
+    >
+      {d.resultHeadline}
+    </p>
+    <p class="m-0 text-[17px] leading-normal"><strong>The problem:</strong> {d.problem}</p>
+    <ul class="m-0 flex list-none flex-wrap gap-2 p-0" aria-label="Services">
+      {
+        d.services.map((s) => (
+          <li class="rounded-full bg-espresso px-3.5 py-[7px] text-sm font-semibold text-cream">{s}</li>
+        ))
+      }
+    </ul>
+    <a href={`/work/${entry.id}`} class="text-[17px] font-semibold">Open the case file</a>
+  </div>
+
+  <div class="relative min-w-0 flex-[1_1_340px] self-center">
+    <!-- Laptop: the screen takes the screenshot's own proportions so nothing is cropped -->
+    <!-- With a phone, the laptop leaves room so the phone only overlaps its bezel, never the screenshot -->
+    <div class:list={['relative', d.mockupMobile ? 'mr-[21%]' : '']}>
+      <div class="mx-auto w-[92%] rounded-t-[12px] bg-espresso p-2.5">
+        {
+          d.mockupDesktop ? (
+            <SiteViewer
+              hero={d.mockupDesktop}
+              full={d.fullPage}
+              client={d.title}
+              url={d.liveUrl}
+              widths={[480, 800, 1200]}
+              sizes="(min-width: 900px) 420px, 80vw"
+            />
+          ) : (
+            <div aria-hidden="true" class="flex aspect-[16/10] w-full items-center justify-center rounded-[4px] bg-cream-deep text-sm text-espresso-soft">[Desktop mockup]</div>
+          )
+        }
+      </div>
+      <div aria-hidden="true" class="h-3.5 w-full rounded-b-[12px] bg-espresso-soft"></div>
+    </div>
+    {
+      d.mockupMobile && (
+        <div aria-hidden="true" class="absolute right-0 bottom-0 w-[24%] rounded-[18px] bg-espresso p-[5px] shadow-[0_16px_32px_rgba(25,25,25,0.25)] sm:rounded-[22px] sm:p-[6px]">
+          <Picture
+            src={d.mockupMobile}
+            alt=""
+            widths={[160, 320]}
+            sizes="(min-width: 900px) 110px, 24vw"
+            formats={['avif']}
+            fallbackFormat="webp"
+            class="block h-auto w-full rounded-[13px] sm:rounded-[16px]"
+          />
+        </div>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  /* Desktop: scale with the window height so the whole card (problem line,
+     service tags and link) stays visible while the section is pinned. */
+  @media (min-width: 900px) {
+    .case-card {
+      padding: clamp(24px, 4.6svh, 44px);
+      column-gap: clamp(24px, 3vw, 40px);
+    }
+    .case-text {
+      gap: clamp(8px, 1.8svh, 18px);
+    }
+    .case-result {
+      font-size: clamp(32px, min(4.4vw, 7svh), 62px);
+    }
+  }
+</style>

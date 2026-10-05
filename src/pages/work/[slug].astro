@@ -1,0 +1,229 @@
+---
+/**
+ * Case study (CLAUDE.md section 6): breadcrumb, kicker, client name, result headline,
+ * meta row, large mockups, three stats, the four story sections with an in-page nav,
+ * client quote, "Next case file" band in blue and the CTA band.
+ */
+import { Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
+import SiteViewer from '../../components/ui/SiteViewer.astro';
+import CtaBand from '../../components/ui/CtaBand.astro';
+import { getCaseStudies, caseNumber, type CaseStudy } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const cases = await getCaseStudies();
+  return cases.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, next: cases[(i + 1) % cases.length] },
+  }));
+}
+
+interface Props {
+  entry: CaseStudy;
+  next: CaseStudy;
+}
+
+const { entry, next } = Astro.props;
+const d = entry.data;
+const { Content, headings } = await render(entry);
+const sections = headings.filter((h) => h.depth === 2);
+const liveIsUrl = !!d.liveUrl && /^https?:\/\//.test(d.liveUrl);
+
+const meta = [
+  { label: 'Industry', value: d.industry },
+  { label: 'Location', value: d.location },
+  { label: 'Services', value: d.services.join(', ') },
+];
+---
+
+<BaseLayout
+  title={`${d.title}: ${d.resultHeadline} | BizMeUp`}
+  description={`${d.title}, ${d.industry}. ${d.problem}`}
+  type="article"
+  image={`/og/work/${entry.id}.png`}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Work', href: '/work' }, { label: d.title }]}
+>
+  <section class="bg-cream px-5 pt-32 pb-16 md:px-10 lg:px-16 lg:pt-44 lg:pb-24">
+    <div class="mx-auto flex max-w-[1280px] flex-col gap-6">
+      <Breadcrumbs items={[{ label: 'Home', href: '/' }, { label: 'Work', href: '/work' }, { label: d.title }]} />
+      <span class="mt-4 text-[15px] font-semibold text-orange-deep">Case {caseNumber(entry)} / {d.industry}</span>
+      <h1 class="m-0 text-[22px] font-semibold text-espresso-soft">{d.title}</h1>
+      <p class="m-0 max-w-[1100px] font-display text-[clamp(48px,7vw,112px)] leading-[0.9] font-extrabold tracking-[-0.045em] text-espresso">
+        {d.resultHeadline}
+      </p>
+
+      <dl class="mt-8 grid grid-cols-2 gap-x-8 gap-y-6 border-t-2 border-espresso pt-8 md:grid-cols-4">
+        {
+          meta.map((m) => (
+            <div>
+              <dt class="text-sm font-semibold text-muted">{m.label}</dt>
+              <dd class="m-0 mt-1 text-[17px] text-espresso">{m.value}</dd>
+            </div>
+          ))
+        }
+        <div>
+          <dt class="text-sm font-semibold text-muted">Live site</dt>
+          <dd class="m-0 mt-1 text-[17px] text-espresso">
+            {liveIsUrl ? <a href={d.liveUrl} target="_blank" rel="noopener">Visit the site</a> : (d.liveUrl ?? '[Live site URL]')}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Large mockups: the screenshot opens the full-page viewer -->
+  <section class="bg-cream px-5 md:px-10 lg:px-16">
+    <div class="relative mx-auto flex max-w-[1280px] items-end justify-center gap-6 overflow-hidden rounded-[8px] bg-blue px-6 pt-12 pb-0 sm:px-12 sm:pt-16">
+      <div class="w-full max-w-[860px] min-w-0">
+        <div class="rounded-t-[14px] bg-espresso p-3 sm:p-4">
+          {
+            d.mockupDesktop ? (
+              <SiteViewer
+                hero={d.mockupDesktop}
+                full={d.fullPage}
+                client={d.title}
+                url={d.liveUrl}
+                widths={[640, 1280, 1720]}
+                sizes="(min-width: 1024px) 860px, 90vw"
+                eager
+              />
+            ) : (
+              <div aria-hidden="true" class="flex aspect-[16/10] w-full items-center justify-center rounded-[4px] bg-cream-deep text-base text-espresso-soft">[Desktop mockup]</div>
+            )
+          }
+        </div>
+      </div>
+      {
+        d.mockupMobile && (
+          <div aria-hidden="true" class="mb-6 hidden w-[17%] max-w-[200px] shrink-0 rounded-[26px] bg-espresso p-2 shadow-[0_24px_48px_rgba(25,25,25,0.3)] sm:block">
+            <Picture
+              src={d.mockupMobile}
+              alt=""
+              widths={[200, 400, 600]}
+              sizes="200px"
+              formats={['avif']}
+              fallbackFormat="webp"
+              class="block h-auto w-full rounded-[20px]"
+            />
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <!-- Stats -->
+  {
+    d.stats.length > 0 && (
+      <section class="bg-cream px-5 pt-16 md:px-10 lg:px-16 lg:pt-24">
+        <ul class="mx-auto grid max-w-[1280px] list-none grid-cols-1 gap-6 p-0 md:grid-cols-3">
+          {d.stats.slice(0, 3).map((s, i) => (
+            <li class:list={['flex flex-col gap-3 rounded-[8px] p-8', ['bg-mustard text-espresso', 'bg-orange text-espresso', 'bg-espresso text-cream'][i % 3]]}>
+              <span class="font-display text-[clamp(48px,5vw,72px)] leading-none font-extrabold tracking-[-0.04em]">{s.value}</span>
+              <span class="text-lg font-semibold">{s.label}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+
+  <!-- Story with in-page nav -->
+  <section class="bg-cream px-5 py-20 md:px-10 lg:px-16 lg:py-32">
+    <div class="mx-auto flex max-w-[1280px] flex-col gap-12 lg:flex-row lg:gap-20">
+      {
+        sections.length > 0 && (
+          <nav aria-label="On this page" class="lg:sticky lg:top-32 lg:w-[260px] lg:flex-none lg:self-start">
+            <ol class="m-0 flex list-none flex-wrap gap-2.5 p-0 lg:flex-col lg:gap-1">
+              {sections.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`} class="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-espresso px-4 text-[15px] font-semibold text-espresso no-underline hover:text-espresso lg:rounded-none lg:border-0 lg:border-l-[3px] lg:px-5">
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+      <div class="case-story min-w-0 max-w-[760px] flex-1">
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  <!-- Client quote -->
+  {
+    d.testimonial && (
+      <section class="bg-cream px-5 pb-24 md:px-10 lg:px-16 lg:pb-32">
+        <div class="mx-auto max-w-[900px] rounded-[20px] border-2 border-espresso bg-cream-deep p-6 sm:p-10">
+          <figure class="m-0 max-w-[90%] rounded-[4px_16px_16px_16px] bg-white px-6 py-5">
+            <figcaption class="text-[15px] font-semibold text-orange-deep">
+              {d.testimonial.name}, {d.testimonial.role}
+            </figcaption>
+            <blockquote class="mx-0 mt-2 mb-0 font-serif text-[clamp(24px,2.4vw,32px)] leading-[1.3] text-espresso-soft italic">
+              {d.testimonial.quote}
+            </blockquote>
+          </figure>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- Next case file -->
+  {
+    next.id !== entry.id && (
+      <section class="relative bg-blue px-5 py-20 text-cream md:px-10 lg:px-16 lg:py-28">
+        <div class="mx-auto flex max-w-[1280px] flex-col gap-4">
+          <span class="text-[15px] font-semibold text-cream/80">Next case file</span>
+          <span class="text-[15px] font-semibold text-cream">Case {caseNumber(next)} / {next.data.industry}</span>
+          <p class="m-0 max-w-[1000px] font-display text-[clamp(40px,5.6vw,88px)] leading-[0.92] font-extrabold tracking-[-0.045em] text-cream">
+            {next.data.resultHeadline}
+          </p>
+          <a href={`/work/${next.id}`} class="text-[19px] font-bold text-cream after:absolute after:inset-0 after:content-[''] hover:text-cream">
+            Open the case file
+          </a>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .case-story :global(h2) {
+    margin: 64px 0 16px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(32px, 3.4vw, 48px);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--color-espresso);
+    scroll-margin-top: 120px;
+  }
+  .case-story :global(h2:first-child) {
+    margin-top: 0;
+  }
+  .case-story :global(h3) {
+    margin: 32px 0 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    color: var(--color-espresso);
+  }
+  .case-story :global(p),
+  .case-story :global(li) {
+    font-size: 19px;
+    line-height: 1.6;
+  }
+  .case-story :global(p) {
+    margin: 0 0 18px;
+  }
+  .case-story :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+</style>

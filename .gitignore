@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Original case study screenshots (large PNGs). Optimised copies live in src/content/case-studies.
+Websites Case Study/
+
+# Original reels (large videos). Optimised copies live in public/reels.
+Video Gallery/
+
+# Original images (large PNGs). Optimised copies live in src/assets.
+Image Assets/

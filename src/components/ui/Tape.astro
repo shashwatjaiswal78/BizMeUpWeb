@@ -1,0 +1,19 @@
+---
+/** Decorative strip of tape stuck over a poster or photo. Position it with `style`. */
+interface Props {
+  color: string;
+  width?: number;
+  height?: number;
+  rotate?: number;
+  style?: string;
+}
+
+const { color, width = 90, height = 26, rotate = 0, style = '' } = Astro.props;
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none absolute z-[1]"
+  style={`width:${width}px;height:${height}px;background:${color};transform:rotate(${rotate}deg);${style}`}
+>
+</div>
