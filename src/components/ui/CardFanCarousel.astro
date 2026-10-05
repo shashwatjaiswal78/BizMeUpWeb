@@ -37,10 +37,6 @@ const arrow =
               aria-label={`${card.title} reel`}
             >
               <Image src={card.poster} alt="" widths={[300, 540].filter((w) => w <= card.poster.width)} sizes="300px" loading="lazy" class="fan-media absolute inset-0 h-full w-full object-cover" />
-              <span class="fan-meta absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 bg-gradient-to-t from-espresso/85 to-espresso/0 px-3 pt-10 pb-2.5 text-xs font-semibold text-cream sm:text-sm">
-                <span class="truncate">{card.title}</span>
-                {card.views && <span class="shrink-0 text-cream/75">{card.views}</span>}
-              </span>
             </Tag>
           );
         })}
@@ -67,6 +63,7 @@ const arrow =
   .fan-layout {
     height: 22rem;
     outline: none;
+    touch-action: pan-y;
   }
   .fan-card {
     position: absolute;
@@ -344,13 +341,21 @@ const arrow =
       if (e.key === 'ArrowLeft') cycle('left');
     });
 
-    // Swipe on touch screens.
-    let startX = 0;
-    layout.addEventListener('touchstart', (e) => (startX = e.touches[0].clientX), { passive: true });
-    layout.addEventListener('touchend', (e) => {
-      const dx = e.changedTouches[0].clientX - startX;
+    // Swipe on touch screens. Pointer events, not touch events: the browser can cancel a touch
+    // sequence once it starts a horizontal pan, which would drop the swipe. With touch-action
+    // pan-y (see the style block) vertical scrolling stays with the page and sideways drags reach here.
+    let swipeX: number | null = null;
+    layout.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return;
+      swipeX = e.clientX;
+    });
+    layout.addEventListener('pointerup', (e) => {
+      if (swipeX === null) return;
+      const dx = e.clientX - swipeX;
+      swipeX = null;
       if (Math.abs(dx) > 40) cycle(dx < 0 ? 'right' : 'left');
     });
+    layout.addEventListener('pointercancel', () => (swipeX = null));
 
     let resizeRaf = 0;
     window.addEventListener('resize', () => {
