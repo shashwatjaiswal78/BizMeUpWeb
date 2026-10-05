@@ -27,7 +27,7 @@ The client approved these changes during the build. They override the rest of th
 - **Case Files:** 4 real cases (Rudra, Nevoxel, Kutsu, Elemento) with a full-page site viewer.
 - **Testimonials:** an animated testimonial box with 3 real clients. The group chat panel was removed (October 2026); on desktop the card stack sits left and the quote leads on the right.
 - **Footer contact block:** only "India" plus Instagram and LinkedIn logos.
-- **Industries marquee replaced by a Stat bar** (`StatBar.astro`): four floating tiles (white, 1.5px espresso outline, soft drop shadow; no solid offset shadow), no stars or band; 5+ Years, 40+ Clients, 120+ Projects delivered, ₹1 Cr In ad spends. On desktop screens at least 800px tall the row rises 40px into the hero's bottom padding. Static, 2 x 2 equal tiles on phones.
+- **Industries marquee replaced by a Stat bar** (`StatBar.astro`): one floating white bar (1.5px espresso outline, soft drop shadow) with the four stats divided by near-invisible lines (espresso at 10%); 5+ Years, 40+ Clients, 120+ Projects delivered, ₹1 Cr In ad spends. On desktop screens at least 800px tall the row rises 40px into the hero's bottom padding. Static; a 2 x 2 grid inside the same bar on phones and tablets.
 - **Founder photo** is `Image Assets/Hero.png` (optimised to `src/assets/founder/shashwat.webp`). On stacked layouts (below 1024px) the "Hi, I’m Shashwat." heading sits above the photo.
 - **Watch us build was removed** (October 2026) and replaced by the Reels fan section (4.7).
 
