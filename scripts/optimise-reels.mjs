@@ -1,7 +1,9 @@
 // Reels for the homepage card fan. Originals live in "Video Gallery/" (not deployed).
 // Each reel becomes a 540x960 (or smaller, never upscaled) H.264 MP4 with no audio (the fan always plays muted),
 // capped at 30fps with faststart so it starts playing while it downloads, plus a WebP poster frame.
-// Run: node scripts/optimise-reels.mjs   (skips reels that are already encoded; pass --force to redo them)
+// Run: npm install --no-save ffmpeg-static && node scripts/optimise-reels.mjs
+// (ffmpeg-static is not a project dependency, so deploys don't download ffmpeg. Skips reels that are
+// already encoded; pass --force to redo them.)
 
 import ffmpeg from 'ffmpeg-static';
 import sharp from 'sharp';
