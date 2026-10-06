@@ -41,12 +41,12 @@ const covers = [
                 alt=""
                 widths={[400, 800]}
                 sizes="(min-width: 1024px) 400px, 90vw"
-                class="aspect-[16/10] w-full rounded-[6px] object-cover"
+                class="aspect-[16/9] w-full rounded-[6px] object-cover"
               />
             ) : (
               <div
                 aria-hidden="true"
-                class:list={['flex aspect-[16/10] items-end rounded-[6px] p-6', covers[i % covers.length]]}
+                class:list={['flex aspect-[16/9] items-end rounded-[6px] p-6', covers[i % covers.length]]}
               >
                 <span class="font-display text-[28px] leading-[0.95] font-extrabold tracking-[-0.03em]">
                   {post.data.title}
