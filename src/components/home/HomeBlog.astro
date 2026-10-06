@@ -1,0 +1,78 @@
+---
+/**
+ * Homepage blog preview (CLAUDE.md homepage order: after Testimonials, before AuditCta).
+ * Shows the three most recent posts with coloured cover tiles when no image is set.
+ * Falls back silently if no posts exist yet.
+ */
+import { Image } from 'astro:assets';
+import { getPosts, formatDate } from '../../lib/content';
+
+const allPosts = await getPosts();
+const posts = allPosts.slice(0, 3);
+
+const covers = [
+  'bg-orange text-white',
+  'bg-mustard text-espresso',
+  'bg-blue text-white',
+];
+---
+
+{posts.length > 0 && (
+  <section class="bg-cream px-5 py-20 md:px-10 lg:px-16 lg:py-28">
+    <div class="mx-auto max-w-[1280px]">
+      <div class="mb-12 flex flex-wrap items-end justify-between gap-6 lg:mb-14">
+        <h2 class="m-0 font-display text-[clamp(40px,5.5vw,88px)] leading-[0.92] font-extrabold tracking-[-0.04em] text-espresso">
+          From the blog.
+        </h2>
+        <a
+          href="/blog"
+          class="text-[17px] font-semibold text-espresso underline underline-offset-4 hover:text-orange-deep"
+        >
+          Read all posts &rarr;
+        </a>
+      </div>
+
+      <ul class="m-0 grid list-none grid-cols-1 gap-x-8 gap-y-12 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post, i) => (
+          <li class="relative flex flex-col gap-4">
+            {post.data.cover ? (
+              <Image
+                src={post.data.cover}
+                alt=""
+                widths={[400, 800]}
+                sizes="(min-width: 1024px) 400px, 90vw"
+                class="aspect-[16/10] w-full rounded-[6px] object-cover"
+              />
+            ) : (
+              <div
+                aria-hidden="true"
+                class:list={['flex aspect-[16/10] items-end rounded-[6px] p-6', covers[i % covers.length]]}
+              >
+                <span class="font-display text-[28px] leading-[0.95] font-extrabold tracking-[-0.03em]">
+                  {post.data.title}
+                </span>
+              </div>
+            )}
+            <div class="flex flex-wrap items-center gap-3 text-sm text-muted">
+              <time datetime={post.data.publishedAt.toISOString()}>
+                {formatDate(post.data.publishedAt)}
+              </time>
+              {post.data.tags.map((t) => (
+                <span class="rounded-full bg-cream-deep px-3 py-1 font-semibold text-espresso-soft">{t}</span>
+              ))}
+            </div>
+            <h3 class="m-0 font-display text-[clamp(22px,2.2vw,30px)] leading-[1.02] font-extrabold tracking-[-0.03em] text-espresso">
+              <a
+                href={`/blog/${post.id}`}
+                class="text-espresso no-underline after:absolute after:inset-0 after:content-[''] hover:text-espresso hover:underline"
+              >
+                {post.data.title}
+              </a>
+            </h3>
+            <p class="m-0 text-[17px] leading-normal text-espresso-soft">{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+)}
