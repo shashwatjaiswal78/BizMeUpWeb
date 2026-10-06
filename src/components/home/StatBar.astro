@@ -1,7 +1,7 @@
 ---
 /**
  * Stat bar (replaces the industries marquee). One floating white bar straddling the seam between the
- * cream hero and the Manifesto: 1.5px espresso outline, soft drop shadow, and the four stats divided by
+ * cream hero and the Manifesto: 6px corners and the posters' soft drop shadow (no outline), and the four stats divided by
  * near-invisible lines (espresso at 10%). Desktop: one row of four; phones and tablets: a 2 x 2 grid.
  * On desktop screens at least 800px tall the bar rises 40px into the hero's bottom padding so it peeks
  * above the fold. Static (no motion).
@@ -20,7 +20,7 @@ const stats = [
 >
   <!-- Desktop: the background splits cream over white exactly at the bar's midline, so it sits on the seam. -->
   <ul
-    class="m-0 mx-auto grid max-w-[1280px] list-none grid-cols-2 overflow-hidden rounded-[16px] border-[1.5px] border-espresso bg-white p-0 lg:grid-cols-4"
+    class="m-0 mx-auto grid max-w-[1280px] list-none grid-cols-2 overflow-hidden rounded-[6px] bg-white p-0 shadow-[var(--shadow-poster)] lg:grid-cols-4"
   >
     {
       stats.map((stat, i) => (

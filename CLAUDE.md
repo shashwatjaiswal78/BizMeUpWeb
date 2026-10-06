@@ -21,15 +21,15 @@ The client approved these changes during the build. They override the rest of th
 - **Hero headline** breaks after the first sentence: "Great businesses don’t fail." / "They go unseen."
 - **Audit buttons** all read "Book my audit" (hero, CTA bands, service pages, nav, form). Descriptive copy still says "free visibility audit".
 - **Typography:** curly apostrophes in display copy. The Manifesto headline is framed by two slab quote marks (cap-height tall, opening mark hanging left, closing mark inline after "problem.").
-- **No italics (October 2026).** Nothing on the site is italic. The Instrument Serif Italic accent is retired: the Manifesto supporting line, the Founder note's first paragraph, the About intro, blog post descriptions and blockquotes, and case study quotes are upright Instrument Sans (Manifesto and About intro `clamp(20px, 2vw, 28px)`, Founder 21px / 24px from 640px). "unseen" in the hero headline is no longer italic.
+- **No italics (October 2026).** Nothing on the site is italic. The Instrument Serif Italic accent is retired: the Manifesto supporting line, the Founder note's first paragraph, the About intro, blog post descriptions and blockquotes, and case study quotes are upright Instrument Sans (Manifesto and About intro `clamp(20px, 2vw, 28px)`, Founder note paragraphs all 19px / 21px from 640px). "unseen" in the hero headline is no longer italic.
 - **Homepage order:** Hero, Stat bar, Manifesto, Founder note, Services (Poster Wall), Reels fan, Case Files, Process, Why choose us, Testimonials, Audit CTA. (Reels fan and Case Files were swapped October 2026 so Case Files sits below "Content that stops the scroll".)
 - **Header:** thinner nav (63px). The wordmark full stop is orange on light pages and cream on dark pages.
 - **Poster Wall:** compact 3x3 grid on desktop. Illustrations on Social media, Performance marketing and Automations only, with none on Websites.
 - **Case Files:** 4 real cases (Rudra, Nevoxel, Kutsu, Elemento) with a full-page site viewer.
 - **Testimonials:** an animated testimonial box with 3 real clients. The group chat panel was removed (October 2026); on desktop the card stack sits left and the quote leads on the right.
 - **Footer contact block:** only "India" plus Instagram and LinkedIn logos.
-- **Industries marquee replaced by a Stat bar** (`StatBar.astro`): one floating white bar (1.5px espresso outline, soft drop shadow) with the four stats divided by near-invisible lines (espresso at 10%); 5+ Years, 40+ Clients, 120+ Projects delivered, ₹1 Cr In ad spends. On desktop screens at least 800px tall the row rises 40px into the hero's bottom padding. Static; a 2 x 2 grid inside the same bar on phones and tablets.
-- **Founder photo** is `Image Assets/Hero.png` (optimised to `src/assets/founder/shashwat.webp`). On stacked layouts (below 1024px) the "Hi, I’m Shashwat." heading sits above the photo.
+- **Industries marquee replaced by a Stat bar** (`StatBar.astro`): one floating white bar (6px corners and the soft `--shadow-poster` drop shadow, no outline: the espresso outline was removed October 2026 to match the rest of the site) with the four stats divided by near-invisible lines (espresso at 10%); 5+ Years, 40+ Clients, 120+ Projects delivered, ₹1 Cr In ad spends. On desktop screens at least 800px tall the row rises 40px into the hero's bottom padding. Static; a 2 x 2 grid inside the same bar on phones and tablets.
+- **Founder photo** is `Image Assets/Hero.png` (optimised to `src/assets/founder/shashwat.webp`). On stacked layouts (below 1024px) the "Hi, I’m Shashwat" heading (no full stop) sits above the photo.
 - **Watch us build was removed** (October 2026) and replaced by the Reels fan section (4.7).
 
 ---
