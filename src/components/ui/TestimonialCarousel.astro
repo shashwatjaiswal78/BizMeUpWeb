@@ -123,11 +123,13 @@ const words = (quote: string) => {
   }
 
   /* Quote box: height follows the active quote. Inactive quotes sit absolutely
-     so they don't push the box taller than the current quote. */
+     so they don't push the box taller than the current quote, and opacity:0
+     makes them invisible without removing them from the DOM. */
   .tcar-quote[aria-hidden='true'] {
     position: absolute;
     inset: 0;
-    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
   }
   .tcar-card {
     transform: translate(var(--x), var(--y)) rotate(var(--tilt)) scale(0.94);
