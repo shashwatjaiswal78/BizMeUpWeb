@@ -49,7 +49,7 @@ const services = defineCollection({
     intro: z.array(z.string()).default([]),
     posterColor: z.enum(['orange', 'mustard', 'blue', 'white', 'espresso']),
     startingPrice: z.string().optional(),
-    /** Short price for stickers, e.g. "₹15K" */
+    /** Short price for stickers, e.g. "₹6,999" */
     priceShort: z.string().optional(),
     order: z.number(),
     seoTitle: z.string(),

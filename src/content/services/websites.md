@@ -7,8 +7,8 @@ intro:
   - "Your website shouldn’t just look good. It should explain what you do, build trust and turn visitors into enquiries."
   - "We design and build fast, conversion-focused websites that make your brand look credible and make it easier for customers to say yes."
 posterColor: "orange"
-startingPrice: "₹15,000"
-priceShort: "₹15K"
+startingPrice: "₹6,999"
+priceShort: "₹6,999"
 order: 1
 seoTitle: "Websites in Mohali and Chandigarh | BizMeUp"
 seoDescription: "Fast, gorgeous websites built to turn visitors into enquiries, from landing pages to full Shopify stores."

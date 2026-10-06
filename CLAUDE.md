@@ -17,13 +17,15 @@ The client approved these changes during the build. They override the rest of th
 - **Hero is cream, not orange.** Cream ("ivory") background, espresso text and a cream spotlight veil. The composition is centred, and the scene scales down on short screens.
 - **Hero scene:** Kutsu product photos in the website mockup, 8 client social posts in the phone grid, and 3 floating social logos in their original brand colours (YouTube, Instagram, WhatsApp), enlarged.
 - **Hero controls:** no "Turn on the lights" / "Dim the lights" button (the client found it confusing). The lights come on at the first scroll, a click in the hero or any key press; the "Move your cursor" hint fades out when they do.
-- **Hero scene polish:** one light source (shadows grow with stacking height: cards, browser, phone), alternating tilts (browser -3, phone 4, cards -3 and 2), nothing tucked under the phone, scene text 13px minimum, "yourbrand" used in both the mockup and the phone. Side by side, the scene's lowest card lines up with the bottom of the buttons. The "Websites from ₹15K" sticker is 100px (92px on phones) with more space from the buttons.
+- **Hero scene polish:** one light source (shadows grow with stacking height: cards, browser, phone), alternating tilts (browser -3, phone 4, cards -3 and 2), nothing tucked under the phone, scene text 13px minimum, "yourbrand" used in both the mockup and the phone. Side by side, the scene's lowest card lines up with the bottom of the buttons. The "Websites from ₹6,999" sticker is 100px (92px on phones) with more space from the buttons.
 - **Hero headline** breaks after the first sentence: "Great businesses don’t fail." / "They go unseen."
-- **Audit buttons** all read "Book my audit" (hero, CTA bands, service pages, nav, form). Descriptive copy still says "free visibility audit".
+- **Audit buttons** all read "Book my audit" (hero, CTA bands, service pages, nav, form). Descriptive copy still says "free visibility audit". The audit form's submit button is orange-deep #B4472C with white text and a soft orange shadow (October 2026, so it pops on the white form card).
+- **Website pricing (October 2026):** websites start at ₹6,999 (was ₹15K): hero sticker "Websites from ₹6,999", Websites poster and service page sticker "Starting ₹6,999", Why choose us "Clear Pricing" copy, and the Service JSON-LD minPrice 6999. Set in `src/content/services/websites.md` (`startingPrice`, `priceShort`).
 - **Typography:** curly apostrophes in display copy. The Manifesto headline is framed by two slab quote marks (cap-height tall, opening mark hanging left, closing mark inline after "problem.").
 - **No italics (October 2026).** Nothing on the site is italic. The Instrument Serif Italic accent is retired: the Manifesto supporting line, the Founder note's first paragraph, the About intro, blog post descriptions and blockquotes, and case study quotes are upright Instrument Sans (Manifesto and About intro `clamp(20px, 2vw, 28px)`, Founder note paragraphs all 19px / 21px from 640px). "unseen" in the hero headline is no longer italic.
 - **Homepage order:** Hero, Stat bar, Manifesto, Founder note, Services (Poster Wall), Reels fan, Case Files, Process, Why choose us, Testimonials, Audit CTA. (Reels fan and Case Files were swapped October 2026 so Case Files sits below "Content that stops the scroll".)
 - **Header:** thinner nav (63px). The wordmark full stop is orange on light pages and cream on dark pages.
+- **Stacked logo (October 2026):** the white stacked "BIZ / MEUP" mark (`src/assets/brand/logo-stacked-white.png`, original in `Image Assets/`) is used on dark only: the favicon and app icons (white on a #191919 tile), the top of the full-screen mobile menu (48px tall, replacing the wordmark there), the bottom-right tile on every Open Graph image, and the Organization JSON-LD `logo`. The header and footer keep the horizontal wordmark.
 - **Poster Wall:** compact 3x3 grid on desktop. Illustrations on Social media, Performance marketing and Automations only, with none on Websites.
 - **Case Files:** 4 real cases (Rudra, Nevoxel, Kutsu, Elemento) with a full-page site viewer.
 - **Testimonials:** an animated testimonial box with 3 real clients. The group chat panel was removed (October 2026); on desktop the card stack sits left and the quote leads on the right.
@@ -96,7 +98,7 @@ All three are Google Fonts. Self-host them as woff2 with `font-display: swap`; p
 ### Graphic details to preserve exactly
 
 - Poster rotations (between -2deg and 2deg), tape strips, soft shadows, the peeled corner on the Performance poster.
-- Rotated circular stickers ("Websites from ₹15K", "Starting ₹15K").
+- Rotated circular stickers ("Websites from ₹6,999", "Starting ₹6,999").
 - Thin mustard underline under the word "visibility".
 - Mustard four-point stars between marquee items.
 - Fully rounded pill buttons.
@@ -118,7 +120,7 @@ Transparent over the orange hero. Wordmark "BizMeUp" in espresso with a cream fu
 - **Headline (white, Bricolage 800, `clamp(48px, 6.2vw, 92px)`):** Great businesses don't fail. They go unseen.
 - **Subline (white, 21px):** BizMeUp builds websites, content and campaigns that make you impossible to miss.
 - Buttons: "Get a free visibility audit" (espresso background, cream text) and "See our work" (espresso outline and text).
-- Sticker: mustard circle, espresso text, rotated 12deg: "Websites from ₹15K" `[confirm price]`.
+- Sticker: mustard circle, espresso text, rotated 12deg: "Websites from ₹6,999".
 - Scene (decorative, `aria-hidden`): a website mockup card, a phone with an Instagram-style grid, a search result card ("best jeweller near me" / "Your business, on page 1") and a mustard "New enquiry" card. Replace with a real hero image later if supplied; keep the composition.
 
 ### 4.3 Industries marquee
@@ -134,7 +136,7 @@ Three-column grid; Websites spans two columns and two rows. One column on mobile
 
 | Poster | Background | Text | Headline | Description |
 |---|---|---|---|---|
-| Websites (large) | orange | headline white; label, description and link espresso; sticker espresso with mustard text "Starting ₹15K" | Your 24/7 salesperson. | Fast, gorgeous websites built to turn visitors into enquiries, from landing pages to full Shopify stores. |
+| Websites (large) | orange | headline white; label, description and link espresso; sticker espresso with mustard text "Starting ₹6,999" | Your 24/7 salesperson. | Fast, gorgeous websites built to turn visitors into enquiries, from landing pages to full Shopify stores. |
 | Social media | mustard | espresso | Scroll-stoppers, on schedule. | Content, captions and community management that keep your brand showing up every week. |
 | Content strategy | blue | white | Plans, not random posts. | A clear content plan built around your customers, your goals and what actually gets saved and shared. |
 | Performance marketing | white, peeled corner | espresso, link orange-deep | Put ₹1 in. Get more out. | Meta and Google ads that are tracked, tested and scaled on what makes money. |
@@ -278,7 +280,7 @@ slug: "websites"
 posterHeadline: "Your 24/7 salesperson."
 shortDescription: "..."
 posterColor: "orange"   # matches the Poster Wall
-startingPrice: "₹15,000"
+startingPrice: "₹6,999"
 order: 1
 seoTitle: "..."
 seoDescription: "..."
