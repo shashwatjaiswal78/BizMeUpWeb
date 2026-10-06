@@ -7,10 +7,10 @@
  * above the fold. Static (no motion).
  */
 const stats = [
-  { value: '5+', label: 'Years' },
+  { value: '5+', label: 'Years in business' },
   { value: '40+', label: 'Clients' },
   { value: '120+', label: 'Projects delivered' },
-  { value: '₹1 Cr', label: 'In ad spends' },
+  { value: '₹1 Cr+', label: 'Ad spend managed' },
 ];
 ---
 
@@ -20,7 +20,7 @@ const stats = [
 >
   <!-- Desktop: the background splits cream over white exactly at the bar's midline, so it sits on the seam. -->
   <ul
-    class="m-0 mx-auto grid max-w-[1280px] list-none grid-cols-2 overflow-hidden rounded-[16px] border-[1.5px] border-espresso bg-white p-0 shadow-[0_18px_32px_rgba(25,25,25,0.1)] lg:grid-cols-4"
+    class="m-0 mx-auto grid max-w-[1280px] list-none grid-cols-2 overflow-hidden rounded-[16px] border-[1.5px] border-espresso bg-white p-0 lg:grid-cols-4"
   >
     {
       stats.map((stat, i) => (

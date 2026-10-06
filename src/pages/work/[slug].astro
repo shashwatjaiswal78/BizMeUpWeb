@@ -142,7 +142,7 @@ const meta = [
             <ol class="m-0 flex list-none flex-wrap gap-2.5 p-0 lg:flex-col lg:gap-1">
               {sections.map((h) => (
                 <li>
-                  <a href={`#${h.slug}`} class="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-espresso px-4 text-[15px] font-semibold text-espresso no-underline hover:text-espresso lg:rounded-none lg:border-0 lg:border-l-[3px] lg:px-5">
+                  <a href={`#${h.slug}`} class="case-nav-link inline-flex min-h-11 items-center rounded-full border-[1.5px] border-espresso px-4 text-[15px] font-semibold text-espresso no-underline hover:text-espresso lg:rounded-none lg:border-0 lg:border-l-[3px] lg:px-5">
                     {h.text}
                   </a>
                 </li>
@@ -230,4 +230,37 @@ const meta = [
     height: auto;
     border-radius: 8px;
   }
+  .case-nav-link {
+    opacity: 0.55;
+    transition: opacity 200ms ease;
+  }
+  .case-nav-link[aria-current='true'] {
+    opacity: 1;
+    border-color: var(--color-espresso);
+    color: var(--color-espresso);
+  }
 </style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[aria-label="On this page"]');
+  if (nav) {
+    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a'));
+    const targets = links.map((l) => document.querySelector<HTMLElement>(new URL(l.href).hash));
+    let current = -1;
+    const activate = (i: number) => {
+      if (i === current) return;
+      current = i;
+      links.forEach((l, j) => l.setAttribute('aria-current', j === i ? 'true' : 'false'));
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) activate(targets.indexOf(e.target as HTMLElement));
+        });
+      },
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0 },
+    );
+    targets.forEach((t) => t && io.observe(t));
+    if (links.length) activate(0);
+  }
+</script>

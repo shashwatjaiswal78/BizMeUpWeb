@@ -22,7 +22,7 @@ const covers = ['bg-orange text-white', 'bg-mustard text-espresso', 'bg-blue tex
 
       {
         posts.length ? (
-          <ul class="m-0 grid list-none grid-cols-1 gap-x-10 gap-y-14 p-0 md:grid-cols-2 lg:grid-cols-3">
+          <ul class="m-0 grid list-none grid-cols-1 gap-x-10 gap-y-14 p-0 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(320px,1fr))]">
             {posts.map((post, i) => (
               <li class="relative flex flex-col gap-4">
                 {post.data.cover ? (

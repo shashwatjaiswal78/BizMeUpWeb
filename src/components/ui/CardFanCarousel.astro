@@ -46,9 +46,7 @@ const arrow =
         <button type="button" class={arrow} data-dir="left" aria-label="Previous reel">
           <svg aria-hidden="true" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
         </button>
-        <div class="flex items-center gap-1.5 sm:gap-2" aria-hidden="true">
-          {cards.map(() => <span class="fan-dot h-1.5 w-1.5 rounded-full sm:h-2 sm:w-2 bg-espresso/20 transition-all duration-300" />)}
-        </div>
+        <span class="fan-counter min-w-[3.5ch] text-center text-sm font-semibold tabular-nums text-espresso/50" aria-hidden="true"></span>
         <button type="button" class={arrow} data-dir="right" aria-label="Next reel">
           <svg aria-hidden="true" class="h-4 w-4 md:h-5 md:w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
         </button>
@@ -90,10 +88,6 @@ const arrow =
     outline: 3px solid var(--color-mustard);
     outline-offset: 6px;
     border-radius: 16px;
-  }
-  .fan-dot.is-active {
-    background: var(--color-espresso);
-    transform: scale(1.3);
   }
   @media (min-width: 480px) {
     .fan-layout { height: 26rem; }
@@ -163,7 +157,7 @@ const arrow =
   document.querySelectorAll<HTMLElement>('.fan-carousel').forEach((root) => {
     const layout = root.querySelector<HTMLElement>('.fan-layout')!;
     const cards = Array.from(root.querySelectorAll<HTMLElement>('.fan-card'));
-    const dots = Array.from(root.querySelectorAll<HTMLElement>('.fan-dot'));
+    const counter = root.querySelector<HTMLElement>('.fan-counter');
     const status = root.querySelector<HTMLElement>('.fan-status')!;
     const total = cards.length;
     const paginated = total > MAX_VISIBLE;
@@ -212,7 +206,7 @@ const arrow =
     });
 
     const syncCentre = () => {
-      dots.forEach((dot, i) => dot.classList.toggle('is-active', i === centre));
+      if (counter) counter.textContent = `${centre + 1} / ${total}`;
       cards.forEach((card, i) => {
         const isCentre = i === centre;
         card.classList.toggle('is-centre', isCentre);

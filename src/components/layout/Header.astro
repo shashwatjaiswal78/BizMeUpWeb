@@ -99,7 +99,7 @@ const { tone = 'light' } = Astro.props;
 <style>
   .site-header {
     color: var(--color-espresso);
-    transition: background-color 200ms ease;
+    transition: background-color 200ms ease, backdrop-filter 200ms ease, border-color 200ms ease;
   }
   .wordmark,
   .wordmark:hover,
@@ -125,18 +125,22 @@ const { tone = 'light' } = Astro.props;
     color: var(--color-cream);
   }
 
-  /* Solid state after scrolling, and the dark tone (same colours, transparent background) */
+  /* Solid state after scrolling: frosted cream, not the heavy espresso bar */
   .site-header[data-solid='true'] {
-    background: var(--color-espresso);
+    background: rgba(253, 246, 236, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(25, 25, 25, 0.08);
   }
-  .site-header[data-solid='true'] .wordmark,
-  .site-header[data-solid='true'] .nav-link,
+  /* Text stays espresso (readable on cream) — no colour flip needed */
+  .site-header[data-solid='true'] .wordmark-dot {
+    color: var(--color-orange);
+  }
+  /* Dark tone: dark pages (espresso bg before scrolling, same frosted on scroll) */
   .site-header[data-tone='dark'] .wordmark,
   .site-header[data-tone='dark'] .nav-link {
     color: var(--color-cream);
   }
-  .site-header[data-solid='true'] .header-cta,
-  .site-header[data-solid='true'] .menu-toggle,
   .site-header[data-tone='dark'] .header-cta,
   .site-header[data-tone='dark'] .menu-toggle {
     background: var(--color-cream);

@@ -46,8 +46,8 @@ const labelCls = 'flex flex-col gap-2 text-sm font-medium';
       <div class="flex flex-wrap gap-2.5">
         {
           services.map((s) => (
-            <label class="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-espresso-line px-4 py-2.5 text-[15px] text-espresso">
-              <input type="checkbox" name="services" value={s} class="m-0 h-4 w-4 accent-orange" />
+            <label class="audit-chip inline-flex min-h-11 cursor-pointer items-center rounded-full border border-espresso-line px-4 py-2.5 text-[15px] text-espresso transition-colors duration-150">
+              <input type="checkbox" name="services" value={s} class="sr-only" />
               {s}
             </label>
           ))
@@ -57,10 +57,15 @@ const labelCls = 'flex flex-col gap-2 text-sm font-medium';
 
     <label class={labelCls}>
       Monthly budget (optional)
-      <select class={field} name="budget">
-        <option value="">Choose a range</option>
-        {budgets.map((b) => <option value={b}>{b}</option>)}
-      </select>
+      <div class="audit-select-wrap relative">
+        <select class={`${field} cursor-pointer appearance-none pr-10`} name="budget">
+          <option value="">Choose a range</option>
+          {budgets.map((b) => <option value={b}>{b}</option>)}
+        </select>
+        <span aria-hidden="true" class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-muted">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 6 8 10 12 6"/></svg>
+        </span>
+      </div>
     </label>
 
     <!-- Honeypot: hidden from people, filled by bots -->
@@ -99,6 +104,14 @@ const labelCls = 'flex flex-col gap-2 text-sm font-medium';
     </a>
   </div>
 </div>
+
+<style>
+  .audit-chip:has(input:checked) {
+    background: var(--color-espresso);
+    border-color: var(--color-espresso);
+    color: var(--color-cream);
+  }
+</style>
 
 <script>
   import { initAuditForms } from '../../scripts/audit-form';

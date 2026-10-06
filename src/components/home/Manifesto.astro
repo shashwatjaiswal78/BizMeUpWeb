@@ -21,18 +21,18 @@ const mark =
     <h2
       class="m-0 font-display text-[clamp(48px,8.4vw,132px)] leading-[0.92] font-extrabold tracking-[-0.045em] text-espresso"
     >
-      <svg aria-hidden="true" class="quote-open quote-mark block text-espresso" viewBox="0 0 92 70" fill="currentColor">
+      <svg aria-hidden="true" class="quote-open quote-mark block text-espresso/30" viewBox="0 0 92 70" fill="currentColor">
         <path d={mark} /><path d={mark} transform="translate(52 0)" />
       </svg>
       {before.map((word) => <><span class="reveal-word inline-block">{word}</span>{' '}</>)}<span
         class="reveal-word skip-ink relative z-0 inline-block"
         >visibility<span
           aria-hidden="true"
-          class="absolute right-0 bottom-[-0.03em] left-0 -z-10 h-[0.06em] rounded-[2px] bg-mustard"></span></span
+          class="absolute right-0 bottom-[-0.14em] left-0 -z-10 h-[0.07em] rounded-[2px] bg-mustard"></span></span
       >{' '}<span class="whitespace-nowrap"
         ><span class="reveal-word inline-block">{after}</span><svg
           aria-hidden="true"
-          class="quote-close quote-mark inline-block text-espresso"
+          class="quote-close quote-mark inline-block text-espresso/30"
           viewBox="0 0 92 70"
           fill="currentColor"
           ><g transform="rotate(180 46 35)"><path d={mark} /><path d={mark} transform="translate(52 0)" /></g></svg
