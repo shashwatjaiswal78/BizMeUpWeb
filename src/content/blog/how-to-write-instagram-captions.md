@@ -93,19 +93,19 @@ The lower the effort required to answer, the higher the response rate.
 
 ## Tips 8 to 10: hashtags, workflow and editing
 
-### 8. Use hashtags strategically
+### 8. Make your five hashtags count
 
-Hashtags still matter for discovery in 2026, but spray-and-pray is not a strategy.
+Instagram now limits each post to five hashtags. Spray-and-pray is no longer even an option, so every hashtag has to earn its place.
 
-For accounts under 100K followers, including hashtags in the caption improves reach more than placing them in the first comment. For larger accounts, the first comment is a cleaner approach that keeps the caption readable.
+Hashtags still help Instagram understand what your post is about, but your caption does more of that work than ever. Treat hashtags as labels that sort your post into the right topic, not as a growth hack.
 
-Mix your hashtag strategy across three tiers:
+Split your five across three tiers:
 
-- **Niche hashtags (under 100K posts):** highest chance of being seen and staying visible.
-- **Mid-size hashtags (100K to 500K posts):** good discovery traffic.
-- **Broad hashtags (500K plus):** low visibility odds but still worth one or two per post.
+- **Niche hashtags (under 100K posts), two or three:** your best chance of being seen and staying visible.
+- **Mid-size hashtags (100K to 500K posts), one or two:** good discovery traffic.
+- **Broad hashtags (500K plus), one at most:** low visibility odds, but it tells Instagram the wider topic.
 
-Use 10 to 15 well-chosen hashtags rather than 30 generic ones. Quality of relevance beats volume every time.
+Skip generic tags like #love or #instagood. Five specific, relevant hashtags beat five popular ones every time.
 
 ### 9. Write the caption before you finalise the visual
 
@@ -130,7 +130,7 @@ Before posting, run through this:
 - Is there one clear CTA at the end?
 - Are paragraphs three lines or shorter?
 - Does the tone match the brand voice?
-- Are hashtags relevant and tiered?
+- Are there five hashtags or fewer, all relevant and tiered?
 - Have you read it out loud at least once?
 
 If all seven are yes, post it.
