@@ -6,10 +6,11 @@ import Process from '../components/home/Process.astro';
 import Tape from '../components/ui/Tape.astro';
 import CtaBand from '../components/ui/CtaBand.astro';
 
+// Draft values awaiting client review.
 const values = [
-  { title: '[Value 1]', text: '[One line on what this means for clients]', bg: 'bg-mustard text-espresso', rotate: -1.5, tape: 'rgba(255,255,255,0.6)' },
-  { title: '[Value 2]', text: '[One line on what this means for clients]', bg: 'bg-blue text-white', rotate: 1.5, tape: 'rgba(253,246,236,0.7)' },
-  { title: '[Value 3]', text: '[One line on what this means for clients]', bg: 'bg-white text-espresso', rotate: -1, tape: 'rgba(244,185,66,0.55)' },
+  { title: 'Work that works', text: 'Every website, post and campaign is built to do a job: bring you enquiries, not just compliments.', bg: 'bg-mustard text-espresso', rotate: -1.5, tape: 'rgba(255,255,255,0.6)' },
+  { title: 'Small on purpose', text: 'You work directly with the people doing the work, not an account manager passing messages along.', bg: 'bg-blue text-white', rotate: 1.5, tape: 'rgba(253,246,236,0.7)' },
+  { title: 'Clear, not clever', text: 'Honest pricing, plain updates and no jargon. You always know what we’re doing and why.', bg: 'bg-white text-espresso', rotate: -1, tape: 'rgba(244,185,66,0.55)' },
 ];
 ---
 
@@ -25,14 +26,21 @@ const values = [
         Turning Business Challenges into Success Stories
       </h1>
       <p class="m-0 max-w-[760px] text-[clamp(20px,2vw,28px)] leading-[1.4] text-espresso-soft">
-        You've built something good. Nobody's seeing it. That's the part we fix.
+        You’ve built something good. Nobody’s seeing it. That’s the part we fix.
       </p>
     </div>
   </section>
 
   <FounderNote>
-    <p class="m-0 max-w-[560px] text-[19px] leading-[1.6]">[Founder story, expanded: how BizMeUp started and why.]</p>
-    <p class="m-0 max-w-[560px] text-[19px] leading-[1.6]">[Founder story, expanded: the kind of businesses BizMeUp helps.]</p>
+    <p class="m-0 max-w-[560px] text-[19px] leading-[1.6]">
+      I started BizMeUp after years of watching great products and honest businesses get drowned out, not because they
+      weren’t good enough, but because nobody could find them. The work was always there. The visibility wasn’t.
+    </p>
+    <p class="m-0 max-w-[560px] text-[19px] leading-[1.6]">
+      So we built a studio for exactly those businesses: resorts, showrooms, stores and firms with something real to
+      offer and a story worth telling. We handle the websites, the content and the campaigns, and we stay small so the
+      people you talk to are the people doing the work.
+    </p>
   </FounderNote>
 
   <Process title="How BizMeUp works." />

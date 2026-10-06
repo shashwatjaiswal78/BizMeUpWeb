@@ -1,52 +1,89 @@
 ---
-import { nav, site } from '../../config/site';
+import { site } from '../../config/site';
+import { getServices } from '../../lib/content';
 import Logo from '../ui/Logo.astro';
 import SocialIcon from '../ui/SocialIcon.astro';
 
 const year = new Date().getFullYear();
+const services = await getServices();
 const socials = [
   { name: 'instagram' as const, label: 'Instagram', url: site.instagram.url },
   { name: 'linkedin' as const, label: 'LinkedIn', url: site.linkedin.url },
 ];
+
+const companyLinks = [
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/about' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
+  { label: 'Privacy', href: '/privacy' },
+];
+
+const colTitle = 'm-0 mb-5 text-[13px] font-semibold tracking-[0.12em] text-espresso/60 uppercase';
+const colLink = 'text-[17px] text-espresso no-underline hover:underline';
 ---
 
-<footer class="border-t border-espresso/20 bg-white px-5 pt-16 pb-10 text-espresso md:px-10 md:pt-24 lg:px-16">
+<footer class="border-t border-espresso/20 bg-white px-5 pt-16 pb-28 text-espresso md:px-10 md:pt-24 md:pb-24 lg:px-16">
   <div class="mx-auto flex max-w-[1312px] flex-col gap-14">
-    <div class="flex flex-wrap justify-between gap-10">
-      <nav aria-label="Footer" class="flex flex-wrap gap-7">
-        {
-          nav.map((item) => (
-            <a href={item.href} class="text-[17px] text-espresso no-underline hover:text-espresso hover:underline">
-              {item.label}
-            </a>
-          ))
-        }
-      </nav>
-      <address class="flex flex-col gap-2 text-base text-espresso not-italic">
-        <a href={`mailto:${site.email}`} class="text-espresso no-underline hover:text-espresso hover:underline">{site.email}</a>
-        <a href={site.phone.href} class="text-espresso no-underline hover:text-espresso hover:underline">{site.phone.label}</a>
-        <span>{site.country}</span>
-        <span class="-ml-2.5 flex gap-1">
+    <div class="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-4">
+      <nav aria-label="Services" class="flex flex-col">
+        <h2 class={colTitle}>Services</h2>
+        <ul class="flex list-none flex-col gap-3 p-0">
           {
-            socials.map((s) =>
-              s.url ? (
-                <a
-                  href={s.url}
-                  class="inline-flex h-11 w-11 items-center justify-center text-espresso transition-transform duration-200 hover:-translate-y-0.5 hover:text-espresso motion-reduce:transform-none"
-                  target="_blank"
-                  rel="noopener"
-                  aria-label={`BizMeUp on ${s.label}`}
-                >
-                  <SocialIcon name={s.name} />
+            services.map((s) => (
+              <li>
+                <a href={`/services/${s.id}`} class={colLink}>
+                  {s.data.title}
                 </a>
-              ) : (
-                <span class="inline-flex h-11 w-11 items-center justify-center text-espresso" role="img" aria-label={`${s.label} (link coming soon)`}>
-                  <SocialIcon name={s.name} />
-                </span>
-              ),
-            )
+              </li>
+            ))
           }
-        </span>
+        </ul>
+      </nav>
+
+      <nav aria-label="Company" class="flex flex-col">
+        <h2 class={colTitle}>Company</h2>
+        <ul class="flex list-none flex-col gap-3 p-0">
+          {
+            companyLinks.map((item) => (
+              <li>
+                <a href={item.href} class={colLink}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <address class="col-span-2 flex flex-col not-italic md:col-span-2">
+        <h2 class={colTitle}>Contact</h2>
+        <div class="flex flex-col gap-3">
+          <a href={`mailto:${site.email}`} class={colLink}>{site.email}</a>
+          <a href={site.phone.href} class={colLink}>{site.phone.label}</a>
+          <span class="text-[17px]">{site.location}</span>
+          <span class="-ml-2.5 mt-1 flex gap-1">
+            {
+              socials.map((s) =>
+                s.url ? (
+                  <a
+                    href={s.url}
+                    class="inline-flex h-11 w-11 items-center justify-center text-espresso transition-transform duration-200 hover:-translate-y-0.5 motion-reduce:transform-none"
+                    target="_blank"
+                    rel="noopener"
+                    aria-label={`BizMeUp on ${s.label}`}
+                  >
+                    <SocialIcon name={s.name} />
+                  </a>
+                ) : (
+                  <span class="inline-flex h-11 w-11 items-center justify-center text-espresso" role="img" aria-label={`${s.label} (link coming soon)`}>
+                    <SocialIcon name={s.name} />
+                  </span>
+                ),
+              )
+            }
+          </span>
+        </div>
       </address>
     </div>
 

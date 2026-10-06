@@ -38,7 +38,7 @@ const Heading = headingLevel;
   </p>
   <p class="m-0 text-[17px] leading-normal"><strong>The problem:</strong> {d.problem}</p>
   <ul class="m-0 flex list-none flex-wrap gap-2 p-0" aria-label="Services">
-    {d.services.map((s) => <li class="rounded-full bg-espresso px-3.5 py-[7px] text-sm font-semibold text-cream">{s}</li>)}
+    {(d.servicesDone.length ? d.servicesDone : d.services).map((s) => <li class="rounded-full bg-espresso px-3.5 py-[7px] text-sm font-semibold text-cream">{s}</li>)}
   </ul>
   <a href={`/work/${entry.id}`} class="text-[17px] font-semibold after:absolute after:inset-0 after:content-['']">Open the case file</a>
 </article>

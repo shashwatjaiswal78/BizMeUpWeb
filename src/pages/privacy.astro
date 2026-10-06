@@ -1,0 +1,82 @@
+---
+/**
+ * Privacy policy (audit finding 6). Draft content: review with a legal
+ * advisor and set a real effective date before launch.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/ui/CtaBand.astro';
+import { site } from '../config/site';
+
+const sections = [
+  {
+    heading: 'What we collect',
+    body: [
+      'When you fill in our visibility audit form, we collect the details you give us: your name, your business name, your phone number, a link to your website or Instagram, the services you are interested in and, optionally, your budget range.',
+      'When you browse the site, we and our analytics partners collect standard technical information such as your device, browser, approximate location and the pages you view.',
+    ],
+  },
+  {
+    heading: 'How we use it',
+    body: [
+      'We use the details from the form to reply to you, usually on WhatsApp, and to prepare your free visibility audit. We use the technical information to understand how the site is used and to improve it.',
+      'We do not sell your personal information to anyone.',
+    ],
+  },
+  {
+    heading: 'Who we share it with',
+    body: [
+      'Your form submissions are stored in Google Sheets and sent to us by email through Google. We use Google Analytics and the Meta Pixel to measure site traffic and the performance of our campaigns. When you contact us on WhatsApp, your message is handled by WhatsApp. Each of these providers processes data under its own privacy policy.',
+    ],
+  },
+  {
+    heading: 'How long we keep it',
+    body: [
+      'We keep your enquiry for as long as we need it to respond to you and to maintain our business records. You can ask us to delete it at any time.',
+    ],
+  },
+  {
+    heading: 'Your rights',
+    body: [
+      'Under India’s Digital Personal Data Protection Act, you can ask us what personal data we hold about you, ask us to correct it, and ask us to delete it. To make a request, email us at the address below.',
+    ],
+  },
+  {
+    heading: 'Contact',
+    body: [
+      `For any question about this policy or your data, email ${site.email} or message us on WhatsApp at ${site.phone.label}. We are based in ${site.location}.`,
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Privacy policy | BizMeUp"
+  description="How BizMeUp collects, uses and protects your personal information."
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy' }]}
+>
+  <section class="bg-cream px-5 pt-32 pb-16 md:px-10 lg:px-16 lg:pt-44 lg:pb-20">
+    <div class="mx-auto flex max-w-[820px] flex-col gap-6">
+      <h1 class="m-0 font-display text-[clamp(40px,6vw,88px)] leading-[0.92] font-extrabold tracking-[-0.04em] text-espresso">
+        Privacy policy
+      </h1>
+      <p class="m-0 text-[17px] text-espresso/70">Effective date: [set before launch]. This is a draft pending review.</p>
+    </div>
+  </section>
+
+  <section class="bg-cream px-5 pb-24 md:px-10 lg:px-16 lg:pb-40">
+    <div class="mx-auto flex max-w-[820px] flex-col gap-12">
+      {
+        sections.map((s) => (
+          <div class="flex flex-col gap-4 border-t-2 border-espresso pt-8">
+            <h2 class="m-0 font-display text-[clamp(26px,3vw,40px)] leading-[1.05] font-extrabold tracking-[-0.03em] text-espresso">
+              {s.heading}
+            </h2>
+            {s.body.map((p) => <p class="m-0 text-[18px] leading-[1.6] text-espresso-soft">{p}</p>)}
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

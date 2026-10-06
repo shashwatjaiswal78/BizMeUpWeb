@@ -4,14 +4,18 @@ slug: "elemento"
 industry: "Home Finishing"
 location: "Gorakhpur, Uttar Pradesh"
 services: ["Website", "Lead capture"]
+servicesDone: ["UI/UX Design", "Showroom Website", "Product Catalogue", "Lead Capture"]
 featured: true
 order: 4
 resultHeadline: "The whole showroom, online before the visit."
-problem: "Customers couldn't explore the brands or past work before visiting the showroom."
+problem: "Customers couldn’t explore the brands or past work before visiting the showroom."
+stats:
+  - { label: "Tech stack", value: "HTML, Tailwind CSS" }
+  - { label: "Category", value: "Web design" }
+  - { label: "Delivery", value: "1 week" }
 mockupDesktop: "./hero.webp"
 fullPage: "./full.webp"
 mockupMobile: "./mobile.webp"
-liveUrl: "[Live site URL]"
 testimonial:
   quote: "We needed a website that could handle a large product catalogue and still load fast. BizMeUp delivered exactly that. The site is clean, professional, and our sales inquiries went up noticeably within the first month of going live. They understood our industry right away."
   name: "Nikhil Anand"
@@ -29,8 +33,4 @@ Bring the showroom online. Show the brands and the portfolio up front so visitor
 
 ## The build
 
-A website showcasing Elemento's brands, product collections and portfolio, with a lead capture form and a "Book a Showroom Visit" call to action on every page.
-
-## The results
-
-[Add the results: enquiries or showroom visits since launch.]
+A website showcasing Elemento’s brands, product collections and portfolio, with a lead capture form and a “Book a Showroom Visit” call to action on every page.

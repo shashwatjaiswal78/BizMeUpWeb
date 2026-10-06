@@ -7,7 +7,12 @@ import { getServices, getCaseStudies, caseServiceSlugs } from '../../lib/content
 
 const services = await getServices();
 const cases = await getCaseStudies();
-const filters = [{ id: 'all', label: 'All' }, ...services.map((s) => ({ id: s.id, label: s.data.title }))];
+// Only offer a filter for services that actually have at least one case.
+const activeServiceIds = new Set(cases.flatMap((c) => caseServiceSlugs(c, services)));
+const filters = [
+  { id: 'all', label: 'All' },
+  ...services.filter((s) => activeServiceIds.has(s.id)).map((s) => ({ id: s.id, label: s.data.title })),
+];
 ---
 
 <BaseLayout
@@ -22,7 +27,7 @@ const filters = [{ id: 'all', label: 'All' }, ...services.map((s) => ({ id: s.id
         <h1 class="m-0 font-display text-[clamp(48px,7vw,112px)] leading-[0.9] font-extrabold tracking-[-0.045em] text-espresso">
           The Case Files.
         </h1>
-        <p class="m-0 text-[19px] sm:text-[21px]">Real businesses. Real problems. Lights on.</p>
+        <p class="m-0 text-[19px] sm:text-[21px]">Real businesses. Real problems. Lights&nbsp;on.</p>
       </div>
 
       <div class="work-filters hidden flex-wrap gap-2.5" role="group" aria-label="Filter by service">

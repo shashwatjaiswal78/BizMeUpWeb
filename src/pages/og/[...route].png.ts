@@ -5,7 +5,7 @@ import { getServices, getCaseStudies, getPosts, caseNumber } from '../../lib/con
 export const getStaticPaths = (async () => {
   const [services, cases, posts] = await Promise.all([getServices(), getCaseStudies(), getPosts()]);
   const cards: { route: string; card: OgCard }[] = [
-    { route: 'home', card: { tone: 'cream', headline: "Great businesses don't fail. They go unseen." } },
+    { route: 'home', card: { tone: 'cream', headline: "Great businesses don’t fail. They go unseen." } },
     { route: 'about', card: { tone: 'cream', kicker: 'About BizMeUp', headline: 'Turning Business Challenges into Success Stories' } },
     { route: 'contact', card: { tone: 'orange', kicker: 'Get a free visibility audit', headline: 'Ready to be seen?' } },
     { route: 'work', card: { tone: 'cream', kicker: 'Real businesses. Real problems. Lights on.', headline: 'The Case Files.' } },

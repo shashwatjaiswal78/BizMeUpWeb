@@ -3,7 +3,7 @@
  * Case Files (CLAUDE.md 4.6).
  * Default (mobile, reduced motion, no JS): native horizontal swipe with scroll-snap and dots.
  * Desktop with motion: the section pins and vertical scroll drives the cards sideways.
- * In both modes the active card is fully lit and the others sit at 32% opacity.
+ * In both modes the active card is fully lit and the others sit at 55% opacity.
  */
 import { getCollection } from 'astro:content';
 import CaseCard from '../ui/CaseCard.astro';
@@ -13,7 +13,7 @@ const cases = (await getCollection('case-studies', ({ data }) => data.featured))
 const total = cases.length;
 ---
 
-<section id="work" class="case-files overflow-hidden bg-blue py-16 pl-5 text-cream md:pl-10 lg:py-20 lg:pl-16" data-total={total}>
+<section id="work" class="case-files overflow-hidden bg-blue py-12 pl-5 text-cream md:pl-10 lg:py-[60px] lg:pl-16" data-total={total}>
   <div class="case-pin">
     <div class="case-head mb-12 flex flex-wrap items-end justify-between gap-6 pr-5 md:pr-10 lg:mb-16 lg:pr-16">
       <div class="flex flex-col gap-4">
@@ -22,7 +22,7 @@ const total = cases.length;
         >
           The Case Files.
         </h2>
-        <p class="m-0 text-[19px] text-white sm:text-[21px]">Real businesses. Real problems. Lights on.</p>
+        <p class="m-0 text-[19px] text-white sm:text-[21px]">Real businesses. Real problems. Lights&nbsp;on.</p>
       </div>
       <div class="flex items-center gap-3.5 text-[15px] text-white">
         <span class="case-label" aria-live="polite">Case 1 of {total}</span>
@@ -49,10 +49,10 @@ const total = cases.length;
         ))
       }
     </div>
-  </div>
 
-  <div class="mt-8 lg:mt-6">
-    <Button href="/work" variant="mustard">See all our work</Button>
+    <div class="mt-8 lg:mt-7">
+      <Button href="/work" variant="cream">See all our work</Button>
+    </div>
   </div>
 </section>
 
@@ -142,7 +142,7 @@ const total = cases.length;
     const light = (position: number) => {
       cards.forEach((card, i) => {
         const lit = Math.max(0, 1 - Math.abs(position - i));
-        card.style.opacity = String(0.32 + 0.68 * lit);
+        card.style.opacity = String(0.55 + 0.45 * lit);
       });
       setActive(Math.round(position));
     };
@@ -159,7 +159,7 @@ const total = cases.length;
           best = i;
         }
       });
-      cards.forEach((card, i) => (card.style.opacity = i === best ? '1' : '0.32'));
+      cards.forEach((card, i) => (card.style.opacity = i === best ? '1' : '0.55'));
       setActive(best);
     };
 

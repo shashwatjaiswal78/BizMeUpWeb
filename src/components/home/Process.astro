@@ -16,20 +16,20 @@ interface Props {
   title?: string;
 }
 
-const { title = 'Spot. Plan. Build. Blow up.' } = Astro.props;
+const { title = 'Spot. Plan. Build. Blow up.' } = Astro.props;
 
 const steps = [
   { key: 'spot', title: 'Spot.', text: 'We find what’s keeping you invisible.' },
   { key: 'plan', title: 'Plan.', text: 'A strategy built around your customers.' },
   { key: 'build', title: 'Build.', text: 'Website, content and campaigns, done properly.' },
-  { key: 'blow', title: 'Blow up.', text: 'Launch, measure and scale what works.' },
+  { key: 'blow', title: 'Blow up.', text: 'Launch, measure and scale what works.' },
 ];
 const rows = [36, 54, 72];
 ---
 
 <section class="process bg-mustard px-5 pt-16 pb-12 text-espresso md:px-10 lg:px-16 lg:pt-20 lg:pb-14">
   <div class="mx-auto max-w-[1280px]">
-    <h2 class="m-0 font-display text-[clamp(36px,4.4vw,64px)] leading-[0.95] font-extrabold tracking-[-0.04em]">
+    <h2 class="m-0 text-balance font-display text-[clamp(36px,4.4vw,64px)] leading-[0.95] font-extrabold tracking-[-0.04em]">
       {title}
     </h2>
     <ol class="process-steps mt-10 grid list-none grid-cols-1 gap-x-10 gap-y-10 p-0 lg:mt-12 lg:grid-cols-4">
@@ -159,7 +159,6 @@ const rows = [36, 54, 72];
     height: var(--tile);
     border-radius: 50%;
     background: var(--color-cream);
-    border: 2px solid var(--color-espresso);
     box-shadow: 0 12px 24px rgba(25, 25, 25, 0.14);
   }
   .art {

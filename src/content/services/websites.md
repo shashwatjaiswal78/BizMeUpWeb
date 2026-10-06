@@ -3,6 +3,9 @@ title: "Websites"
 slug: "websites"
 posterHeadline: "Your 24/7 salesperson."
 shortDescription: "Fast, gorgeous websites built to turn visitors into enquiries, from landing pages to full Shopify stores."
+intro:
+  - "Your website shouldn’t just look good. It should explain what you do, build trust and turn visitors into enquiries."
+  - "We design and build fast, conversion-focused websites that make your brand look credible and make it easier for customers to say yes."
 posterColor: "orange"
 startingPrice: "₹15,000"
 priceShort: "₹15K"
@@ -12,15 +15,15 @@ seoDescription: "Fast, gorgeous websites built to turn visitors into enquiries, 
 caseTags: ["Website", "Website redesign", "Shopify build", "Custom Liquid", "Next.js build", "Jobs portal", "Landing page"]
 processTitle: "How a website happens."
 whatYouGet:
-  - { title: "[Deliverable 1]", text: "[One line on what is included]" }
-  - { title: "[Deliverable 2]", text: "[One line on what is included]" }
-  - { title: "[Deliverable 3]", text: "[One line on what is included]" }
-  - { title: "[Deliverable 4]", text: "[One line on what is included]" }
-  - { title: "[Deliverable 5]", text: "[One line on what is included]" }
-  - { title: "[Deliverable 6]", text: "[One line on what is included]" }
+  - { title: "Strategy & Sitemap", text: "We map out your pages, user journeys and conversion points before design begins." }
+  - { title: "UI/UX Design", text: "Clean, distinctive interfaces designed around your brand, audience and business goals." }
+  - { title: "Responsive Development", text: "Fast, responsive websites that work seamlessly across desktop, tablet and mobile." }
+  - { title: "Conversion Optimisation", text: "Strategic CTAs, enquiry forms, social proof and page structures designed to drive action." }
+  - { title: "SEO-Ready Setup", text: "Clean page structures, metadata, performance optimisation and technical foundations built for search." }
+  - { title: "Launch & Handover", text: "Testing, optimisation, deployment and everything you need to confidently take your website live." }
 faqs:
-  - { question: "[Question 1]", answer: "[Answer 1]" }
-  - { question: "[Question 2]", answer: "[Answer 2]" }
-  - { question: "[Question 3]", answer: "[Answer 3]" }
-  - { question: "[Question 4]", answer: "[Answer 4]" }
+  - { question: "How long does a website take to build?", answer: "Most business websites take around 2–4 weeks, depending on the number of pages, content and functionality required." }
+  - { question: "Can you redesign my existing website?", answer: "Yes. We can either improve your existing website or rebuild it from scratch if the current foundation is holding the brand back." }
+  - { question: "Can I update the website myself?", answer: "Yes. Depending on the project, we can build with platforms such as Shopify or CMS solutions that make ongoing content updates simple." }
+  - { question: "Do you provide website maintenance?", answer: "Yes. We can provide ongoing support for updates, improvements, content changes, SEO and new functionality." }
 ---

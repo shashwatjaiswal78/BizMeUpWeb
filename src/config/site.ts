@@ -8,12 +8,12 @@ export const site = {
   // Shown in the footer
   country: 'India',
   email: 'mail.bizmeup@gmail.com',
-  phone: { label: '+91-7309138731', href: 'tel:+917309138731' },
+  phone: { label: '+91 73091 38731', href: 'tel:+917309138731' },
   instagram: { label: 'Instagram', url: 'https://www.instagram.com/bizmeup.in/' },
   linkedin: { label: 'LinkedIn', url: 'https://www.linkedin.com/company/biz-me-up-india/' },
   // Digits only with country code
   whatsappNumber: '917309138731',
-  whatsappMessage: "Hi BizMeUp, I'd like a free visibility audit.",
+  whatsappMessage: "Hi BizMeUp, I’d like a free visibility audit.",
 };
 
 export const nav = [

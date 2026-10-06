@@ -14,7 +14,10 @@ const caseStudies = defineCollection({
       slug: z.string().optional(),
       industry: z.string(),
       location: z.string(),
+      /** Internal tags that map a case to services, for related cases and Work filters */
       services: z.array(z.string()),
+      /** Client-facing list of what was delivered, shown as chips. Falls back to services. */
+      servicesDone: z.array(z.string()).default([]),
       featured: z.boolean().default(false),
       order: z.number(),
       resultHeadline: z.string(),
@@ -42,6 +45,8 @@ const services = defineCollection({
     slug: z.string().optional(),
     posterHeadline: z.string(),
     shortDescription: z.string(),
+    /** Longer service-page intro, one string per paragraph. Falls back to shortDescription. */
+    intro: z.array(z.string()).default([]),
     posterColor: z.enum(['orange', 'mustard', 'blue', 'white', 'espresso']),
     startingPrice: z.string().optional(),
     /** Short price for stickers, e.g. "₹15K" */

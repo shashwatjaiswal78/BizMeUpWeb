@@ -4,14 +4,18 @@ slug: "rudra-imperial-resort"
 industry: "Hospitality"
 location: "Sitapur, Uttar Pradesh"
 services: ["Next.js build", "Lead capture"]
+servicesDone: ["UI/UX Design", "Hotel Website", "Resort Website", "Lead Form"]
 featured: true
 order: 1
 resultHeadline: "Weddings, rooms and enquiries, all in one place."
 problem: "A newly built resort with no website to show off the property or take enquiries."
+stats:
+  - { label: "Tech stack", value: "Next.js" }
+  - { label: "Category", value: "Web design" }
+  - { label: "Delivery", value: "3 weeks" }
 mockupDesktop: "./hero.webp"
 fullPage: "./full.webp"
 mockupMobile: "./mobile.webp"
-liveUrl: "[Live site URL]"
 publishedAt: 2026-10-05
 ---
 
@@ -26,7 +30,3 @@ Let the website do the showing and the first round of selling. Put the property 
 ## The build
 
 A new website built on Next.js, with pages for rooms, the restaurant, venues and events, a gallery, FAQs and a blog. A dedicated wedding section covers venues, packages and pricing in detail. Lead capture is built in: a quick-action bar lets visitors call, WhatsApp, check availability, or book a room, a wedding or a table in one tap.
-
-## The results
-
-[Add the results: enquiries, bookings or traffic since launch.]

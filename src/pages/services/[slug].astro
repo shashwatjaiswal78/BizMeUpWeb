@@ -50,7 +50,17 @@ const sectionTitle = 'm-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95
         >
           {d.posterHeadline}
         </h1>
-        <p class="m-0 max-w-[520px] text-[19px] leading-normal sm:text-[21px]">{d.shortDescription}</p>
+        {
+          d.intro.length > 0 ? (
+            <div class="flex max-w-[520px] flex-col gap-4">
+              {d.intro.map((p) => (
+                <p class="m-0 text-[19px] leading-normal sm:text-[21px]">{p}</p>
+              ))}
+            </div>
+          ) : (
+            <p class="m-0 max-w-[520px] text-[19px] leading-normal sm:text-[21px]">{d.shortDescription}</p>
+          )
+        }
         {
           d.startingPrice && (
             <p class="m-0 text-lg font-semibold text-espresso">Starting at {d.startingPrice}</p>
@@ -107,7 +117,7 @@ const sectionTitle = 'm-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95
             <h2 class="m-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-cream">
               Related case files.
             </h2>
-            <Button href="/work" variant="mustard">See all our work</Button>
+            <Button href="/work" variant="cream">See all our work</Button>
           </div>
           <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
             {related.slice(0, 4).map((entry) => <CaseTile entry={entry} />)}

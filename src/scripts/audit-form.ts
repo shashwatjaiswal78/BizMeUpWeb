@@ -126,7 +126,7 @@ export function initAuditForms() {
       const business = body.get('business');
       if (whatsapp) {
         whatsapp.href = whatsappUrl(
-          `Hi BizMeUp, I'm ${name} from ${business}. I just booked a free visibility audit.`,
+          `Hi BizMeUp, I’m ${name} from ${business}. I just booked a free visibility audit.`,
         );
       }
       form.hidden = true;

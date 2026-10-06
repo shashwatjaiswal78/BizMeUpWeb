@@ -33,10 +33,10 @@ import { auditHref } from '../../config/site';
     </p>
 
     <h1
-      class="hero-title m-0 font-display text-[46px] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso sm:text-[clamp(48px,6.2vw,92px)]"
+      class="hero-title m-0 text-balance font-display text-[42px] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso sm:text-[clamp(48px,6.2vw,92px)]"
     >
       <span class="block">Great businesses don’t fail.</span>
-      <span class="block text-orange">They go unseen.</span>
+      <span class="block text-orange-deep">They go unseen.</span>
     </h1>
 
     <p class="m-0 max-w-[520px] text-[19px] leading-normal text-balance text-espresso sm:text-[21px]">
@@ -101,8 +101,18 @@ import { auditHref } from '../../config/site';
     opacity: 0;
   }
 
+  /* Default (mouse/trackpad): show the cursor prompt. On touch devices, show the drag
+     prompt instead, matching spotlight.ts's own (hover: none) detection. */
   .prompt-touch {
     display: none;
+  }
+  @media (hover: none) {
+    .prompt-pointer {
+      display: none;
+    }
+    .prompt-touch {
+      display: inline;
+    }
   }
 
   /* Desktop: the hero is one screen tall (up to the designed 860px). The copy and the
