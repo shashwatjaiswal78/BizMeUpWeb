@@ -1,5 +1,5 @@
 // Build-time Open Graph images (CLAUDE.md section 11): 1200x630 PNG, cream or orange
-// background, espresso type and the BizMeUp wordmark. Kept well under 300 KB.
+// background, espresso type, the BizMeUp wordmark and the stacked logo on a dark tile. Kept well under 300 KB.
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import satori from 'satori';
@@ -20,6 +20,12 @@ const C = {
 
 // Resolved from the project root: this module is bundled elsewhere at build time.
 const font = (path: string) => readFile(join(process.cwd(), 'node_modules', path));
+
+let logo: string | null = null;
+async function loadLogo() {
+  const png = await readFile(join(process.cwd(), 'src/assets/brand/logo-stacked-white.png'));
+  return `data:image/png;base64,${png.toString('base64')}`;
+}
 
 let fonts: Awaited<ReturnType<typeof loadFonts>> | null = null;
 async function loadFonts() {
@@ -43,6 +49,7 @@ const el = (type: string, style: Record<string, unknown>, children?: unknown): N
 
 export async function renderOg({ tone, kicker, headline }: OgCard) {
   fonts ??= await loadFonts();
+  logo ??= await loadLogo();
   const size = headline.length <= 28 ? 104 : headline.length <= 56 ? 80 : 62;
   const bg = tone === 'orange' ? C.orange : C.cream;
   const dot = tone === 'orange' ? C.cream : C.orange;
@@ -70,9 +77,16 @@ export async function renderOg({ tone, kicker, headline }: OgCard) {
           headline,
         ),
       ]),
-      el('div', { display: 'flex', fontFamily: 'Bricolage', fontSize: 52, letterSpacing: '-1.5px' }, [
-        el('span', {}, 'BizMeUp'),
-        el('span', { color: dot }, '.'),
+      el('div', { display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }, [
+        el('div', { display: 'flex', fontFamily: 'Bricolage', fontSize: 52, letterSpacing: '-1.5px' }, [
+          el('span', {}, 'BizMeUp'),
+          el('span', { color: dot }, '.'),
+        ]),
+        el(
+          'div',
+          { display: 'flex', alignItems: 'center', justifyContent: 'center', width: 128, height: 128, borderRadius: 28, background: C.espresso },
+          [{ type: 'img', props: { src: logo, width: 88, height: 62 } }],
+        ),
       ]),
     ],
   );

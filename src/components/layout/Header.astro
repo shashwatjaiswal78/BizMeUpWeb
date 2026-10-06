@@ -5,7 +5,9 @@
  * Below 1024px: wordmark plus a round menu button that opens a full-screen espresso menu.
  */
 import { nav, auditHref } from '../../config/site';
+import { Image } from 'astro:assets';
 import Logo from '../ui/Logo.astro';
+import logoStacked from '../../assets/brand/logo-stacked-white.png';
 
 interface Props {
   /**
@@ -63,8 +65,8 @@ const { tone = 'light' } = Astro.props;
   aria-label="Menu"
 >
   <div class="flex items-center justify-between gap-4">
-    <a href="/" class="inline-flex text-cream no-underline hover:text-cream" aria-label="BizMeUp home">
-      <Logo class="h-[30px] w-[182px]" decorative />
+    <a href="/" class="inline-flex no-underline" aria-label="BizMeUp home">
+      <Image src={logoStacked} alt="" height={48} densities={[1, 2]} class="h-12 w-auto" />
     </a>
     <button
       type="button"

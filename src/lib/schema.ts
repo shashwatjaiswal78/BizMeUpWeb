@@ -18,7 +18,7 @@ export function organization(base?: URL) {
     telephone: '+917309138731',
     founder: { '@type': 'Person', name: 'Shashwat Jaiswal' },
     sameAs: [site.instagram.url, site.linkedin.url].filter(Boolean),
-    // [Add "logo" once the logo files are ready]
+    logo: abs('/icon-512.png', base),
   };
 }
 
