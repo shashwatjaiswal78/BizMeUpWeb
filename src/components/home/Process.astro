@@ -17,13 +17,13 @@ interface Props {
   steps?: Array<{ title: string; text: string }>;
 }
 
-const { title = 'Spot. Plan. Build. Blow up.', steps: customSteps } = Astro.props;
+const { title = 'Spot. Plan. Build. Grow.', steps: customSteps } = Astro.props;
 
 const defaultSteps = [
   { key: 'spot', title: 'Spot.', text: 'We find what’s keeping you invisible.' },
   { key: 'plan', title: 'Plan.', text: 'A strategy built around your customers.' },
   { key: 'build', title: 'Build.', text: 'Website, content and campaigns, done properly.' },
-  { key: 'blow', title: 'Blow up.', text: 'Launch, measure and scale what works.' },
+  { key: 'blow', title: 'Grow.', text: 'Launch, measure and scale what works.' },
 ];
 
 const steps = customSteps && customSteps.length === 4
