@@ -57,6 +57,8 @@ const services = defineCollection({
     /** Case study service names that belong to this service, for related cases and Work filters */
     caseTags: z.array(z.string()).default([]),
     processTitle: z.string(),
+    /** Service-specific four-step process. Overrides the homepage steps when provided. */
+    processSteps: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
     whatYouGet: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
     faqs: z.array(z.object({ question: z.string(), answer: z.string() })).default([]),
   }),

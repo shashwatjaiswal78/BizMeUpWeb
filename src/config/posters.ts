@@ -25,7 +25,6 @@ export const posterStyles: Record<string, PosterStyle> = {
     class: 'min-[900px]:col-span-2 min-[900px]:row-span-2',
   },
   'social-media': {
-    collapsible: true,
     rotate: 1.5,
     bg: 'mustard',
     text: 'espresso',
@@ -34,7 +33,6 @@ export const posterStyles: Record<string, PosterStyle> = {
     tape: { color: 'rgba(255,255,255,0.6)', rotate: 4, style: 'top:-12px;left:34px' },
   },
   'content-strategy': {
-    collapsible: true,
     rotate: -2,
     bg: 'blue',
     text: 'white',
@@ -43,7 +41,6 @@ export const posterStyles: Record<string, PosterStyle> = {
   },
   'performance-marketing': {
     showLink: true,
-    collapsible: true,
     rotate: 1.5,
     bg: 'white',
     text: 'espresso',
@@ -55,7 +52,6 @@ export const posterStyles: Record<string, PosterStyle> = {
     tape: { color: 'rgba(231,111,81,0.25)', rotate: -2, style: 'top:-12px;left:50%;margin-left:-45px' },
   },
   'seo-and-blogs': {
-    collapsible: true,
     rotate: -1.5,
     bg: 'espresso',
     text: 'cream',
@@ -66,7 +62,6 @@ export const posterStyles: Record<string, PosterStyle> = {
     tape: { color: 'rgba(253,246,236,0.75)', rotate: 3, style: 'top:-12px;left:40px' },
   },
   automations: {
-    collapsible: true,
     rotate: 1.5,
     bg: 'white',
     text: 'espresso',

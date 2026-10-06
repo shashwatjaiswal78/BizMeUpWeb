@@ -14,6 +14,15 @@ seoTitle: "Performance marketing in Mohali and Chandigarh | BizMeUp"
 seoDescription: "Meta and Google ads that are tracked, tested and scaled on what makes money."
 caseTags: ["Meta ads", "Google ads", "Performance marketing"]
 processTitle: "How a campaign happens."
+processSteps:
+  - title: "Audit."
+    text: "We review your existing ads or set up tracking from scratch so every rupee is accountable."
+  - title: "Plan."
+    text: "Campaign structure, audience targeting and creatives briefed and approved before spend begins."
+  - title: "Launch."
+    text: "Campaigns live with daily monitoring in the first week to catch anything before it wastes budget."
+  - title: "Scale."
+    text: "Weekly optimisation: kill what is not working, increase budget on what is."
 whatYouGet:
   - { title: "Campaign Strategy", text: "We define your audience, offer, funnel, budget and campaign objectives before spending begins." }
   - { title: "Meta & Google Ads", text: "Campaigns built and managed across the platforms most relevant to your customers." }

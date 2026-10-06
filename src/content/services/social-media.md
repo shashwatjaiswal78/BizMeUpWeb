@@ -14,6 +14,15 @@ seoTitle: "Social media in Mohali and Chandigarh | BizMeUp"
 seoDescription: "Content, captions and community management that keep your brand showing up every week."
 caseTags: ["Social media"]
 processTitle: "How social media happens."
+processSteps:
+  - title: "Learn."
+    text: "We spend a week understanding your brand voice, competitors and what your audience actually saves and shares."
+  - title: "Plan."
+    text: "A monthly content calendar with post ideas, formats and captions, ready for your review."
+  - title: "Create."
+    text: "Graphics, reels and captions produced and scheduled, with consistent posting every week."
+  - title: "Review."
+    text: "Monthly report on reach, saves and enquiries so we double down on what is working."
 whatYouGet:
   - { title: "Content Strategy", text: "A clear social strategy based on your audience, positioning, competitors and business goals." }
   - { title: "Content Calendar", text: "A structured monthly calendar so you always know what is going out, when and why." }

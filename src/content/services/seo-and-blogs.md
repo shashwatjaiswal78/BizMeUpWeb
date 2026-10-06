@@ -14,6 +14,15 @@ seoTitle: "SEO and blogs in Mohali and Chandigarh | BizMeUp"
 seoDescription: "Search-friendly sites and regular blogs so customers find you when they’re already looking."
 caseTags: ["SEO", "Blogs"]
 processTitle: "How page 1 happens."
+processSteps:
+  - title: "Audit."
+    text: "Technical SEO check, keyword gaps and a full list of what is holding your pages back."
+  - title: "Fix."
+    text: "On-page fixes, meta updates and site speed improvements done in the first two weeks."
+  - title: "Write."
+    text: "Regular blog posts targeting the exact searches your customers are already making."
+  - title: "Track."
+    text: "Monthly rankings report so you can see the climb and know what is driving it."
 whatYouGet:
   - { title: "SEO Audit", text: "We identify technical, content and on-page issues that could be limiting your visibility." }
   - { title: "Keyword Research", text: "We find the search terms your potential customers are actually using and prioritise opportunities worth targeting." }

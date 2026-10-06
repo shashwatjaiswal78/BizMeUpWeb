@@ -14,6 +14,15 @@ seoTitle: "Content strategy in Mohali and Chandigarh | BizMeUp"
 seoDescription: "A clear content plan built around your customers, your goals and what actually gets saved and shared."
 caseTags: ["Content strategy"]
 processTitle: "How a content plan happens."
+processSteps:
+  - title: "Research."
+    text: "We map your customers, their questions and the content your competitors are missing."
+  - title: "Plan."
+    text: "A 90-day content roadmap across formats: posts, reels, blogs and lead magnets."
+  - title: "Build."
+    text: "Templates, brand voice guidelines and the first batch of content ready to publish."
+  - title: "Iterate."
+    text: "Monthly reviews to cut what is not landing and scale what is."
 whatYouGet:
   - { title: "Brand & Audience Research", text: "We understand your audience, positioning, competitors and the conversations happening in your category." }
   - { title: "Content Pillars", text: "Clear themes that give your brand something meaningful to say and make content easier to produce." }

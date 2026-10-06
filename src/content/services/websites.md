@@ -14,6 +14,15 @@ seoTitle: "Websites in Mohali and Chandigarh | BizMeUp"
 seoDescription: "Fast, gorgeous websites built to turn visitors into enquiries, from landing pages to full Shopify stores."
 caseTags: ["Website", "Website redesign", "Shopify build", "Custom Liquid", "Next.js build", "Jobs portal", "Landing page"]
 processTitle: "How a website happens."
+processSteps:
+  - title: "Audit."
+    text: "We review your current online presence and find the gaps before we write a line of code."
+  - title: "Plan."
+    text: "A clear brief covering pages, features, copy direction and timeline, approved before build starts."
+  - title: "Build."
+    text: "Design and development together, with weekly check-ins so there are no surprises at the end."
+  - title: "Launch."
+    text: "Live site, speed checks, and a handover guide so you can update it yourself."
 whatYouGet:
   - { title: "Strategy & Sitemap", text: "We map out your pages, user journeys and conversion points before design begins." }
   - { title: "UI/UX Design", text: "Clean, distinctive interfaces designed around your brand, audience and business goals." }

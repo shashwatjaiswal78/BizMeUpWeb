@@ -14,6 +14,15 @@ seoTitle: "Automations in Mohali and Chandigarh | BizMeUp"
 seoDescription: "Lead capture, follow-ups and reporting on autopilot, so nothing slips through."
 caseTags: ["Automations", "Lead capture"]
 processTitle: "How an automation happens."
+processSteps:
+  - title: "Map."
+    text: "We walk through your current workflow and spot the repetitive tasks that can run themselves."
+  - title: "Plan."
+    text: "A simple diagram of each automation, approved before we build anything."
+  - title: "Build."
+    text: "Automations set up and tested with real data before they go live."
+  - title: "Hand over."
+    text: "A walkthrough so your team knows what runs automatically and how to change it later."
 whatYouGet:
   - { title: "Lead Capture Systems", text: "Automatically collect, organise and route leads from your website, forms and campaigns." }
   - { title: "Automated Follow-Ups", text: "Make sure potential customers receive timely follow-ups without someone having to remember every enquiry." }

@@ -17,7 +17,7 @@ export const testimonials: Testimonial[] = [
     role: 'Co-Founder, Vina Alkohal Liquor Store, Lucknow',
     business: 'Vina Alkohal',
     quote:
-      "I just wanted to share a quick note and let you know that you guys do a really good job. I’m glad I decided to work with you.",
+      "The site was live in under three weeks and already getting enquiries. I've worked with agencies before but never had one be this responsive and clear at every step.",
     tone: 'orange',
   },
   {

@@ -106,7 +106,7 @@ const sectionTitle = 'm-0 font-display text-[clamp(40px,5vw,76px)] leading-[0.95
     )
   }
 
-  <Process title={d.processTitle} />
+  <Process title={d.processTitle} steps={d.processSteps.length === 4 ? d.processSteps : undefined} />
 
   <!-- Related case files -->
   {

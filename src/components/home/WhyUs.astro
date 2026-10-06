@@ -6,40 +6,28 @@
  */
 const reasons = [
   {
-    title: 'Fast Turnaround',
-    text: 'Clear timelines from day one, and we stick to them. No projects that drag on for months.',
+    title: 'Live in 3 weeks',
+    text: 'Most websites go from kick-off to launch in about 21 days. No months-long projects, no loose timelines.',
     tone: 'orange',
     icon: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/>',
   },
   {
-    title: 'Strategic Planning',
-    text: 'Every project starts with your customers and your goals, not a template.',
+    title: 'Fixed-price quotes',
+    text: 'Websites from ₹15K, written quote before we start. No surprise invoices, no hidden extras.',
     tone: 'mustard',
-    icon: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/>',
-  },
-  {
-    title: 'Clear Pricing',
-    text: 'A fixed quote up front. No surprise invoices, no hidden extras.',
-    tone: 'blue',
     icon: '<path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
   },
   {
-    title: 'Proactive Updates',
-    text: 'You hear from us before you have to ask, with regular progress updates on WhatsApp.',
-    tone: 'orange',
-    icon: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
-  },
-  {
-    title: 'Dedicated Partnership',
-    text: 'You work directly with the people doing the work, from kickoff to launch and beyond.',
-    tone: 'mustard',
-    icon: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.6 0 4.5 1.8 4.5 4.5"/>',
-  },
-  {
-    title: 'Active Support',
-    text: 'Something needs fixing or changing after launch? Message us and we are on it.',
+    title: 'Updates on WhatsApp',
+    text: 'Regular progress updates sent before you have to ask, straight to your phone.',
     tone: 'blue',
     icon: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/><circle cx="8.5" cy="12" r="1" fill="currentColor"/><circle cx="12.5" cy="12" r="1" fill="currentColor"/><circle cx="16.5" cy="12" r="1" fill="currentColor"/>',
+  },
+  {
+    title: 'You work with us directly',
+    text: 'No account managers, no hand-offs. The people doing the work are the people you talk to.',
+    tone: 'mustard',
+    icon: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14c2.6 0 4.5 1.8 4.5 4.5"/>',
   },
 ];
 
@@ -61,7 +49,7 @@ const tones: Record<string, string> = {
       </p>
     </div>
 
-    <ul class="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
+    <ul class="m-0 grid list-none grid-cols-1 gap-5 p-0 sm:grid-cols-2 lg:gap-7">
       {
         reasons.map((r) => (
           <li class="why-tile flex flex-col gap-4 rounded-[6px] bg-white p-6 sm:p-7">

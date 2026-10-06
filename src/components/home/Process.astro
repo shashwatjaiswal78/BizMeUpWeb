@@ -14,16 +14,21 @@
  */
 interface Props {
   title?: string;
+  steps?: Array<{ title: string; text: string }>;
 }
 
-const { title = 'Spot. Plan. Build. Blow up.' } = Astro.props;
+const { title = 'Spot. Plan. Build. Blow up.', steps: customSteps } = Astro.props;
 
-const steps = [
+const defaultSteps = [
   { key: 'spot', title: 'Spot.', text: 'We find what’s keeping you invisible.' },
   { key: 'plan', title: 'Plan.', text: 'A strategy built around your customers.' },
   { key: 'build', title: 'Build.', text: 'Website, content and campaigns, done properly.' },
   { key: 'blow', title: 'Blow up.', text: 'Launch, measure and scale what works.' },
 ];
+
+const steps = customSteps && customSteps.length === 4
+  ? customSteps.map((s, i) => ({ key: defaultSteps[i].key, ...s }))
+  : defaultSteps;
 const rows = [36, 54, 72];
 ---
 

@@ -34,7 +34,7 @@ const words = (quote: string) => {
 ---
 
 <div class="tcar" role="region" aria-roledescription="carousel" aria-label="Client testimonials">
-  <div class="tcar-grid grid items-end gap-x-6 gap-y-6 sm:gap-x-8 lg:gap-x-20 lg:gap-y-10">
+  <div class="tcar-grid grid items-start gap-x-6 gap-y-6 sm:gap-x-8 lg:gap-x-20 lg:gap-y-10">
     <!-- Card stack -->
     <div aria-hidden="true" class="tcar-stack relative h-[150px] w-[150px] sm:h-[188px] sm:w-[188px] lg:h-[290px] lg:w-[290px]">
       {
@@ -52,8 +52,19 @@ const words = (quote: string) => {
       }
     </div>
 
-    <!-- Name, role and controls -->
-    <div class="tcar-meta flex min-w-0 flex-col gap-5 lg:max-w-[820px] lg:flex-row lg:items-end lg:justify-between lg:gap-8">
+    <!-- Quotes (height follows the active quote) -->
+    <div class="tcar-quotes relative" aria-live="off">
+      {
+        testimonials.map((t, i) => (
+          <blockquote class="tcar-quote m-0 text-[18px] leading-[1.55] text-espresso-soft sm:text-[19px] lg:text-[clamp(24px,2.1vw,30px)] lg:leading-[1.4] lg:font-medium lg:tracking-[-0.01em] lg:text-espresso" data-slide={i} aria-hidden={i === 0 ? undefined : 'true'}>
+            {words(t.quote).map((w, j) => <><span class="tcar-word" style={`--i:${j}`}>{w}</span>{' '}</>)}
+          </blockquote>
+        ))
+      }
+    </div>
+
+    <!-- Name, role and controls below the quote -->
+    <div class="tcar-meta flex min-w-0 flex-col gap-4 lg:max-w-[820px] lg:flex-row lg:items-center lg:justify-between lg:gap-8">
       <div class="grid">
         {
           testimonials.map((t, i) => (
@@ -73,17 +84,6 @@ const words = (quote: string) => {
         </button>
       </div>
     </div>
-
-    <!-- Quotes -->
-    <div class="tcar-quotes grid" aria-live="off">
-      {
-        testimonials.map((t, i) => (
-          <blockquote class="tcar-quote m-0 text-[18px] leading-[1.55] text-espresso-soft [grid-area:1/1] sm:text-[19px] lg:max-w-[820px] lg:text-[clamp(24px,2.1vw,30px)] lg:leading-[1.4] lg:font-medium lg:tracking-[-0.01em] lg:text-espresso" data-slide={i} aria-hidden={i === 0 ? undefined : 'true'}>
-            {words(t.quote).map((w, j) => <><span class="tcar-word" style={`--i:${j}`}>{w}</span>{' '}</>)}
-          </blockquote>
-        ))
-      }
-    </div>
   </div>
 </div>
 
@@ -91,11 +91,13 @@ const words = (quote: string) => {
   .tcar-grid {
     grid-template-columns: auto minmax(0, 1fr);
     grid-template-areas:
-      'stack meta'
-      'quote quote';
+      'stack stack'
+      'quote quote'
+      'meta  meta';
   }
   .tcar-stack {
     grid-area: stack;
+    justify-self: start;
   }
   .tcar-meta {
     grid-area: meta;
@@ -103,20 +105,29 @@ const words = (quote: string) => {
   .tcar-quotes {
     grid-area: quote;
   }
+  @media (min-width: 640px) {
+    .tcar-grid {
+      grid-template-areas:
+        'stack quote'
+        'meta  meta';
+    }
+  }
   @media (min-width: 1024px) {
     .tcar-grid {
       grid-template-columns: auto minmax(0, 1fr);
       grid-template-areas:
         'stack quote'
         'stack meta';
-      align-items: center;
+      align-items: start;
     }
-    .tcar-quotes {
-      align-self: end;
-    }
-    .tcar-meta {
-      align-self: start;
-    }
+  }
+
+  /* Quote box: height follows the active quote. Inactive quotes sit absolutely
+     so they don't push the box taller than the current quote. */
+  .tcar-quote[aria-hidden='true'] {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
   }
   .tcar-card {
     transform: translate(var(--x), var(--y)) rotate(var(--tilt)) scale(0.94);
@@ -133,8 +144,7 @@ const words = (quote: string) => {
     }
   }
 
-  .tcar-caption[aria-hidden='true'],
-  .tcar-quote[aria-hidden='true'] {
+  .tcar-caption[aria-hidden='true'] {
     visibility: hidden;
     opacity: 0;
   }
