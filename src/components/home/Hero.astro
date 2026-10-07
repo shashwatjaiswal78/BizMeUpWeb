@@ -39,7 +39,7 @@ import { auditHref } from '../../config/site';
       <span class="block text-orange-deep">They go unseen.</span>
     </h1>
 
-    <p class="m-0 max-w-[520px] text-[19px] leading-normal text-balance text-espresso sm:text-[21px]">
+    <p class="hero-sub m-0 max-w-[520px] text-[19px] leading-normal text-balance text-espresso sm:text-[21px]">
       BizMeUp builds websites, content and campaigns that make you impossible to miss.
     </p>
 
@@ -215,6 +215,9 @@ import { auditHref } from '../../config/site';
     }
     .hero :global(.hero-scene) {
       height: 504px;
+      /* The pieces are sized in percentages, so the scene never grows past the width it has at
+         1440px; wider screens scale the whole composition instead (zoom, below). */
+      max-width: 592px;
       /* Room for the logos above the scene. */
       margin-top: 76px;
       zoom: var(--scene-zoom);
@@ -247,6 +250,58 @@ import { auditHref } from '../../config/site';
   @media (min-width: 1024px) and (max-height: 610px) {
     .hero {
       --scene-zoom: 0.74;
+    }
+  }
+
+  /* Wide screens (1600px+): the hero sits in a centred container instead of running edge to edge,
+     the copy grows (headline up to 124px, still capped by screen height), and the scene keeps its
+     1440px proportions, scaled up as a whole when the screen is tall enough to fit it. */
+  @media (min-width: 1600px) {
+    .hero {
+      --hero-max: 1720px;
+      justify-content: space-between;
+      padding-inline: max(64px, calc((100% - var(--hero-max)) / 2));
+    }
+    .hero-copy {
+      max-width: 920px;
+    }
+    .hero-title {
+      font-size: clamp(48px, min(5.6vw, 11.5svh), 124px);
+    }
+    .hero-prompt {
+      font-size: 18px;
+    }
+    .hero-sub {
+      max-width: 600px;
+      font-size: 24px;
+    }
+    .hero [data-hero-cta] {
+      zoom: 1.12;
+    }
+    .hero :global(.hero-scene) {
+      flex: 0 0 592px;
+      /* The WhatsApp tile overhangs the scene's right edge; this evens the side margins. */
+      margin-right: 28px;
+    }
+  }
+  @media (min-width: 1600px) and (min-height: 900px) {
+    .hero {
+      --scene-zoom: 1.1;
+    }
+  }
+  @media (min-width: 1900px) and (min-height: 980px) {
+    .hero {
+      --hero-max: 1760px;
+      --scene-zoom: 1.2;
+    }
+  }
+  @media (min-width: 2300px) and (min-height: 1150px) {
+    .hero {
+      --hero-max: 2000px;
+      --scene-zoom: 1.4;
+    }
+    .hero [data-hero-cta] {
+      zoom: 1.25;
     }
   }
 
