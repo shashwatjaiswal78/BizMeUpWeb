@@ -4,7 +4,7 @@
 import type { PosterProps } from '../components/ui/Poster.astro';
 import robotThinking from '../assets/illustrations/robot-thinking.webp';
 import phoneScroll from '../assets/illustrations/phone-scroll.webp';
-import moneyStack from '../assets/illustrations/money-stack.webp';
+import rupeeCoin from '../assets/illustrations/rupee-coin.webp';
 
 export type PosterStyle = Omit<PosterProps, 'id' | 'label' | 'headline' | 'description' | 'href' | 'sticker'>;
 
@@ -47,8 +47,8 @@ export const posterStyles: Record<string, PosterStyle> = {
     linkColor: 'orange-deep',
     peel: true,
     minHeight: 320,
-    // Sits just left of the permanent peeled corner.
-    illustration: { src: moneyStack, height: '32%', textGap: '50%', right: '58px', bottom: '10px' },
+    // A ₹1 coin (the headline's "Put ₹1 in") just left of the permanent peeled corner.
+    illustration: { src: rupeeCoin, height: '42%', textGap: '50%', right: '72px', bottom: '16px', dropShadow: true },
     tape: { color: 'rgba(231,111,81,0.25)', rotate: -2, style: 'top:-12px;left:50%;margin-left:-45px' },
   },
   'seo-and-blogs': {

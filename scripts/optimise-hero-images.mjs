@@ -52,12 +52,13 @@ for (const p of products) {
 const illustrations = [
   { file: 'robot-thinking.png', out: 'src/assets/illustrations/robot-thinking.webp' },
   { file: 'phone-scroll.webp', out: 'src/assets/illustrations/phone-scroll.webp', width: 640 },
-  { file: 'money-stack.webp', out: 'src/assets/illustrations/money-stack.webp', width: 720 },
+  { file: 'rupee-coin.png', out: 'src/assets/illustrations/rupee-coin.webp', width: 480, trim: true },
   { file: 'lead-form.png', out: 'src/assets/illustrations/lead-form.webp', width: 720 },
 ];
 await mkdir('src/assets/illustrations', { recursive: true });
 for (const ill of illustrations) {
   let img = sharp(join(SRC, 'Illustrations', ill.file));
+  if (ill.trim) img = img.trim();
   if (ill.width) img = img.resize({ width: ill.width, withoutEnlargement: true });
   await img.webp({ quality: 86, alphaQuality: 100 }).toFile(ill.out);
   console.log(ill.out, await kb(ill.out), 'KB');

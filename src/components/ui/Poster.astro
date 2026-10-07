@@ -56,6 +56,8 @@ export interface PosterProps {
     headlineGap?: string;
     right?: string;
     bottom?: string;
+    /** Soft shadow under an image that has none of its own (e.g. the rupee coin), so it sits on the paper */
+    dropShadow?: boolean;
   };
   class?: string;
 }
@@ -235,7 +237,7 @@ const stretch = 'poster-stretch';
           sizes="160px"
           formats={['avif']}
           fallbackFormat="webp"
-          class="block h-full w-auto max-w-none"
+          class:list={['block h-full w-auto max-w-none', illustration.dropShadow && 'drop-shadow-[0_10px_14px_rgba(25,25,25,0.22)]']}
         />
       </div>
     )
