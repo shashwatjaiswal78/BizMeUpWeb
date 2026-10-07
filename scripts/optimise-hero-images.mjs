@@ -1,5 +1,5 @@
 // Small images for the decorative hero scene and poster illustrations: eight social posts for the phone grid and
-// three product photos (cropped from the Kutsu best sellers capture) for the website mockup.
+// three product photos (a stone bracelet and two apparel shots) for the website mockup.
 // Originals live in "Websites Case Study/" (not deployed). Run: node scripts/optimise-hero-images.mjs
 
 import sharp from 'sharp';
@@ -21,12 +21,13 @@ const posts = [
   'ahllya-what-is-numerology.png',
 ];
 
-// Product tiles in the Kutsu full-page capture: { name, left, top } with a square-ish crop.
-const KUTSU = join(SRC, 'Kutsu Full Page.png');
+// Product tiles for the website mockup, cropped to the tiles' 3:2 shape: a natural stone bracelet
+// (from the Meraaksha amethyst post, below its text) and two apparel shots from Unsplash (free
+// Unsplash Licence: fxBkM2xXoRY by TuanAnh Blue, S4f4apZd-hA by tian dayong).
 const products = [
-  { name: 'product-brown-slipper', left: 185, top: 2161 },
-  { name: 'product-pink-heels', left: 1294, top: 2161 },
-  { name: 'product-cross-sandal', left: 1849, top: 3013 },
+  { name: 'product-amethyst-bracelet', file: 'amethyst-bracelet-post.png', crop: { left: 180, top: 540, width: 720, height: 480 } },
+  { name: 'product-folded-tees', file: 'apparel-folded-tees.jpg', crop: { left: 0, top: 0, width: 1200, height: 800 } },
+  { name: 'product-linen-shirt', file: 'apparel-linen-shirt.jpg', crop: { left: 0, top: 380, width: 1200, height: 800 } },
 ];
 
 const kb = async (p) => Math.round((await stat(p)).size / 1024);
@@ -39,10 +40,10 @@ for (const file of posts) {
 
 for (const p of products) {
   const out = join(OUT, `${p.name}.webp`);
-  await sharp(KUTSU, { limitInputPixels: false })
-    .extract({ left: p.left, top: p.top, width: 526, height: 660 })
-    .resize({ width: 480 })
-    .webp({ quality: 80 })
+  await sharp(join(SRC, 'Hero mockup', p.file))
+    .extract(p.crop)
+    .resize({ width: 480, height: 320, fit: 'cover' })
+    .webp({ quality: 82 })
     .toFile(out);
   console.log(out, await kb(out), 'KB');
 }
