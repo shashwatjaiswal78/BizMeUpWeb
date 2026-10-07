@@ -3,6 +3,8 @@
  * Decorative hero scene: website mockup with real product photos, phone with an
  * Instagram-style grid mixing BizMeUp's social posts and brand colours, a search
  * result card and a "New enquiry" card. Images come from scripts/optimise-hero-images.mjs.
+ * One fixed 504px-tall design at every width: below 1024px Hero.astro scales the whole
+ * scene down (zoom) instead of rearranging it, so phones get the same composition.
  */
 import { Picture } from 'astro:assets';
 import brownSlipper from '../../assets/hero/product-brown-slipper.webp';
@@ -33,10 +35,10 @@ const grid = [
   One light source: every shadow falls straight down and grows with the object's height in the stack
   (--elev-1 cards, --elev-2 browser, --elev-3 phone). Tilts alternate: browser -3, phone 4, cards -3 and 2.
 -->
-<div aria-hidden="true" style="--elev-1:0 14px 28px rgba(25,25,25,0.18);--elev-2:0 22px 44px rgba(25,25,25,0.22);--elev-3:0 32px 60px rgba(25,25,25,0.3)" class="hero-scene relative z-[1] h-[480px] min-w-0 flex-[1_1_480px] sm:h-[504px] sm:min-w-[300px]">
+<div aria-hidden="true" style="--elev-1:0 14px 28px rgba(25,25,25,0.18);--elev-2:0 22px 44px rgba(25,25,25,0.22);--elev-3:0 32px 60px rgba(25,25,25,0.3)" class="hero-scene relative z-[1] h-[504px] min-w-[300px] flex-[1_1_480px]">
   <!-- Website mockup -->
   <div
-    class="absolute top-10 left-0 h-[260px] w-[86%] overflow-hidden rounded-[14px] bg-white sm:h-[310px] sm:w-[76%]"
+    class="absolute top-10 left-0 h-[310px] w-[76%] overflow-hidden rounded-[14px] bg-white"
     style="box-shadow:var(--elev-2);transform:rotate(-3deg)"
   >
     <div class="flex h-[30px] items-center gap-1.5 bg-espresso-soft px-3">
@@ -45,28 +47,28 @@ const grid = [
       <span class="h-[9px] w-[9px] rounded-full bg-cream"></span>
     </div>
     <!-- Right padding keeps the nav and products clear of the phone, which overlaps this card. -->
-    <div class="flex flex-col gap-3.5 py-[22px] pr-[104px] pl-6 sm:pr-[84px]">
+    <div class="flex flex-col gap-3.5 py-[22px] pr-[84px] pl-6">
       <div class="flex justify-between gap-3 text-[13px] text-espresso-soft">
-        <span class="font-bold">yourbrand</span><span class="hidden whitespace-nowrap sm:inline">Shop / Story / Contact</span>
+        <span class="font-bold">yourbrand</span><span class="whitespace-nowrap">Shop / Story / Contact</span>
       </div>
-      <div class="max-w-[85%] font-display text-[26px] leading-none font-extrabold tracking-[-0.03em] text-espresso sm:text-[34px]">
+      <div class="max-w-[85%] font-display text-[34px] leading-none font-extrabold tracking-[-0.03em] text-espresso">
         Made to be noticed.
       </div>
       <div>
         <span class="inline-block rounded-full bg-orange px-3.5 py-2 text-[13px] font-semibold text-espresso">Shop now</span>
       </div>
-      <div class="grid grid-cols-2 gap-2.5 max-sm:mr-5 sm:grid-cols-3">
+      <div class="grid grid-cols-3 gap-2.5">
         {
-          products.map((src, i) => (
+          products.map((src) => (
             <Picture
               src={src}
               alt=""
               widths={[120, 240]}
-              sizes="(min-width: 640px) 110px, 80px"
+              sizes="110px"
               formats={['avif']}
               fallbackFormat="webp"
               loading="eager"
-              class:list={['block h-[52px] w-full rounded-[8px] object-cover sm:h-[72px]', i === 2 && 'max-sm:hidden']}
+              class="block h-[72px] w-full rounded-[8px] object-cover"
             />
           ))
         }
@@ -76,7 +78,7 @@ const grid = [
 
   <!-- Phone -->
   <div
-    class="absolute top-0 right-0 h-[300px] w-[146px] overflow-hidden rounded-[28px] border-[6px] border-espresso-soft bg-espresso sm:h-[390px] sm:w-[190px] sm:rounded-[34px] sm:border-8"
+    class="absolute top-0 right-0 h-[390px] w-[190px] overflow-hidden rounded-[34px] border-8 border-espresso-soft bg-espresso"
     style="transform:rotate(4deg);box-shadow:var(--elev-3)"
   >
     <div class="flex items-center gap-2 px-3 pt-4 pb-2.5 text-[13px] text-cream">
@@ -86,17 +88,17 @@ const grid = [
       {
         grid.map((tile) =>
           typeof tile === 'string' ? (
-            <div class="h-[42px] sm:h-14" style={`background:var(--color-${tile})`} />
+            <div class="h-14" style={`background:var(--color-${tile})`} />
           ) : (
             <Picture
               src={tile}
               alt=""
               widths={[90, 180]}
-              sizes="(min-width: 640px) 58px, 45px"
+              sizes="58px"
               formats={['avif']}
               fallbackFormat="webp"
               loading="eager"
-              class="block h-[42px] w-full object-cover sm:h-14"
+              class="block h-14 w-full object-cover"
             />
           ),
         )
@@ -104,22 +106,21 @@ const grid = [
     </div>
   </div>
 
-  <!-- Search result: from 640px up the scene is 504px tall, which tucks this card just under the mockup's
-       bottom edge so the cards read as one cluster (phones keep the original 480px layout). -->
+  <!-- Search result: tucked just under the mockup's bottom edge so the cards read as one cluster. -->
   <div
-    class="absolute bottom-10 left-[2%] w-[84%] rounded-[14px] bg-white px-[18px] py-4 text-espresso-soft sm:left-[6%] sm:w-[62%]"
+    class="absolute bottom-10 left-[6%] w-[62%] rounded-[14px] bg-white px-[18px] py-4 text-espresso-soft"
     style="box-shadow:var(--elev-1);transform:rotate(2deg)"
   >
     <div class="rounded-full border border-cream-deep px-3.5 py-[9px] text-sm text-muted">best jeweller near me</div>
     <div class="mt-3 flex items-center gap-2.5">
       <span class="shrink-0 rounded-[6px] bg-mustard px-2 py-1 text-xs font-bold whitespace-nowrap text-espresso">Top result</span>
-      <span class="text-[15px] font-semibold whitespace-nowrap sm:text-base">Your business, on page 1</span>
+      <span class="text-base font-semibold whitespace-nowrap">Your business, on page 1</span>
     </div>
   </div>
 
   <!-- New enquiry -->
   <div
-    class="absolute right-[4%] bottom-[150px] w-[200px] sm:bottom-[94px] rounded-[14px] bg-mustard px-3.5 py-3 text-espresso sm:w-[230px]"
+    class="absolute right-[4%] bottom-[94px] w-[230px] rounded-[14px] bg-mustard px-3.5 py-3 text-espresso"
     style="transform:rotate(-3deg);box-shadow:var(--elev-1)"
   >
     <div class="text-sm font-bold">New enquiry</div>

@@ -20,13 +20,11 @@ const instagram = inline(instagramRaw, 'ig');
 const whatsapp = inline(whatsappRaw, 'wa');
 const youtube = inline(youtubeRaw, 'yt');
 
-// Positions are percentages of the scene (leftSm overrides on phones so tiles stay on screen);
-// depth sets how far each drifts with the pointer.
+// Positions are percentages of the scene; depth sets how far each drifts with the pointer.
 const logos: {
   svg: string;
   top: string;
   left: string;
-  leftSm?: string;
   size: number;
   rotate: number;
   depth: number;
@@ -35,17 +33,17 @@ const logos: {
   badge: 'likes' | 'count' | null;
 }[] = [
   // Three tiles in a triangle around the composition (top left, top right, right middle), popping in in that order.
-  { svg: youtube, top: '-2%', left: '-3%', leftSm: '1%', size: 76, rotate: -9, depth: 0.6, float: 6.2, delay: 0, badge: null },
+  { svg: youtube, top: '-2%', left: '-3%', size: 76, rotate: -9, depth: 0.6, float: 6.2, delay: 0, badge: null },
   { svg: instagram, top: '-3%', left: '54%', size: 92, rotate: 8, depth: 1, float: 5.4, delay: 0.1, badge: 'likes' },
-  { svg: whatsapp, top: '42%', left: '91%', leftSm: '80%', size: 84, rotate: -8, depth: 0.8, float: 6.6, delay: 0.2, badge: 'count' },
+  { svg: whatsapp, top: '42%', left: '91%', size: 84, rotate: -8, depth: 0.8, float: 6.6, delay: 0.2, badge: 'count' },
 ];
 ---
 
 {
   logos.map((l) => (
     <div
-      class="float-logo pointer-events-none absolute z-[4] left-(--left-sm) sm:left-(--left)"
-      style={`top:${l.top};--left:${l.left};--left-sm:${l.leftSm ?? l.left};--size:${l.size}px;--r:${l.rotate}deg;--depth:${l.depth};--float:${l.float}s;--delay:${l.delay}s`}
+      class="float-logo pointer-events-none absolute z-[4] left-(--left)"
+      style={`top:${l.top};--left:${l.left};--size:${l.size}px;--r:${l.rotate}deg;--depth:${l.depth};--float:${l.float}s;--delay:${l.delay}s`}
     >
       <div class="float-logo-pop">
         <div class="float-logo-bob relative">
@@ -82,15 +80,9 @@ const logos: {
   }
   .float-logo-img {
     max-width: none;
-    width: calc(var(--size) * 0.78);
-    height: calc(var(--size) * 0.78);
+    width: var(--size);
+    height: var(--size);
     filter: drop-shadow(0 12px 18px rgba(25, 25, 25, 0.28));
-  }
-  @media (min-width: 640px) {
-    .float-logo-img {
-      width: var(--size);
-      height: var(--size);
-    }
   }
   .float-logo-bob {
     transform: rotate(var(--r));

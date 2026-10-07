@@ -33,7 +33,7 @@ import { auditHref } from '../../config/site';
     </p>
 
     <h1
-      class="hero-title m-0 text-balance font-display text-[42px] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso sm:text-[clamp(48px,6.2vw,92px)]"
+      class="hero-title m-0 text-balance font-display text-[clamp(34px,calc((100vw_-_40px)/7.9),42px)] leading-[0.95] font-extrabold tracking-[-0.035em] text-espresso sm:text-[clamp(48px,6.2vw,92px)]"
     >
       <span class="block">Great businesses don’t fail.</span>
       <span class="block text-orange-deep">They go unseen.</span>
@@ -43,12 +43,12 @@ import { auditHref } from '../../config/site';
       BizMeUp builds websites, content and campaigns that make you impossible to miss.
     </p>
 
-    <!-- Desktop: both buttons and the sticker in one row.
-         Mobile: main button full width, then "See our work" with the sticker beside it. -->
-    <div class="flex flex-wrap items-center gap-3.5">
-      <Button href={auditHref} class="w-full sm:w-auto">Book my audit</Button>
-      <Button href="/#work" variant="outline" class="min-w-0 flex-1 sm:flex-none">See our work</Button>
-      <Sticker size={100} mobileSize={92} rotate={10} class="hero-sticker sm:ml-6">Websites from ₹6,999</Sticker>
+    <!-- Desktop: both buttons and the sticker in one row. Phones: two equal halves side by side
+         (stacked below 360px, where both labels don't fit). The sticker only shows from 1024px. -->
+    <div data-hero-cta class="grid grid-cols-2 gap-3 max-[359px]:grid-cols-1 sm:flex sm:flex-wrap sm:items-center sm:gap-3.5">
+      <Button href={auditHref} class="whitespace-nowrap max-sm:px-4">Book my audit</Button>
+      <Button href="/#work" variant="outline" class="whitespace-nowrap max-sm:px-4">See our work</Button>
+      <Sticker size={100} mobileSize={92} rotate={10} class="hero-sticker sm:ml-6 max-lg:hidden">Websites from ₹6,999</Sticker>
     </div>
   </div>
 
@@ -112,6 +112,85 @@ import { auditHref } from '../../config/site';
     }
     .prompt-touch {
       display: inline;
+    }
+  }
+
+  /* Phones and tablets: the scene is the approved desktop composition, kept intact and scaled down
+     (zoom) as a stage at the top of the hero, and the headline follows straight under it. The hint to drag sits
+     over the stage while the lights are off. The hero hugs its content, so the Stat bar follows
+     directly. */
+  @media (max-width: 1023px) {
+    .hero {
+      --scene-zoom: 0.66;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: 0;
+      padding-top: 66px;
+      padding-bottom: 40px;
+    }
+    .hero :global(.hero-scene) {
+      order: -1;
+      flex: none;
+      align-self: center;
+      width: 460px;
+      min-width: 0;
+      /* 36px clears the logos that overhang the scene's top; the scene's own empty 40px base is
+         the gap to the headline. */
+      margin: 36px 0 0;
+      zoom: var(--scene-zoom);
+    }
+    .hero-copy {
+      position: static;
+      flex: none;
+      gap: 16px;
+    }
+    .hero-copy > :not(.hero-prompt) {
+      position: relative;
+      z-index: 3;
+    }
+    /* Over the stage, centred, while the lights are off. */
+    .hero-prompt {
+      position: absolute;
+      top: calc(66px + 236px * var(--scene-zoom));
+      left: 50%;
+      z-index: 3;
+      transform: translateX(-50%);
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--color-white);
+      box-shadow: var(--shadow-poster);
+      font-size: 15px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+  }
+  @media (min-width: 390px) and (max-width: 1023px) {
+    .hero {
+      --scene-zoom: 0.72;
+    }
+  }
+  @media (min-width: 430px) and (max-width: 1023px) {
+    .hero {
+      --scene-zoom: 0.78;
+    }
+  }
+  @media (min-width: 640px) and (max-width: 1023px) {
+    .hero {
+      --scene-zoom: 0.9;
+      padding-top: 80px;
+      padding-bottom: 64px;
+    }
+    /* On the wider canvas the stage lines up with the copy's left edge (plus the YouTube tile's overhang). */
+    .hero :global(.hero-scene) {
+      align-self: flex-start;
+      margin-left: 16px;
+    }
+  }
+  /* Short phones (e.g. 375x667): a smaller stage keeps both buttons on the first screen. */
+  @media (max-width: 639px) and (max-height: 700px) {
+    .hero {
+      --scene-zoom: 0.56;
     }
   }
 
