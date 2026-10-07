@@ -35,8 +35,6 @@ export interface PosterProps {
   linkColor?: string;
   tape: { color: string; style: string; rotate: number; width?: number; height?: number };
   sticker?: string;
-  /** Permanently peeled corner (Performance marketing) */
-  peel?: boolean;
   minHeight: number;
   shadow?: 'lg' | 'md' | 'dark';
   /** Decorative copy (service page hero): no links, no tap-to-expand, hidden from screen readers */
@@ -46,7 +44,7 @@ export interface PosterProps {
   /**
    * Transparent illustration standing in the poster's bottom-right negative space.
    * `height` is a share of the poster's height; `textGap` keeps the description clear of it;
-   * `right`/`bottom` offset it (e.g. to sit beside a peeled corner or above a link).
+   * `right`/`bottom` offset it (e.g. to clear the corner that peels on hover).
    */
   illustration?: {
     src: ImageMetadata;
@@ -58,6 +56,8 @@ export interface PosterProps {
     bottom?: string;
     /** Soft shadow under an image that has none of its own (e.g. the rupee coin), so it sits on the paper */
     dropShadow?: boolean;
+    /** The art is cropped at the bottom (e.g. a hand holding a phone), so it stays flush with the edge on phones */
+    bleed?: boolean;
   };
   class?: string;
 }
@@ -83,7 +83,6 @@ const {
   linkColor,
   tape,
   sticker,
-  peel = false,
   minHeight,
   shadow = 'md',
   static: isStatic = false,
@@ -117,7 +116,6 @@ const stretch = 'poster-stretch';
   class:list={[
     'poster relative flex flex-col justify-between rounded-[6px]',
     large ? 'gap-8 p-7 md:p-12' : 'gap-[22px] p-[34px]',
-    peel && 'overflow-hidden',
     className,
   ]}
   style={style}
@@ -229,7 +227,7 @@ const stretch = 'poster-stretch';
 
   {
     illustration && (
-      <div aria-hidden="true" class="poster-ill pointer-events-none absolute z-[1]">
+      <div aria-hidden="true" class="poster-ill pointer-events-none absolute z-[1]" data-bleed={illustration.bleed ? 'true' : undefined}>
         <Picture
           src={illustration.src}
           alt=""
@@ -245,7 +243,7 @@ const stretch = 'poster-stretch';
 
   <div
     aria-hidden="true"
-    class:list={['poster-peel absolute right-0 bottom-0', peel ? 'poster-peel-static' : '', large ? 'h-20 w-20' : 'h-16 w-16']}
+    class:list={['poster-peel absolute right-0 bottom-0', large ? 'h-20 w-20' : 'h-16 w-16']}
   >
   </div>
 </article>
@@ -348,6 +346,8 @@ const stretch = 'poster-stretch';
   .poster[data-illustrated='true']:not([data-compact='true']) .poster-ill {
     height: 150px;
     bottom: 0;
+    /* Clear the 64px corner that peels on hover. */
+    right: max(var(--ill-right), 72px);
   }
   .poster[data-illustrated='true']:not([data-compact='true']) .poster-body p,
   .poster[data-illustrated='true']:not([data-compact='true']) .poster-link {
@@ -360,18 +360,16 @@ const stretch = 'poster-stretch';
     .poster[data-illustrated='true'] .poster-ill {
       height: 132px;
       bottom: 0;
+      /* Clear the 64px corner that peels on hover. */
+      right: max(var(--ill-right), 72px);
     }
     .poster[data-illustrated='true'] .poster-body p,
     .poster[data-illustrated='true'] .poster-link {
       padding-right: 0;
     }
   }
-  /* An illustrated poster's hover moment is the illustration itself, so it skips the hover
-     peel. A permanent peel (Performance marketing) stays; its illustration sits beside it. */
-  .poster[data-illustrated='true'] .poster-peel:not(.poster-peel-static) {
-    display: none;
-  }
-  /* On lift, the robot leans in a little, as if to take a closer look. */
+  /* On lift, every poster peels its corner (below); an illustration also leans in a little, as if
+     to take a closer look. Illustrations sit left of the corner so the peel never covers them. */
   @media (hover: hover) and (min-width: 900px) {
     .poster:hover .poster-ill {
       transform: translateY(-4px) rotate(-4deg);
@@ -381,7 +379,7 @@ const stretch = 'poster-stretch';
     transform: translateY(-4px) rotate(-4deg);
   }
 
-  /* Peeled corner: hidden until lift, except on the Performance poster where it is always peeled. */
+  /* Peeled corner: hidden until lift, the same on every poster. */
   .poster-peel {
     background: linear-gradient(
       135deg,
@@ -397,8 +395,22 @@ const stretch = 'poster-stretch';
     pointer-events: none;
     z-index: 3;
   }
-  .poster-peel-static {
-    transform: scale(1);
+  /* Desktop: keep the corner that peels on hover clear of text. The large poster lifts its bottom row
+     above the peel (it has height to spare); the others keep their last words out of the corner.
+     Illustrated posters already leave that corner to the illustration. Sizes: peel minus padding, plus 8px. */
+  @media (min-width: 900px) {
+    .poster.poster[data-large='true'] {
+      padding-bottom: 88px; /* 80px peel */
+    }
+    .poster.poster[data-compact='true'][data-large='true'] {
+      padding-bottom: 72px; /* 64px peel */
+    }
+    .poster:not([data-illustrated='true']):not([data-large='true']) .poster-body {
+      padding-right: 38px; /* 64px peel, 34px padding */
+    }
+    .poster[data-compact='true']:not([data-illustrated='true']):not([data-large='true']) .poster-body {
+      padding-right: 30px; /* 48px peel, 26px padding */
+    }
   }
 
   /* Lift and peel: hover on desktop, focus anywhere */
@@ -409,9 +421,6 @@ const stretch = 'poster-stretch';
     .poster:hover .poster-peel {
       transform: scale(1);
     }
-    .poster:hover .poster-peel-static {
-      transform: scale(1.4);
-    }
   }
   .poster:focus-within {
     transform: rotate(var(--r)) translate3d(0, -10px, 0);
@@ -419,8 +428,29 @@ const stretch = 'poster-stretch';
   .poster:focus-within .poster-peel {
     transform: scale(1);
   }
-  .poster:focus-within .poster-peel-static {
-    transform: scale(1.4);
+
+  /* Phones and tablets (no hover): no corner peel on any poster, so the illustration can sit right in the
+     bottom-right corner: 12px from the right edge, 10px above the bottom (flush when the art is cropped
+     at the bottom, like the hand holding a phone). */
+  @media (max-width: 899px) {
+    .poster-peel {
+      display: none;
+    }
+    /* [data-poster] lifts these above the full-size (service page) strip rules. */
+    .poster.poster[data-illustrated='true'][data-poster] {
+      padding-bottom: calc(34px + 112px);
+    }
+    /* Full-size posters (service pages) keep their 150px illustration. */
+    .poster.poster[data-illustrated='true']:not([data-compact='true'])[data-poster] {
+      padding-bottom: calc(34px + 132px);
+    }
+    .poster.poster[data-illustrated='true'] .poster-ill {
+      right: 12px;
+      bottom: 10px;
+    }
+    .poster.poster[data-illustrated='true'] .poster-ill[data-bleed='true'] {
+      bottom: 0;
+    }
   }
 
   /* Mobile: collapsed posters hide their description until tapped (only once JS is running). */

@@ -29,7 +29,7 @@ export const posterStyles: Record<string, PosterStyle> = {
     bg: 'mustard',
     text: 'espresso',
     minHeight: 300,
-    illustration: { src: phoneScroll, height: '56%', textGap: '30%', right: '10px' },
+    illustration: { src: phoneScroll, height: '42%', textGap: '41%', right: '56px', bleed: true },
     tape: { color: 'rgba(255,255,255,0.6)', rotate: 4, style: 'top:-12px;left:34px' },
   },
   'content-strategy': {
@@ -45,10 +45,9 @@ export const posterStyles: Record<string, PosterStyle> = {
     bg: 'white',
     text: 'espresso',
     linkColor: 'orange-deep',
-    peel: true,
     minHeight: 320,
-    // A ₹1 coin (the headline's "Put ₹1 in") just left of the permanent peeled corner.
-    illustration: { src: rupeeCoin, height: '42%', textGap: '50%', right: '72px', bottom: '16px', dropShadow: true },
+    // A ₹1 coin (the headline's "Put ₹1 in"); it sits left of the corner so the hover peel never covers it.
+    illustration: { src: rupeeCoin, height: '40%', textGap: '50%', right: '72px', bottom: '16px', dropShadow: true },
     tape: { color: 'rgba(231,111,81,0.25)', rotate: -2, style: 'top:-12px;left:50%;margin-left:-45px' },
   },
   'seo-and-blogs': {
@@ -67,7 +66,7 @@ export const posterStyles: Record<string, PosterStyle> = {
     text: 'espresso',
     headlineColor: 'orange-deep',
     minHeight: 320,
-    illustration: { src: robotThinking, height: '56%', textGap: '27%' },
+    illustration: { src: robotThinking, height: '44%', textGap: '36%', right: '56px' },
     tape: { color: 'rgba(244,185,66,0.55)', rotate: -4, style: 'top:-12px;right:36px' },
   },
 };
