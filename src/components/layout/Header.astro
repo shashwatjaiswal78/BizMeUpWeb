@@ -16,13 +16,15 @@ interface Props {
    * "dark": pages that open on a dark background (cream text before scrolling).
    */
   tone?: 'hero' | 'light' | 'dark';
+  /** Wide screens: line up with the homepage hero's container rather than the 1280px content column */
+  wide?: boolean;
 }
 
-const { tone = 'light' } = Astro.props;
+const { tone = 'light', wide = false } = Astro.props;
 ---
 
 <header id="site-header" class="site-header fixed inset-x-0 top-0 z-50" data-solid="false" data-tone={tone}>
-  <div class="flex items-center justify-between gap-4 px-5 py-4 md:px-10 lg:px-16 lg:py-3">
+  <div data-wide={wide ? 'true' : undefined} class="header-bar flex items-center justify-between gap-4 px-5 py-4 md:px-10 lg:px-16 lg:py-3">
     <a href="/" class="wordmark inline-flex no-underline" aria-label="BizMeUp home">
       <Logo class="h-[30px] w-[182px] lg:h-[27px] lg:w-[164px]" decorative />
     </a>
@@ -99,6 +101,16 @@ const { tone = 'light' } = Astro.props;
 </div>
 
 <style>
+  /* Wide screens: the header's edges line up with the page's content. Inner pages use the 1280px
+     content column; the homepage uses the hero's wider container (--wide-max, global.css). */
+  @media (min-width: 1600px) {
+    .header-bar {
+      padding-inline: max(64px, calc((100% - 1280px) / 2));
+    }
+    .header-bar[data-wide='true'] {
+      padding-inline: max(64px, calc((100% - var(--wide-max)) / 2));
+    }
+  }
   .site-header {
     color: var(--color-espresso);
     transition: background-color 200ms ease, backdrop-filter 200ms ease, border-color 200ms ease;

@@ -2,6 +2,24 @@
 @import './fonts.css';
 @import './tokens.css';
 
+/* Wide screens: the centred content width shared by the header and the homepage hero, so their
+   edges line up. Tiers match the hero's scene zoom (wider only when the screen is tall enough). */
+@media (min-width: 1600px) {
+  :root {
+    --wide-max: 1720px;
+  }
+}
+@media (min-width: 1900px) and (min-height: 980px) {
+  :root {
+    --wide-max: 1760px;
+  }
+}
+@media (min-width: 2300px) and (min-height: 1150px) {
+  :root {
+    --wide-max: 2000px;
+  }
+}
+
 @layer base {
   html {
     /* Keeps anchor targets clear of the fixed header */

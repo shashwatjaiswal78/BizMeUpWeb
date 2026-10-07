@@ -14,13 +14,15 @@ interface Props {
   type?: 'website' | 'article';
   noindex?: boolean;
   headerTone?: 'hero' | 'light' | 'dark';
+  /** Header lines up with the homepage hero's wide container (1600px+) instead of the 1280px content column */
+  wideHeader?: boolean;
   /** BreadcrumbList structured data for inner pages (Home first) */
   breadcrumbs?: Crumb[];
   /** Extra JSON-LD objects for this page */
   schema?: Record<string, unknown>[];
 }
 
-const { headerTone, breadcrumbs, schema = [], image = '/og/home.png', ...props } = Astro.props;
+const { headerTone, wideHeader = false, breadcrumbs, schema = [], image = '/og/home.png', ...props } = Astro.props;
 const jsonLd = [...schema, ...(breadcrumbs ? [breadcrumbList(breadcrumbs, Astro.site)] : [])];
 ---
 
@@ -48,7 +50,7 @@ const jsonLd = [...schema, ...(breadcrumbs ? [breadcrumbList(breadcrumbs, Astro.
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
-    <Header tone={headerTone} />
+    <Header tone={headerTone} wide={wideHeader} />
     <main id="main">
       <slot />
     </main>

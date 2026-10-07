@@ -253,14 +253,14 @@ import { auditHref } from '../../config/site';
     }
   }
 
-  /* Wide screens (1600px+): the hero sits in a centred container instead of running edge to edge,
+  /* Wide screens (1600px+): the hero sits in a centred container (--wide-max) instead of running edge to edge,
      the copy grows (headline up to 124px, still capped by screen height), and the scene keeps its
      1440px proportions, scaled up as a whole when the screen is tall enough to fit it. */
   @media (min-width: 1600px) {
     .hero {
-      --hero-max: 1720px;
       justify-content: space-between;
-      padding-inline: max(64px, calc((100% - var(--hero-max)) / 2));
+      /* --wide-max (global.css) is shared with the header so their edges line up. */
+      padding-inline: max(64px, calc((100% - var(--wide-max)) / 2));
     }
     .hero-copy {
       max-width: 920px;
@@ -291,13 +291,11 @@ import { auditHref } from '../../config/site';
   }
   @media (min-width: 1900px) and (min-height: 980px) {
     .hero {
-      --hero-max: 1760px;
       --scene-zoom: 1.2;
     }
   }
   @media (min-width: 2300px) and (min-height: 1150px) {
     .hero {
-      --hero-max: 2000px;
       --scene-zoom: 1.4;
     }
     .hero [data-hero-cta] {
