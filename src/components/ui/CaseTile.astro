@@ -1,6 +1,7 @@
 ---
 /** Compact case file card for the Work page and related cases. The whole tile links to the case. */
 import { Picture } from 'astro:assets';
+import LiveTag from './LiveTag.astro';
 import { caseNumber, type CaseStudy } from '../../lib/content';
 
 interface Props {
@@ -20,15 +21,18 @@ const Heading = headingLevel;
 >
   {
     d.mockupDesktop && (
-      <Picture
-        src={d.mockupDesktop}
-        alt=""
-        widths={[480, 800, 1120]}
-        sizes="(min-width: 900px) 560px, 90vw"
-        formats={['avif']}
+      <div class="mb-2 rounded-[6px] bg-espresso p-[6px]">
+        <LiveTag url={d.liveUrl} note={d.liveNote} class="mt-0.5 mb-[7px] ml-0.5" />
+        <Picture
+          src={d.mockupDesktop}
+          alt=""
+          widths={[480, 800, 1120]}
+          sizes="(min-width: 900px) 560px, 90vw"
+          formats={['avif']}
           fallbackFormat="webp"
-        pictureAttributes={{ class: 'mb-2 block overflow-hidden rounded-[6px] border-[6px] border-espresso [&>img]:h-auto [&>img]:w-full' }}
-      />
+          pictureAttributes={{ class: 'block overflow-hidden rounded-[3px] [&>img]:h-auto [&>img]:w-full' }}
+        />
+      </div>
     )
   }
   <span class="text-[15px] font-semibold text-orange-deep">Case {caseNumber(entry)} / {d.industry}</span>

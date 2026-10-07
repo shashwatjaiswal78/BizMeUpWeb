@@ -9,6 +9,7 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/ui/Breadcrumbs.astro';
 import SiteViewer from '../../components/ui/SiteViewer.astro';
+import LiveTag from '../../components/ui/LiveTag.astro';
 import CtaBand from '../../components/ui/CtaBand.astro';
 import { getCaseStudies, caseNumber, type CaseStudy } from '../../lib/content';
 
@@ -64,11 +65,11 @@ const meta = [
           ))
         }
         {
-          liveIsUrl && (
+          (liveIsUrl || d.liveNote) && (
             <div>
               <dt class="text-sm font-semibold text-muted">Live site</dt>
               <dd class="m-0 mt-1 text-[17px] text-espresso">
-                <a href={d.liveUrl} target="_blank" rel="noopener">Visit the site</a>
+                {liveIsUrl ? <a href={d.liveUrl} target="_blank" rel="noopener">Visit the site</a> : d.liveNote}
               </dd>
             </div>
           )
@@ -82,6 +83,7 @@ const meta = [
     <div class="relative mx-auto flex max-w-[1280px] items-end justify-center gap-6 overflow-hidden rounded-[8px] bg-blue px-6 pt-12 pb-0 sm:px-12 sm:pt-16">
       <div class="w-full max-w-[860px] min-w-0">
         <div class="rounded-t-[14px] bg-espresso p-3 sm:p-4">
+          <LiveTag url={d.liveUrl} note={d.liveNote} class="mb-3 sm:mb-4" />
           {
             d.mockupDesktop ? (
               <SiteViewer

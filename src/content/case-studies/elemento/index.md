@@ -16,6 +16,7 @@ stats:
 mockupDesktop: "./hero.webp"
 fullPage: "./full.webp"
 mockupMobile: "./mobile.webp"
+liveUrl: "https://www.theelemento.com/"
 testimonial:
   quote: "We needed a website that could handle a large product catalogue and still load fast. BizMeUp delivered exactly that. The site is clean, professional, and our sales inquiries went up noticeably within the first month of going live. They understood our industry right away."
   name: "Nikhil Anand"

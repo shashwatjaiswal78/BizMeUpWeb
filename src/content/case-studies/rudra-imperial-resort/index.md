@@ -16,6 +16,7 @@ stats:
 mockupDesktop: "./hero.webp"
 fullPage: "./full.webp"
 mockupMobile: "./mobile.webp"
+liveUrl: "https://www.rudraimperialresort.in/"
 publishedAt: 2026-10-05
 ---
 

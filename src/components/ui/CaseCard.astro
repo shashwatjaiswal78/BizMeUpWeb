@@ -6,6 +6,7 @@
  */
 import { Picture } from 'astro:assets';
 import SiteViewer from './SiteViewer.astro';
+import LiveTag from './LiveTag.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -43,6 +44,7 @@ const number = String(d.order).padStart(2, '0');
     <!-- With a phone, the laptop leaves room so the phone only overlaps its bezel, never the screenshot -->
     <div class:list={['relative', d.mockupMobile ? 'mr-[21%]' : '']}>
       <div class="mx-auto w-[92%] rounded-t-[12px] bg-espresso p-2.5">
+        <LiveTag url={d.liveUrl} note={d.liveNote} class="mb-2.5" />
         {
           d.mockupDesktop ? (
             <SiteViewer

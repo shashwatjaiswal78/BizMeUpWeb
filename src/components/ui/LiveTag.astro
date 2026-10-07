@@ -1,0 +1,38 @@
+---
+/**
+ * "Live Site" tag that sits on the top bezel of a case mockup frame. Links to the
+ * live site, or shows a note (e.g. "Site under maintenance") when the site is offline.
+ * Renders nothing when the case has neither. relative z-10 keeps it above stretched card links.
+ */
+interface Props {
+  url?: string;
+  note?: string;
+  class?: string;
+}
+
+const { url, note, class: className } = Astro.props;
+const isLive = !!url && /^https?:\/\//.test(url);
+const address = isLive && url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : '';
+const base =
+  'relative z-10 flex w-fit items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] leading-none font-semibold text-espresso no-underline';
+---
+
+{
+  isLive ? (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener"
+      class:list={[base, className, 'transition-transform duration-200 hover:-translate-y-0.5 hover:text-espresso motion-reduce:transform-none']}
+      aria-label={`Live Site: visit ${address} (opens in a new tab)`}
+    >
+      <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-[#25D366]" />
+      Live Site
+    </a>
+  ) : note ? (
+    <span class:list={[base, className]}>
+      <span aria-hidden="true" class="h-2 w-2 shrink-0 rounded-full bg-mustard" />
+      {note}
+    </span>
+  ) : null
+}

@@ -29,6 +29,8 @@ const caseStudies = defineCollection({
       fullPage: image().optional(),
       mockupMobile: image().optional(),
       liveUrl: z.string().optional(),
+      /** Shown instead of a link when the site is offline, e.g. "Site under maintenance" */
+      liveNote: z.string().optional(),
       testimonial: z.object({ quote: z.string(), name: z.string(), role: z.string() }).optional(),
       publishedAt: z.coerce.date(),
     }),
