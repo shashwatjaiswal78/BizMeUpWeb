@@ -101,12 +101,15 @@ const { tone = 'light', wide = false } = Astro.props;
 </div>
 
 <style>
-  /* Wide screens: the header's edges line up with the page's content. Inner pages use the 1280px
-     content column; the homepage uses the hero's wider container (--wide-max, global.css). */
-  @media (min-width: 1600px) {
-    .header-bar {
+  /* Desktop: the header's edges line up with the page's content. Inner pages use the 1280px
+     content column (from 1024px); the homepage uses the hero's wider container from 1600px
+     (--wide-max, global.css) and the standard 64px gutter below that. */
+  @media (min-width: 1024px) {
+    .header-bar:not([data-wide='true']) {
       padding-inline: max(64px, calc((100% - 1280px) / 2));
     }
+  }
+  @media (min-width: 1600px) {
     .header-bar[data-wide='true'] {
       padding-inline: max(64px, calc((100% - var(--wide-max)) / 2));
     }
